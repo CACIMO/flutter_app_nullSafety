@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/carrito.dart';
+import 'package:flutter_app/configuracion.dart';
 import 'package:flutter_app/historial.dart';
 import 'package:flutter_app/login.dart';
 import 'newprod.dart';
@@ -45,15 +46,17 @@ Map<String, Widget> options = {
       title: 'Cerrar Sesión',
       nextPage: Login()),
   "604f9cf5aaa8ce91e788e21b": MenuBtn(
-      icono: Icon(CupertinoIcons.book),
-      title: 'Catalogo',
+      icono: Icon(CupertinoIcons.qrcode_viewfinder),
+      title: 'Escaner Qr',
       nextPage: Catalogo()),
   "604f9cf5aaa8ce91e788e21c": MenuBtn(
-      icono: Icon(CupertinoIcons.book),
-      title: 'Catalogo',
+      icono: Icon(CupertinoIcons.arrow_down_doc),
+      title: 'Descargar Formato',
       nextPage: Catalogo()),
   "604f9cf5aaa8ce91e788e21d": MenuBtn(
-      icono: Icon(CupertinoIcons.book), title: 'Catalogo', nextPage: Catalogo())
+      icono: Icon(CupertinoIcons.settings),
+      title: 'Configuracion',
+      nextPage: Configuracion())
 };
 
 double mediaQuery(BuildContext ctx, String type, double factor) {
@@ -88,6 +91,15 @@ void alertLoad(BuildContext ctx) async {
             elevation: 0, backgroundColor: Colors.transparent, content: Load());
       });
 }
+
+/* void alertQrScanner(BuildContext ctx, Function callback) async {
+  return showDialog<void>(
+      barrierDismissible: true,
+      context: ctx,
+      builder: (BuildContext context) {
+        return Container(child: QrScanner(callBack: callback, ctx: ctx));
+      });
+} */
 
 Future httpGet(BuildContext ctx, urlRoute, bool loadDialog) async {
   if (loadDialog) alertLoad(ctx);

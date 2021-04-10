@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/newprod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'utils.dart';
 
 //Models Class
@@ -409,10 +412,13 @@ class _ItemListState extends State<ItemList> {
             color: Colors.blue.withOpacity(0.8),
             icon: CupertinoIcons.pencil_ellipsis_rectangle,
             onTap: () {
-              access('mprod')?Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (ctx) => NuevoProd(prodInfo: this._prod))):errorMsg(_ctx,'Error de aceso', 'No puedes modificar productos');
+              access('mprod')
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (ctx) => NuevoProd(prodInfo: this._prod)))
+                  : errorMsg(
+                      _ctx, 'Error de aceso', 'No puedes modificar productos');
             }),
         IconSlideAction(
             caption: 'Borrar',
@@ -899,4 +905,3 @@ class _AlertVoucher extends State<AlertVoucher> {
         ]));
   }
 }
-

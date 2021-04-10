@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-//import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:open_file/open_file.dart';
 import 'utils.dart';
-//import 'resumen.dart';
+import 'resumen.dart';
 
 class Historial extends StatefulWidget {
   @override
@@ -25,8 +24,8 @@ class _Historial extends State<Historial> {
   }
 
   Future<String> _findLocalPath() async {
-    final directory = await getExternalStorageDirectory();
-    return directory!.path;
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
   }
 
   void _uploadFile(formato) async {
@@ -70,7 +69,8 @@ class _Historial extends State<Historial> {
     return false;
   }
 
-  void descargaFile(idFile, nameFile) async {
+  void descargaFile(BuildContext ctx, idFile, nameFile) async {
+    alertLoad(ctx);
     bool permiso = await _checkPermission();
     String ruta = (await _findLocalPath()) + '/AMDBBFiles';
 
@@ -82,8 +82,9 @@ class _Historial extends State<Historial> {
                 ..inExternalFilesDir()
                 ..subDirectory('$nameFile.jpg'));
       var path = await ImageDownloader.findPath(imgId!);
-      print(path);
-      OpenFile.open('/storage/emulated/0/Android/data/com.example.flutter_app/files/Download/FT00001.jpg');
+      Navigator.of(ctx, rootNavigator: true).pop();
+      OpenFile.open(path!)
+          .then((value) => Navigator.of(ctx, rootNavigator: true).pop());
     }
   }
 
@@ -133,7 +134,6 @@ class _Historial extends State<Historial> {
   }
 
   void getFormatosAll() async {
-    //print(DateTime.parse('2021-03-13T13:13:58.978Z'));
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String user = prefs.getString('user')!;
 
@@ -174,10 +174,10 @@ class _Historial extends State<Historial> {
               flex: 9,
               child: InkWell(
                   onTap: () {
-                    /*  Navigator.push(
+                    Navigator.push(
                         this.context,
                         MaterialPageRoute(
-                            builder: (ctx) => Resumen(format: info['_id']))); */
+                            builder: (ctx) => Resumen(format: info['_id'])));
                   },
                   child: Column(children: [
                     Row(children: [
@@ -288,7 +288,8 @@ class _Historial extends State<Historial> {
                             ? _uploadFile(info['_id'])
                             : errorMsg(
                                 context, 'Error de Acceso', 'No tienes acesso'),
-                        () => descargaFile(info['_id'], info['formato']));
+                        () => descargaFile(
+                            context, info['_id'], info['formato']));
                   },
                   icon: Icon(CupertinoIcons.square_favorites)))
         ]));
@@ -356,7 +357,7 @@ class _Historial extends State<Historial> {
                                         scafoldKey.currentState!.openDrawer();
                                       },
                                       icon: Icon(
-                                        Icons.menu,
+                                        CupertinoIcons.sidebar_left,
                                         size: 18,
                                       ))))
                         ]),
