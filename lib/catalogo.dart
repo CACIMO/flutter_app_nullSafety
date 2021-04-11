@@ -133,9 +133,7 @@ class _Catalogo extends State<Catalogo> {
           tagId[item['titulo']] = item['_id'];
         });
       });
-    }).catchError((error) {
-      print('Esto Fallo $error');
-    });
+    }).catchError((error) {});
   }
 
   void getColor() {
@@ -200,22 +198,21 @@ class _Catalogo extends State<Catalogo> {
       setState(() {
         items = convertOnList(resp['data']);
       });
-    }).catchError((onError) {
-      print(onError);
-    });
+    }).catchError((onError) {});
   }
 
   List<Widget> convertOnList(List prods) {
     List<Widget> auxList = [];
     prods.forEach((item) {
-      //print(ItemList(product: item));
       auxList.add(ItemList(
           product: item,
           ctx: this.context,
           voidCallBack: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Catalogo()));
-          }));
+          },
+          voidCallBack1: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Catalogo()))));
       auxList.add(Divider());
     });
     return auxList;
@@ -227,7 +224,6 @@ class _Catalogo extends State<Catalogo> {
         items.addAll(new List.generate(42, (index) => Text('Inserted $index')));
       });
     } */
-    print('');
   }
 
   @override

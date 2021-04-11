@@ -130,7 +130,8 @@ class _NuevoProd extends State<NuevoProd> {
       httpPostFile(this.context, 'producto/null', jsonAux, fileImg, true)
           .then((resp) {
         //Navigator.pop(ctx);
-        successMsg(this.context, 'Producto Creado Correctamente.').then((value) {
+        successMsg(this.context, 'Producto Creado Correctamente.')
+            .then((value) {
           if (this.prodData == null) {
             getInitialData();
             controllers.forEach((key, value) {
@@ -248,9 +249,7 @@ class _NuevoProd extends State<NuevoProd> {
           });
         });
       }
-    }).catchError((error) {
-      print('Esto Fallo $error');
-    });
+    }).catchError((error) {});
   }
 
   void getColor() {
@@ -532,7 +531,7 @@ class _NuevoProd extends State<NuevoProd> {
                                               source: ImageSource.gallery);
                                           fileImg = null;
                                           if (img != null) {
-                                            fileImg = File(img!.path);     
+                                            fileImg = File(img!.path);
                                             var auxExt =
                                                 img!.path.split('.').last;
                                             if (auxExt == 'jpg' ||

@@ -39,7 +39,7 @@ class _Login extends State<Login> {
     return true;
   }
 
-  void cleanSessions() async{
+  void cleanSessions() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }
@@ -52,11 +52,12 @@ class _Login extends State<Login> {
       'password':
           sha512.convert(utf8.encode(controllers['password']!.text)).toString()
     };
+
     //it is validate that the fiels User and password aren't null or thant aren't in blanck
     for (final key in jsonAux.keys) {
       if (jsonAux[key] == '') {
         flag = true;
-        errorMsg(this.context,'Error Log in', 'Por favor ingrese su $key');
+        errorMsg(this.context, 'Error Log in', 'Por favor ingrese su $key');
         break;
       }
     }
@@ -68,7 +69,7 @@ class _Login extends State<Login> {
         setState(() {
           menOptions = resp['data']['usuario'][0]['MenuData'];
           permissions = resp['data']['usuario'][0]['Permiso'];
-          token =resp['data']['token'];
+          token = resp['data']['token'];
         });
         prefs.setString('token', resp['data']['token']);
         prefs.setString('user', resp['data']['usuario'][0]['_id']);
@@ -78,12 +79,11 @@ class _Login extends State<Login> {
           MaterialPageRoute(builder: (context) => Catalogo()),
         );
       }).catchError((jsonError) {
-        print(jsonError);
-        errorMsg(this.context,'Error Log in', 'Usuario o contraseña incorrecto.');
+        errorMsg(
+            this.context, 'Error Log in', 'Usuario o contraseña incorrecto.');
       });
     }
   }
-//
 
   @override
   Widget build(BuildContext context) {

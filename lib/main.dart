@@ -10,17 +10,6 @@ import 'package:flutter_app/login.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/* 
- void func(String a, DownloadTaskStatus status, int i) {
-    print('');
-  }
-
-void _initDownloader() async {
-  FlutterDownloader.initialize(debug: true);
-  
-  FlutterDownloader.registerCallback(func);
-}
- */
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //_initDownloader();
@@ -56,11 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
   //methods
   void authToken() async {
     if (token != '') {
-      print('Paso 2');
       httpGet(this.context, 'auth', false).then((resp) {
-        print('Paso 3');
         httpGet(this.context, 'menuTk', false).then((resp) {
-          print('Paso 4');
           setState(() {
             menOptions = resp['data'][0]['MenuData'];
             permissions = resp['data'][0]['Permiso'];
@@ -86,7 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token') ?? '';
-    print('Paso 1');
   }
 
   @override

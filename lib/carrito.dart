@@ -50,9 +50,17 @@ class _Carrito extends State<Carrito> {
     });
   }
 
-  void removerCarrito(idItem) {
-    httpPut(this.context, 'carrito',
-            {'idCarrito': carrito['_id'], 'iditem': idItem}, true)
+  void removerCarrito(itemData) {
+    httpPut(
+            this.context,
+            'carrito',
+            {
+              'idCarrito': carrito['_id'],
+              'iditem': itemData['_id'],
+              'idProducto': itemData['id'],
+              'cantidad': itemData['cantidad'].toString()
+            },
+            true)
         .then((resp) {
       getCarrito();
     }).catchError((onError) {});
@@ -93,8 +101,7 @@ class _Carrito extends State<Carrito> {
                                               ctx,
                                               MaterialPageRoute(
                                                   builder: (ctx) =>
-                                                      DatosCliente())) 
-                                          ,
+                                                      DatosCliente())),
                                           icon: Icon(
                                             CupertinoIcons.tray_arrow_down,
                                             size: 18,
@@ -276,8 +283,7 @@ class _Carrito extends State<Carrito> {
                                             color: Colors.red.withOpacity(0.8),
                                             icon:
                                                 Icons.highlight_remove_rounded,
-                                            onTap: () =>
-                                                removerCarrito(item['_id']))
+                                            onTap: () => removerCarrito(item))
                                       ]);
                                 }))
                       ])

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,7 @@ class _QrScanner extends State<QrScanner> {
         result = scanData;
       });
       await controller.stopCamera();
-      _callBack(scanData.code);
+      _callBack(jsonDecode(scanData.code));
     });
   }
   //_callBack(data.code);

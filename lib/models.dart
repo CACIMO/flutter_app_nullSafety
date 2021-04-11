@@ -7,6 +7,7 @@ import 'package:flutter_app/newprod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'catalogo.dart';
 import 'utils.dart';
 
 //Models Class
@@ -179,21 +180,28 @@ class ItemList extends StatefulWidget {
   final product;
   final BuildContext ctx;
   final Function voidCallBack;
+  final Function voidCallBack1;
   ItemList(
-      {Key? key, this.product, required this.ctx, required this.voidCallBack})
+      {Key? key,
+      this.product,
+      required this.ctx,
+      required this.voidCallBack,
+      required this.voidCallBack1})
       : super(key: key);
 
   @override
-  _ItemListState createState() =>
-      _ItemListState(this.product, this.ctx, this.voidCallBack);
+  _ItemListState createState() => _ItemListState(
+      this.product, this.ctx, this.voidCallBack, this.voidCallBack1);
 }
 
 class _ItemListState extends State<ItemList> {
   final BuildContext _ctx;
   final _prod;
   final Function _voidCallBack;
+  final Function _voidCallBack1;
 
-  _ItemListState(this._prod, this._ctx, this._voidCallBack);
+  _ItemListState(
+      this._prod, this._ctx, this._voidCallBack, this._voidCallBack1);
 
   List<Widget> colorData = [];
   List<Widget> tallaData = [];
@@ -211,14 +219,14 @@ class _ItemListState extends State<ItemList> {
             }));
   }
 
-  Future<void> _showModal(ctxs, data) async {
+  Future<void> _showModal(ctxs, data, Function callback) async {
     return showModalBottomSheet<void>(
         context: ctxs,
         isScrollControlled: true,
         barrierColor: Colors.black.withOpacity(0.3),
         backgroundColor: Colors.transparent,
         builder: (BuildContext ctx) {
-          return Producto(data: data);
+          return Producto(data: data, callBack: callback);
         });
   }
 
@@ -276,7 +284,7 @@ class _ItemListState extends State<ItemList> {
       actionExtentRatio: 0.25,
       child: InkWell(
           onTap: () => access('venta')
-              ? _showModal(context, _prod)
+              ? _showModal(context, _prod, _voidCallBack1)
               : alertQr(context, _prod),
           child: Container(
               child: Column(children: [
@@ -298,7 +306,7 @@ class _ItemListState extends State<ItemList> {
                                           padding: EdgeInsets.all(30),
                                           child: CircularProgressIndicator()),
                                       imageUrl:
-                                          'http://3.138.111.218:3000/getimg/${this._prod['_id']}'))),
+                                          'http://$urlDB/getimg/${this._prod['_id']}'))),
                           Expanded(
                               flex: 7,
                               child: Container(
@@ -435,17 +443,20 @@ class _ItemListState extends State<ItemList> {
 
 class Producto extends StatefulWidget {
   final data;
+  final Function callBack;
 
-  const Producto({Key? key, this.data}) : super(key: key);
+  const Producto({Key? key, this.data, required this.callBack})
+      : super(key: key);
 
   @override
-  _Producto createState() => _Producto(this.data);
+  _Producto createState() => _Producto(this.data, this.callBack);
 }
 
 class _Producto extends State<Producto> {
   final data;
+  final Function _callBack;
 
-  _Producto(this.data);
+  _Producto(this.data, this._callBack);
 
   Map<String, bool> conf = {'CT': true, 'TG': true, 'CL': true, 'TL': true};
 
@@ -567,8 +578,10 @@ class _Producto extends State<Producto> {
     }
     if (flag) {
       httpPost(ctx, 'carrito', dataSend, true).then((resp) {
-        successMsg(ctx, 'Agregado Correctamente.')
-            .then((value) => Navigator.pop(ctx));
+        successMsg(ctx, 'Agregado Correctamente.').then((value) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Catalogo()));
+        });
       }).catchError((onError) {
         errorMsg(ctx, 'Error en Catalogo', 'Error al agregar');
       });
@@ -865,7 +878,7 @@ class _Producto extends State<Producto> {
                                       padding: EdgeInsets.all(20),
                                       child: CircularProgressIndicator()),
                                   imageUrl:
-                                      'http://3.138.111.218:3000/getimg/${data['_id']}')))),
+                                      'http://$urlDB/getimg/${data['_id']}')))),
                 ))
           ],
         ));

@@ -233,9 +233,7 @@ class _Perfil extends State<Perfil> {
           Permisos = '';
         }
       });
-    }).catchError((onError) {
-      print(onError);
-    });
+    }).catchError((onError) {});
   }
 
   // ignore: missing_return

@@ -5,6 +5,10 @@ import 'package:flutter_app/carrito.dart';
 import 'package:flutter_app/configuracion.dart';
 import 'package:flutter_app/historial.dart';
 import 'package:flutter_app/login.dart';
+import 'package:image_downloader/image_downloader.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'newprod.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -17,7 +21,7 @@ import 'models.dart';
 import 'package:device_info/device_info.dart';
 
 String token = '';
-String urlDB = '3.138.111.218:3000';
+String urlDB = '3.141.11.180:3000';
 List menOptions = [];
 String permissions = '';
 Map pro = {
@@ -275,18 +279,22 @@ Future<void> alertQr(ctx, Map data) async {
       context: ctx,
       builder: (BuildContext context) {
         return AlertDialog(
-            content: SingleChildScrollView(
-                child: Center(
-          child: Container(
-              height: 200,
-              width: 200,
-              child: QrImage(
-                data: jsonEncode(data),
-                version: QrVersions.auto,
-                size: 200,
-                gapless: true,
-              )),
-        )));
+            content: Container(
+                height: 200,
+                child: InkWell(
+                    onDoubleTap: () =>
+                        _descargaFile(context, data['_id'], data['_id']),
+                    child: SingleChildScrollView(
+                        child: Center(
+                            child: Container(
+                                height: 200,
+                                width: 200,
+                                child: QrImage(
+                                  data: jsonEncode(data),
+                                  version: QrVersions.auto,
+                                  size: 200,
+                                  gapless: true,
+                                )))))));
       });
 }
 
@@ -352,4 +360,51 @@ Future<void> uploadMsg(
                     fontSize: mediaQuery(ctx, 'h', .025))),
             content: ActionAlert(msg: msgx));
       });
+}
+
+void _descargaFile(BuildContext ctx, idFile, nameFile) async {
+  alertLoad(ctx);
+  bool permiso = await _checkPermission();
+  if (permiso) {
+    print(AndroidDestinationType.directoryDCIM);
+    var imgId =
+        await ImageDownloader.downloadImage('http://$urlDB/qrscann/$idFile',
+            destination: AndroidDestinationType.directoryDCIM
+              ..inExternalFilesDir()
+              ..subDirectory('$nameFile.png'));
+    var path = await ImageDownloader.findPath(imgId!);
+    Navigator.of(ctx, rootNavigator: true).pop();
+    OpenFile.open(path!)
+        .then((value) => Navigator.of(ctx, rootNavigator: true).pop());
+  }
+}
+
+Future<String> _findLocalPath() async {
+  final directory = await getApplicationDocumentsDirectory();
+  return directory.path;
+}
+
+void _checkfolder() async {
+  var _localPath = (await _findLocalPath()) + '/AMDBBFiles';
+  final savedDir = Directory(_localPath);
+  bool hasExisted = await savedDir.exists();
+  if (!hasExisted) {
+    savedDir.create();
+  }
+}
+
+Future<bool> _checkPermission() async {
+  final status = await Permission.storage.status;
+  if (status != PermissionStatus.granted) {
+    final result = await Permission.storage.request();
+    if (result == PermissionStatus.granted) {
+      _checkfolder();
+      return true;
+    }
+  } else {
+    _checkfolder();
+    return true;
+  }
+
+  return false;
 }

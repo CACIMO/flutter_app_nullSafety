@@ -81,7 +81,6 @@ class _Pedido extends State<Pedido> {
             (value) => Navigator.push(
                 this.context, MaterialPageRoute(builder: (ctx) => Catalogo())));
       }).catchError((onError) {
-        print(onError);
         errorMsg(this.context, 'Error', 'Error al Crear Pedido');
       });
     }
@@ -373,7 +372,7 @@ class _Pedido extends State<Pedido> {
                                                                 child:
                                                                     CircularProgressIndicator()),
                                                         imageUrl:
-                                                            'http://3.138.111.218:3000/getimg/${Prod['_id']}'))),
+                                                            'http://$urlDB/getimg/${Prod['_id']}'))),
                                             Expanded(
                                                 flex: 7,
                                                 child: Container(

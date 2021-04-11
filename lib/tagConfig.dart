@@ -42,9 +42,7 @@ class _TagConfig extends State<TagConfig> {
           tagCheks[item['titulo']] = item['active'];
         });
       });
-    }).catchError((error) {
-      print('Esto Fallo $error');
-    });
+    }).catchError((error) {});
   }
 
   void changeCheck(ctx, type, titulo, bool value, Function callback) {
@@ -97,10 +95,8 @@ class _TagConfig extends State<TagConfig> {
             controllersTG.text = '';
           });
           getTag();
-          Navigator.pop(ctx);
         });
       }).catchError((jsonError) {
-        //print(jsonError);
         errorMsg(ctx, 'Error',
             'Error al crear ${type == 'CT' ? 'Categoria' : (type == 'TL' ? 'Talla' : 'Tag')}');
       });

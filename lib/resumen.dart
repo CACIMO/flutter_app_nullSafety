@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter_app/qrScan.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -45,9 +42,9 @@ class _Resumen extends State<Resumen> {
           carrito = resp['data'][0];
           prePed = carrito['Productos'];
         });
+        print(prePed);
       }
     }).catchError((onError) {
-      print(onError);
       errorMsg(ctx, 'Error en el resumen', 'Error al cargar el resumen');
     });
   }
@@ -57,11 +54,20 @@ class _Resumen extends State<Resumen> {
         context: this.context,
         builder: (BuildContext ctx) {
           return QrScanner(callBack: (data) {
-            print(data);
-            //Navigator.pop(ctx);
-            Navigator.of(this.context, rootNavigator: true).pop();
+            procesarArticulo(data['_id']);
           });
         });
+  }
+
+  void procesarArticulo(id) {
+    httpPost(context, 'qrscann/null', {'formatoId': this.format, 'itemId': id},
+            true)
+        .then((value) {
+      Navigator.of(this.context, rootNavigator: true).pop();
+      getFormato(this.context);
+    }).catchError((onError) {
+      print(onError);
+    });
   }
 
   @override
@@ -328,7 +334,7 @@ class _Resumen extends State<Resumen> {
                             Map Talla = carrito['Tallas']
                                 .where((e) => e['_id'] == item['talla'])
                                 .toList()[0];
-
+                            print(Prod);
                             return Container(
                                 child: Column(children: [
                               Row(children: [
@@ -359,7 +365,7 @@ class _Resumen extends State<Resumen> {
                                                                 child:
                                                                     CircularProgressIndicator()),
                                                         imageUrl:
-                                                            'http://3.138.111.218:3000/getimg/${Prod['_id']}'))),
+                                                            'http://$urlDB/getimg/${Prod['_id']}'))),
                                             Expanded(
                                                 flex: 7,
                                                 child: Container(
@@ -392,27 +398,39 @@ class _Resumen extends State<Resumen> {
                                                                               'Roboto-Light')))),
                                                           Expanded(
                                                               flex: 3,
-                                                              child: Container(
-                                                                  decoration: BoxDecoration(
-                                                                      color: Colors
-                                                                              .green[
-                                                                          400],
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
+                                                              child: (item[
+                                                                          'restante'] ==
+                                                                      0)
+                                                                  ? Container(
+                                                                      decoration: BoxDecoration(
+                                                                          color: Colors.green[
+                                                                              400],
+                                                                          borderRadius: BorderRadius.circular(
                                                                               5)),
-                                                                  child: Center(
-                                                                    child: Text(
-                                                                        'Finalizado',
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontSize: mediaQuery(
-                                                                                context,
-                                                                                'h',
-                                                                                .013),
-                                                                            fontFamily:
-                                                                                'Roboto-Medium')),
-                                                                  )))
+                                                                      child:
+                                                                          Center(
+                                                                        child: Text(
+                                                                            'Finalizado',
+                                                                            style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: mediaQuery(context, 'h', .013),
+                                                                                fontFamily: 'Roboto-Medium')),
+                                                                      ))
+                                                                  : Container(
+                                                                      decoration: BoxDecoration(
+                                                                          color: Colors.orange[
+                                                                              400],
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              5)),
+                                                                      child:
+                                                                          Center(
+                                                                        child: Text(
+                                                                            'Pendiente',
+                                                                            style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontSize: mediaQuery(context, 'h', .013),
+                                                                                fontFamily: 'Roboto-Medium')),
+                                                                      )))
                                                         ],
                                                       ),
                                                       Row(children: [

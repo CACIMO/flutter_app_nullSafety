@@ -128,7 +128,6 @@ class _Historial extends State<Historial> {
         stepersD = _stepsData(listFormt);
       });
     }).catchError((onError) {
-      print(onError);
       errorMsg(this.context, 'Error', 'Error al Cargar');
     });
   }
@@ -158,7 +157,6 @@ class _Historial extends State<Historial> {
         stepersD = _stepsData(listFormt);
       });
     }).catchError((onError) {
-      print(onError);
       errorMsg(this.context, 'Error', 'Error al Cargar');
     });
   }
@@ -338,41 +336,40 @@ class _Historial extends State<Historial> {
                     right: mediaQuery(context, 'w', .05)),
                 child: Column(children: [
                   Container(
-                      height: mediaQuery(context, 'h', .15),
                       child: Column(children: [
-                        Row(children: [
-                          Expanded(
-                              flex: 9,
-                              child: Container(
-                                  child: Text('Ventas',
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto-Light',
-                                          fontSize:
-                                              mediaQuery(context, 'h', .06))))),
-                          Expanded(
-                              flex: 1,
-                              child: Container(
-                                  child: IconButton(
-                                      onPressed: () {
-                                        scafoldKey.currentState!.openDrawer();
-                                      },
-                                      icon: Icon(
-                                        CupertinoIcons.sidebar_left,
-                                        size: 18,
-                                      ))))
-                        ]),
-                        Row(children: [
-                          Expanded(
-                              child: Container(
-                                  margin: EdgeInsets.only(
-                                      top: mediaQuery(context, 'w', .01)),
-                                  child: Text('Historial de Ventas',
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto-Thin',
-                                          fontSize:
-                                              mediaQuery(context, 'h', .04)))))
-                        ])
-                      ])),
+                    Row(children: [
+                      Expanded(
+                          flex: 9,
+                          child: Container(
+                              child: Text('Ventas',
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto-Light',
+                                      fontSize:
+                                          mediaQuery(context, 'h', .05))))),
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                              child: IconButton(
+                                  onPressed: () {
+                                    scafoldKey.currentState!.openDrawer();
+                                  },
+                                  icon: Icon(
+                                    CupertinoIcons.sidebar_left,
+                                    size: 18,
+                                  ))))
+                    ]),
+                    Row(children: [
+                      Expanded(
+                          child: Container(
+                              margin: EdgeInsets.only(
+                                  top: mediaQuery(context, 'w', .01)),
+                              child: Text('Historial de Ventas',
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto-Thin',
+                                      fontSize:
+                                          mediaQuery(context, 'h', .03)))))
+                    ])
+                  ])),
                   Divider(),
                   Column(children: [
                     Row(children: [

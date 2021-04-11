@@ -41,9 +41,7 @@ class _TallaConfig extends State<TallaConfig> {
           tallaCheks[item['titulo']] = item['active'];
         });
       });
-    }).catchError((error) {
-      print('Esto Fallo $error');
-    });
+    }).catchError((error) {});
   }
 
   void changeCheck(ctx, type, titulo, bool value, Function callback) {
@@ -96,10 +94,8 @@ class _TallaConfig extends State<TallaConfig> {
             controllersTL.text = '';
           });
           getTalla();
-          Navigator.pop(ctx);
         });
       }).catchError((jsonError) {
-        //print(jsonError);
         errorMsg(ctx, 'Error',
             'Error al crear ${type == 'CT' ? 'Categoria' : (type == 'TL' ? 'Talla' : 'Tag')}');
       });

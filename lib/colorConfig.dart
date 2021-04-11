@@ -94,7 +94,6 @@ class _ConfigColor extends State<ConfigColor> {
             controllersCL.text = '';
           });
           getColor();
-          Navigator.pop(ctx);
         });
       }).catchError((jsonError) {
         print(jsonError);

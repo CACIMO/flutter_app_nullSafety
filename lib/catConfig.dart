@@ -73,17 +73,15 @@ class _CatConfig extends State<CatConfig> {
 
     if (!flag) {
       httpPost(ctx, 'categoria',
-              {'titulo': controllersCT.text, 'active': 'true'}, false)
+              {'titulo': controllersCT.text, 'active': 'true'}, true)
           .then((resp) {
         successMsg(ctx, 'Categoria Agregada').then((value) {
           setState(() {
             controllersCT.text = '';
           });
           getCategory();
-          Navigator.pop(ctx);
         });
       }).catchError((jsonError) {
-        //print(jsonError);
         errorMsg(ctx, 'Error', 'Error al crear  Categoria');
       });
     }
