@@ -54,20 +54,29 @@ class _Resumen extends State<Resumen> {
         context: this.context,
         builder: (BuildContext ctx) {
           return QrScanner(callBack: (data) {
-            procesarArticulo(data['_id']);
+            procesarArticulo(data);
           });
         });
   }
 
-  void procesarArticulo(id) {
-    httpPost(context, 'qrscann/null', {'formatoId': this.format, 'itemId': id},
+  void procesarArticulo(Map data) {
+    print(data);
+    /* httpPost(
+            context,
+            'qrscann/null',
+            {
+              'formatoId': this.format,
+              'itemId': data['_id'],
+              'colorId': data['colorData'],
+              'tallaId': data['tallaData']
+            },
             true)
         .then((value) {
       Navigator.of(this.context, rootNavigator: true).pop();
       getFormato(this.context);
     }).catchError((onError) {
       print(onError);
-    });
+    }); */
   }
 
   @override

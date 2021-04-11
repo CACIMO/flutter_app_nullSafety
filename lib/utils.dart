@@ -283,7 +283,7 @@ Future<void> alertQr(ctx, Map data) async {
                 height: 200,
                 child: InkWell(
                     onDoubleTap: () =>
-                        _descargaFile(context, data['_id'], data['_id']),
+                        _descargaFile(context, data, data['_id']),
                     child: SingleChildScrollView(
                         child: Center(
                             child: Container(
@@ -362,20 +362,24 @@ Future<void> uploadMsg(
       });
 }
 
-void _descargaFile(BuildContext ctx, idFile, nameFile) async {
+void _descargaFile(BuildContext ctx, Map data, String nameFile) async {
+  print('data: $data');
   alertLoad(ctx);
   bool permiso = await _checkPermission();
   if (permiso) {
-    print(AndroidDestinationType.directoryDCIM);
-    var imgId =
-        await ImageDownloader.downloadImage('http://$urlDB/qrscann/$idFile',
-            destination: AndroidDestinationType.directoryDCIM
-              ..inExternalFilesDir()
-              ..subDirectory('$nameFile.png'));
-    var path = await ImageDownloader.findPath(imgId!);
-    Navigator.of(ctx, rootNavigator: true).pop();
-    OpenFile.open(path!)
-        .then((value) => Navigator.of(ctx, rootNavigator: true).pop());
+    try {
+      var imgId = await ImageDownloader.downloadImage(
+          'http://$urlDB/qrscann/${jsonEncode(data)}',
+          destination: AndroidDestinationType.directoryDCIM
+            ..inExternalFilesDir()
+            ..subDirectory('$nameFile.png'));
+      var path = await ImageDownloader.findPath(imgId!);
+      Navigator.of(ctx, rootNavigator: true).pop();
+      OpenFile.open(path!)
+          .then((value) => Navigator.of(ctx, rootNavigator: true).pop());
+    } catch (onError) {
+      errorMsg(ctx, 'Error ', 'Error al descargar QR');
+    }
   }
 }
 

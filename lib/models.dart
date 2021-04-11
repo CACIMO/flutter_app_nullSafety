@@ -283,9 +283,7 @@ class _ItemListState extends State<ItemList> {
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
       child: InkWell(
-          onTap: () => access('venta')
-              ? _showModal(context, _prod, _voidCallBack1)
-              : alertQr(context, _prod),
+          onTap: () => _showModal(context, _prod, _voidCallBack1),
           child: Container(
               child: Column(children: [
             Row(children: [
@@ -588,6 +586,22 @@ class _Producto extends State<Producto> {
     }
   }
 
+  void _alertQr(ctx, data) {
+    if (colorKey == '' || tallasKey == '')
+      errorMsg(ctx, 'Error', 'Debe seleccionar talla y color.');
+    else {
+      Map jsonAux = {
+        '_id': data['_id'],
+        'refVendedora': data['refVendedora'],
+        'refInterna': data['refInterna'],
+        'tallaData': tallasId[tallasKey],
+        'colorData': ColorsId[colorKey],
+      };
+      print(jsonAux);
+      alertQr(ctx, jsonAux);
+    }
+  }
+
   @override
   Widget build(BuildContext ctx) {
     if (MediaQuery.of(context).viewInsets.bottom > 0) {
@@ -613,7 +627,10 @@ class _Producto extends State<Producto> {
                     margin: EdgeInsets.only(top: mediaQuery(ctx, 'h', .4)),
                     child: Scaffold(
                         floatingActionButton: FloatingActionButton(
-                          onPressed: () => enviarACarrito(context),
+                          onPressed: () => access('venta')
+                              ? enviarACarrito(context)
+                              : errorMsg(
+                                  ctx, 'Error de Aceso', 'No tienes permisos.'),
                           child: Icon(CupertinoIcons.cart_badge_plus),
                         ),
                         body: Container(
@@ -629,7 +646,7 @@ class _Producto extends State<Producto> {
                             Expanded(
                                 flex: 2,
                                 child: IconButton(
-                                  onPressed: () => alertQr(ctx, this.data),
+                                  onPressed: () => _alertQr(ctx, this.data),
                                   icon: Icon(CupertinoIcons.qrcode),
                                 ))
                           ]),
@@ -831,26 +848,6 @@ class _Producto extends State<Producto> {
                                                     ]);
                                                   }).toList())))
                                     ]))
-                                /*  Center(
-                                    child: Container(
-                                        width: mediaQuery(ctx, 'w', .5),
-                                        alignment: Alignment.center,
-                                        child: ElevatedButton(
-                                            onPressed: () {
-                                              enviarACarrito(ctx);
-                                              //crearUsuarioNuevo(context);
-                                            },
-                                            child: Container(
-                                                height: 50,
-                                                child: Center(
-                                                    child: Text('AGREGAR',
-                                                        style: TextStyle(
-                                                            fontSize: mediaQuery(
-                                                                ctx,
-                                                                'h',
-                                                                .018))))))),
-                                  )
-                                 */
                               ]))
                         ]))),
                     decoration: BoxDecoration(
