@@ -39,11 +39,6 @@ class _Login extends State<Login> {
     return true;
   }
 
-  void cleanSessions() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-  }
-
   void logIn() async {
     bool flag = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -73,6 +68,7 @@ class _Login extends State<Login> {
         });
         prefs.setString('token', resp['data']['token']);
         prefs.setString('user', resp['data']['usuario'][0]['_id']);
+        prefs.setString('mail', resp['data']['usuario'][0]['correo']);
 
         Navigator.push(
           context,

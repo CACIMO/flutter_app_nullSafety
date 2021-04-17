@@ -7,6 +7,7 @@ import 'package:flutter_app/newprod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'catalogo.dart';
 import 'utils.dart';
 
@@ -159,8 +160,13 @@ class _MenuBtnState extends State<MenuBtn> {
       Container(
           height: 50,
           child: InkWell(
-              onTap: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (ctx) => _nextPage)),
+              onTap: () {
+                if (_title == 'Enviar Formato') {
+                  downloadFormat(context);
+                } else
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (ctx) => _nextPage));
+              },
               child: Row(children: [
                 Expanded(flex: 1, child: Container(child: this._icono)),
                 Expanded(
@@ -913,5 +919,146 @@ class _AlertVoucher extends State<AlertVoucher> {
                         fontSize: mediaQuery(context, 'h', .022))))
           ])
         ]));
+  }
+}
+
+class DateFormat extends StatefulWidget {
+  final BuildContext context;
+
+  const DateFormat({Key? key, required this.context}) : super(key: key);
+
+  @override
+  _DateFormat createState() => _DateFormat(this.context);
+}
+
+class _DateFormat extends State<DateFormat> {
+  final BuildContext _context;
+
+  _DateFormat(this._context);
+
+  void selectDate(String text, String fec) async {
+    DateTime date = (await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(2000),
+          lastDate: DateTime.now(),
+          helpText: text,
+        )) ??
+        DateTime.now();
+    if (fec == 'f')
+      setState(() {
+        fecFinal = date;
+      });
+    else
+      setState(() {
+        fecInit = date;
+      });
+  }
+
+  void sendData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString('mail');
+    if (email == null)
+      errorMsg(context, 'Error en App', 'Vuelva a inciar session');
+    else if (fecFinal.isBefore(fecInit)) {
+      errorMsg(context, 'Error Formato',
+          'La fecha final debe ser mayor a la inicial.');
+    } else {
+      httpPost(
+              context,
+              'email',
+              {
+                'fecini': fecInit.toString().split(' ')[0],
+                'fecfin': fecFinal.toString().split(' ')[0],
+                'email': email
+              },
+              false)
+          .then((value) {
+        Navigator.pop(context);
+        successMsg(context, 'Por favor revice su email.');
+      }).catchError((onError) {
+        Navigator.pop(context);
+        errorMsg(context, 'Error Formato', 'Error en el servidor');
+      });
+    }
+  }
+
+  DateTime fecInit = DateTime.now();
+  DateTime fecFinal = DateTime.now();
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Column(children: [
+      Row(children: [
+        Expanded(
+            flex: 4,
+            child: Text('Fecha Inicial:',
+                style: TextStyle(
+                    fontFamily: 'Roboto-Ligth',
+                    fontSize: mediaQuery(context, 'h', .02)))),
+        Expanded(
+            flex: 5,
+            child: Text('${fecInit.toString().split(' ')[0]}',
+                style: TextStyle(
+                    fontFamily: 'Roboto-Ligth',
+                    fontSize: mediaQuery(context, 'h', .02)))),
+        Expanded(
+            flex: 1,
+            child: IconButton(
+                onPressed: () async {
+                  selectDate('Seleccione la fecha inical', 'i');
+                },
+                icon: Icon(CupertinoIcons.calendar,
+                    size: mediaQuery(context, 'h', .02))))
+      ]),
+      Row(
+        children: [
+          Expanded(
+              flex: 4,
+              child: Text('Fecha Final:',
+                  style: TextStyle(
+                      fontFamily: 'Roboto-Ligth',
+                      fontSize: mediaQuery(context, 'h', .02)))),
+          Expanded(
+              flex: 5,
+              child: Text('${fecFinal.toString().split(' ')[0]}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto-Ligth',
+                      fontSize: mediaQuery(context, 'h', .02)))),
+          Expanded(
+              flex: 1,
+              child: IconButton(
+                  onPressed: () async {
+                    selectDate('Seleccione la fecha final', 'f');
+                  },
+                  icon: Icon(CupertinoIcons.calendar,
+                      size: mediaQuery(context, 'h', .02))))
+        ],
+      ),
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Container(
+            margin: EdgeInsets.only(right: 5),
+            height: mediaQuery(context, 'h', .04),
+            child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancelar',
+                    style: TextStyle(
+                        fontFamily: 'Roboto-Regular',
+                        fontSize: mediaQuery(context, 'h', .02))))),
+        Container(
+            height: mediaQuery(context, 'h', .04),
+            child: TextButton(
+                onPressed: () => sendData(),
+                child: Text('Enviar',
+                    style: TextStyle(
+                        fontFamily: 'Roboto-Regular',
+                        fontSize: mediaQuery(context, 'h', .02)))))
+      ])
+    ]));
   }
 }

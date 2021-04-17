@@ -85,7 +85,7 @@ class _ConfigColor extends State<ConfigColor> {
                 'segundario': controllersSG.text,
                 'active': 'true'
               },
-              false)
+              true)
           .then((resp) {
         successMsg(ctx, 'Color nuevo agregado correctamente').then((value) {
           setState(() {

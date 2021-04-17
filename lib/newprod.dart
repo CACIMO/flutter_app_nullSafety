@@ -63,6 +63,7 @@ class _NuevoProd extends State<NuevoProd> {
   Map<String, TextEditingController> controllers = {
     'titulo': TextEditingController(),
     'valor': TextEditingController(),
+    'costo': TextEditingController(),
     'nombre': TextEditingController(),
     'descripcion': TextEditingController(),
     'rfInt': TextEditingController(),
@@ -105,6 +106,7 @@ class _NuevoProd extends State<NuevoProd> {
       'titulo': controllers['titulo']!.text,
       'nombre': controllers['nombre']!.text,
       'valor': controllers['valor']!.text,
+      'costo': controllers['costo']!.text,
       'descripcion': controllers['descripcion']!.text,
       'refVendedora': controllers['rfVend']!.text,
       'refInterna': controllers['rfInt']!.text,
@@ -303,562 +305,618 @@ class _NuevoProd extends State<NuevoProd> {
 
   @override
   Widget build(BuildContext ctx) {
-    return Scaffold(
-        key: scafoldKey,
-        drawer: Container(
-            width: mediaQuery(context, 'w', .70), child: menuOptions(ctx)),
-        body: SingleChildScrollView(
-            child: Container(
-                padding: EdgeInsets.only(
-                    top: mediaQuery(context, 'h', .05),
-                    left: mediaQuery(context, 'w', .05),
-                    right: mediaQuery(context, 'w', .05)),
-                child: Column(children: [
-                  Container(
-                      //padding: EdgeInsets.only(top: mediaQuery(context, 'h', .05),
-                      height: mediaQuery(context, 'h', .15),
-                      child: Column(children: [
-                        Row(children: [
-                          Expanded(
-                              flex: 9,
-                              child: Container(
-                                  child: Text('Producto',
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto-Light',
-                                          fontSize:
-                                              mediaQuery(context, 'h', .05))))),
-                          Expanded(
-                              flex: 1,
-                              child: Container(
-                                  child: IconButton(
-                                      onPressed: () {
-                                        scafoldKey.currentState!.openDrawer();
-                                      },
-                                      icon: Icon(
-                                        CupertinoIcons.sidebar_left,
-                                        size: 18,
-                                      ))))
-                        ]),
-                        Row(children: [
-                          Expanded(
-                              child: Container(
-                                  margin: EdgeInsets.only(
-                                      top: mediaQuery(context, 'w', .01)),
-                                  child: Text('Detalles',
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto-Thin',
-                                          fontSize:
-                                              mediaQuery(context, 'h', .03)))))
-                        ]),
-                        Divider()
-                      ])),
-                  Column(children: [
+    return WillPopScope(
+      onWillPop: () => exitApp(context),
+      child: Scaffold(
+          key: scafoldKey,
+          drawer: Container(
+              width: mediaQuery(context, 'w', .70), child: menuOptions(ctx)),
+          body: SingleChildScrollView(
+              child: Container(
+                  padding: EdgeInsets.only(
+                      top: mediaQuery(context, 'h', .05),
+                      left: mediaQuery(context, 'w', .05),
+                      right: mediaQuery(context, 'w', .05)),
+                  child: Column(children: [
                     Container(
-                        height: mediaQuery(context, 'h', .75),
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        child: SingleChildScrollView(
-                            child: Column(children: [
+                        //padding: EdgeInsets.only(top: mediaQuery(context, 'h', .05),
+                        height: mediaQuery(context, 'h', .15),
+                        child: Column(children: [
                           Row(children: [
                             Expanded(
+                                flex: 9,
                                 child: Container(
-                                    margin: EdgeInsets.only(
-                                        bottom: mediaQuery(context, 'h', .012),
-                                        top: mediaQuery(context, 'h', .005)),
-                                    child: TextFormField(
-                                        autofocus: false,
-                                        controller: controllers['titulo'],
-                                        maxLength: 30,
-                                        decoration: InputDecoration(
-                                            counterText: '',
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            hintText: 'Titulo del Producto',
-                                            labelText: 'Titulo del Producto',
-                                            hintStyle: TextStyle(
-                                                color: Color(0xFFAAAAAA)),
-                                            //filled: true,
-                                            fillColor: Color(0xFFEBEBEB)))))
-                          ]),
-                          Row(children: [
+                                    child: Text('Producto',
+                                        style: TextStyle(
+                                            fontFamily: 'Roboto-Light',
+                                            fontSize: mediaQuery(
+                                                context, 'h', .05))))),
                             Expanded(
+                                flex: 1,
                                 child: Container(
-                                    margin: EdgeInsets.only(
-                                        bottom: mediaQuery(context, 'h', .012),
-                                        top: mediaQuery(context, 'h', .005)),
-                                    child: TextFormField(
-                                        controller: controllers['rfInt'],
-                                        autofocus: false,
-                                        maxLength: 30,
-                                        decoration: InputDecoration(
-                                            counterText: '',
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            hintText: 'Refencia interna',
-                                            labelText: 'Refencia interna',
-                                            hintStyle: TextStyle(
-                                                color: Color(0xFFAAAAAA)),
-                                            //filled: true,
-                                            fillColor: Color(0xFFEBEBEB)))))
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        bottom: mediaQuery(context, 'h', .012),
-                                        top: mediaQuery(context, 'h', .005)),
-                                    child: TextFormField(
-                                        autofocus: false,
-                                        controller: controllers['rfVend'],
-                                        maxLength: 30,
-                                        decoration: InputDecoration(
-                                            counterText: '',
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            hintText: 'Refencia Vendedor@',
-                                            labelText: 'Refencia Vendedor@',
-                                            hintStyle: TextStyle(
-                                                color: Color(0xFFAAAAAA)),
-                                            //filled: true,
-                                            fillColor: Color(0xFFEBEBEB)))))
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        bottom: mediaQuery(context, 'h', .012)),
-                                    child: TextFormField(
-                                        keyboardType: TextInputType.number,
-                                        autofocus: false,
-                                        controller: controllers['cant'],
-                                        maxLength: 7,
-                                        decoration: InputDecoration(
-                                            counterText: '',
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            hintText: 'Unidades Disponibles',
-                                            labelText: 'Unidades Disponibles',
-                                            hintStyle: TextStyle(
-                                                color: Color(0xFFAAAAAA)),
-                                            //filled: true,
-                                            fillColor: Color(0xFFEBEBEB)))))
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        bottom: mediaQuery(context, 'h', .012)),
-                                    child: TextFormField(
-                                        keyboardType: TextInputType.number,
-                                        autofocus: false,
-                                        controller: controllers['valor'],
-                                        maxLength: 7,
-                                        decoration: InputDecoration(
-                                            counterText: '',
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            hintText: 'Valor de Venta',
-                                            labelText: 'Valor de Venta',
-                                            hintStyle: TextStyle(
-                                                color: Color(0xFFAAAAAA)),
-                                            //filled: true,
-                                            fillColor: Color(0xFFEBEBEB)))))
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                flex: 7,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        bottom: mediaQuery(context, 'h', .012)),
-                                    child: TextFormField(
-                                        autofocus: false,
-                                        readOnly: true,
-                                        controller: controllers['nombre'],
-                                        maxLength: 30,
-                                        decoration: InputDecoration(
-                                            counterText: '',
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            hintText: 'Nombre imagen',
-                                            hintStyle: TextStyle(
-                                                color: Color(0xFFAAAAAA)),
-                                            //filled: true,
-                                            fillColor: Color(0xFFEBEBEB))))),
-                            Expanded(
-                                flex: 3,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        bottom: mediaQuery(context, 'h', .012),
-                                        left: mediaQuery(context, 'w', .012)),
-                                    child: ElevatedButton(
-                                        onPressed: () async {
-                                          img = await ImagePicker().getImage(
-                                              source: ImageSource.gallery);
-                                          fileImg = null;
-                                          if (img != null) {
-                                            fileImg = File(img!.path);
-                                            var auxExt =
-                                                img!.path.split('.').last;
-                                            if (auxExt == 'jpg' ||
-                                                auxExt == 'png' ||
-                                                auxExt == 'jpeg')
-                                              setState(() {
-                                                controllers['nombre']!.text =
-                                                    (img == null)
-                                                        ? ''
-                                                        : img!.path
-                                                            .split('/')
-                                                            .last;
-                                              });
-                                            else
-                                              setState(() {
-                                                img = null;
-                                                controllers['nombre']!.text =
-                                                    '';
-                                              });
-                                          }
+                                    child: IconButton(
+                                        onPressed: () {
+                                          scafoldKey.currentState!.openDrawer();
                                         },
-                                        child: Container(
-                                            height: 52,
-                                            child: Center(
-                                                child: Text('Buscar\nImagen',
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            'Roboto-Light',
-                                                        fontSize: 14)))))))
+                                        icon: Icon(
+                                          CupertinoIcons.sidebar_left,
+                                          size: 18,
+                                        ))))
                           ]),
                           Row(children: [
                             Expanded(
                                 child: Container(
                                     margin: EdgeInsets.only(
-                                        bottom: mediaQuery(context, 'h', .012)),
-                                    child: TextFormField(
-                                        autofocus: false,
-                                        maxLines: 5,
-                                        controller: controllers['descripcion'],
-                                        maxLength: 100,
-                                        decoration: InputDecoration(
-                                            counterText: '',
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFEBEBEB),
-                                                    width: 1)),
-                                            hintText: 'Descripción',
-                                            hintStyle: TextStyle(
-                                                color: Color(0xFFAAAAAA)),
-                                            //filled: true,
-                                            fillColor: Color(0xFFEBEBEB)))))
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                flex: 9,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        top: mediaQuery(context, 'w', .01),
-                                        bottom: mediaQuery(context, 'w', .03)),
-                                    child: Text('Colores',
+                                        top: mediaQuery(context, 'w', .01)),
+                                    child: Text('Detalles',
                                         style: TextStyle(
-                                            fontFamily: 'Roboto-Light',
-                                            fontSize: 20)))),
-                            Expanded(
-                                flex: 1,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        top: mediaQuery(context, 'w', .01),
-                                        bottom: mediaQuery(context, 'w', .03)),
-                                    child: IconButton(
-                                        icon: Icon((conf['CL'] ?? false)
-                                            ? Icons.arrow_drop_down
-                                            : Icons.arrow_drop_up),
-                                        onPressed: () => actionCl()))),
+                                            fontFamily: 'Roboto-Thin',
+                                            fontSize: mediaQuery(
+                                                context, 'h', .03)))))
                           ]),
-                          Row(children: [
-                            Expanded(
-                                child: Visibility(
-                                    visible: !(conf['CL'] ?? false),
-                                    child: Container(
-                                        child: Column(
-                                            children: color.map((item) {
-                                      return Row(children: [
-                                        Expanded(
-                                            flex: 2,
-                                            child: Checkbox(
-                                                onChanged: (val) {
-                                                  changeCheck(
-                                                      ctx,
-                                                      'CL',
-                                                      item,
-                                                      !(ColorsCheks[item] ??
-                                                          false), () {
-                                                    setState(() {
-                                                      ColorsCheks[item] =
-                                                          !(ColorsCheks[item] ??
-                                                              false);
+                          Divider()
+                        ])),
+                    Column(children: [
+                      Container(
+                          height: mediaQuery(context, 'h', .75),
+                          padding: EdgeInsets.only(left: 20, right: 20),
+                          child: SingleChildScrollView(
+                              child: Column(children: [
+                            Row(children: [
+                              Expanded(
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              mediaQuery(context, 'h', .012),
+                                          top: mediaQuery(context, 'h', .005)),
+                                      child: TextFormField(
+                                          autofocus: false,
+                                          controller: controllers['titulo'],
+                                          maxLength: 30,
+                                          decoration: InputDecoration(
+                                              counterText: '',
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              hintText: 'Titulo del Producto',
+                                              labelText: 'Titulo del Producto',
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFFAAAAAA)),
+                                              //filled: true,
+                                              fillColor: Color(0xFFEBEBEB)))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              mediaQuery(context, 'h', .012),
+                                          top: mediaQuery(context, 'h', .005)),
+                                      child: TextFormField(
+                                          controller: controllers['rfInt'],
+                                          autofocus: false,
+                                          maxLength: 30,
+                                          decoration: InputDecoration(
+                                              counterText: '',
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              hintText: 'Refencia interna',
+                                              labelText: 'Refencia interna',
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFFAAAAAA)),
+                                              //filled: true,
+                                              fillColor: Color(0xFFEBEBEB)))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              mediaQuery(context, 'h', .012),
+                                          top: mediaQuery(context, 'h', .005)),
+                                      child: TextFormField(
+                                          autofocus: false,
+                                          controller: controllers['rfVend'],
+                                          maxLength: 30,
+                                          decoration: InputDecoration(
+                                              counterText: '',
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              hintText: 'Refencia Vendedor@',
+                                              labelText: 'Refencia Vendedor@',
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFFAAAAAA)),
+                                              //filled: true,
+                                              fillColor: Color(0xFFEBEBEB)))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              mediaQuery(context, 'h', .012)),
+                                      child: TextFormField(
+                                          keyboardType: TextInputType.number,
+                                          autofocus: false,
+                                          controller: controllers['cant'],
+                                          maxLength: 7,
+                                          decoration: InputDecoration(
+                                              counterText: '',
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              hintText: 'Unidades Disponibles',
+                                              labelText: 'Unidades Disponibles',
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFFAAAAAA)),
+                                              //filled: true,
+                                              fillColor: Color(0xFFEBEBEB)))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              mediaQuery(context, 'h', .012)),
+                                      child: TextFormField(
+                                          keyboardType: TextInputType.number,
+                                          autofocus: false,
+                                          controller: controllers['valor'],
+                                          maxLength: 7,
+                                          decoration: InputDecoration(
+                                              counterText: '',
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              hintText: 'Valor de Venta',
+                                              labelText: 'Valor de Venta',
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFFAAAAAA)),
+                                              //filled: true,
+                                              fillColor: Color(0xFFEBEBEB)))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              mediaQuery(context, 'h', .012)),
+                                      child: TextFormField(
+                                          keyboardType: TextInputType.number,
+                                          autofocus: false,
+                                          controller: controllers['costo'],
+                                          maxLength: 7,
+                                          decoration: InputDecoration(
+                                              counterText: '',
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              hintText: 'Costo',
+                                              labelText: 'Costo',
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFFAAAAAA)),
+                                              //filled: true,
+                                              fillColor: Color(0xFFEBEBEB)))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  flex: 7,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              mediaQuery(context, 'h', .012)),
+                                      child: TextFormField(
+                                          autofocus: false,
+                                          readOnly: true,
+                                          controller: controllers['nombre'],
+                                          maxLength: 30,
+                                          decoration: InputDecoration(
+                                              counterText: '',
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              hintText: 'Nombre imagen',
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFFAAAAAA)),
+                                              //filled: true,
+                                              fillColor: Color(0xFFEBEBEB))))),
+                              Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              mediaQuery(context, 'h', .012),
+                                          left: mediaQuery(context, 'w', .012)),
+                                      child: ElevatedButton(
+                                          onPressed: () async {
+                                            img = await ImagePicker().getImage(
+                                                source: ImageSource.gallery);
+                                            fileImg = null;
+                                            if (img != null) {
+                                              fileImg = File(img!.path);
+                                              var auxExt =
+                                                  img!.path.split('.').last;
+                                              if (auxExt == 'jpg' ||
+                                                  auxExt == 'png' ||
+                                                  auxExt == 'jpeg')
+                                                setState(() {
+                                                  controllers['nombre']!.text =
+                                                      (img == null)
+                                                          ? ''
+                                                          : img!.path
+                                                              .split('/')
+                                                              .last;
+                                                });
+                                              else
+                                                setState(() {
+                                                  img = null;
+                                                  controllers['nombre']!.text =
+                                                      '';
+                                                });
+                                            }
+                                          },
+                                          child: Container(
+                                              height: 52,
+                                              child: Center(
+                                                  child: Text('Buscar\nImagen',
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Roboto-Light',
+                                                          fontSize: 14)))))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              mediaQuery(context, 'h', .012)),
+                                      child: TextFormField(
+                                          autofocus: false,
+                                          maxLines: 5,
+                                          controller:
+                                              controllers['descripcion'],
+                                          maxLength: 100,
+                                          decoration: InputDecoration(
+                                              counterText: '',
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFFEBEBEB),
+                                                      width: 1)),
+                                              hintText: 'Descripción',
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFFAAAAAA)),
+                                              //filled: true,
+                                              fillColor: Color(0xFFEBEBEB)))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  flex: 9,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          top: mediaQuery(context, 'w', .01),
+                                          bottom:
+                                              mediaQuery(context, 'w', .03)),
+                                      child: Text('Colores',
+                                          style: TextStyle(
+                                              fontFamily: 'Roboto-Light',
+                                              fontSize: 20)))),
+                              Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          top: mediaQuery(context, 'w', .01),
+                                          bottom:
+                                              mediaQuery(context, 'w', .03)),
+                                      child: IconButton(
+                                          icon: Icon((conf['CL'] ?? false)
+                                              ? Icons.arrow_drop_down
+                                              : Icons.arrow_drop_up),
+                                          onPressed: () => actionCl()))),
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: Visibility(
+                                      visible: !(conf['CL'] ?? false),
+                                      child: Container(
+                                          child: Column(
+                                              children: color.map((item) {
+                                        return Row(children: [
+                                          Expanded(
+                                              flex: 2,
+                                              child: Checkbox(
+                                                  onChanged: (val) {
+                                                    changeCheck(
+                                                        ctx,
+                                                        'CL',
+                                                        item,
+                                                        !(ColorsCheks[item] ??
+                                                            false), () {
+                                                      setState(() {
+                                                        ColorsCheks[item] =
+                                                            !(ColorsCheks[
+                                                                    item] ??
+                                                                false);
+                                                      });
                                                     });
-                                                  });
-                                                },
-                                                value: ColorsCheks[item])),
-                                        Expanded(
-                                            flex: 6,
-                                            child: Text(item,
-                                                style: TextStyle(
-                                                    fontFamily: 'Roboto-Light',
-                                                    fontSize: 18))),
-                                        Container(
-                                          width: 50,
-                                          height: 50,
-                                          child: Card(
-                                              child: Container(
-                                                  width: 50,
-                                                  height: 50,
-                                                  padding: EdgeInsets.all(10),
-                                                  decoration: BoxDecoration(
-                                                      color: Color(int.parse(
-                                                          '0xFF${Combs[item]![0]}')),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              25)),
-                                                  child: Container(
-                                                      decoration: BoxDecoration(
-                                                          color: Color(int.parse(
-                                                              '0xFF${(Combs[item]![1] == '') ? Combs[item]![0] : Combs[item]![1]}')),
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  25)))),
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25))),
-                                        )
-                                      ]);
-                                    }).toList()))))
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                flex: 9,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        top: mediaQuery(context, 'w', .01),
-                                        bottom: mediaQuery(context, 'w', .03)),
-                                    child: Text('Talla',
-                                        style: TextStyle(
-                                            fontFamily: 'Roboto-Light',
-                                            fontSize: 20)))),
-                            Expanded(
-                                flex: 1,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        top: mediaQuery(context, 'w', .01),
-                                        bottom: mediaQuery(context, 'w', .03)),
-                                    child: IconButton(
-                                        icon: Icon((conf['TL'] ?? false)
-                                            ? Icons.arrow_drop_down
-                                            : Icons.arrow_drop_up),
-                                        onPressed: () => actionTl()))),
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                child: Visibility(
-                                    visible: !(conf['TL'] ?? false),
-                                    child: Container(
-                                        child: Column(
-                                            children: tallas.map((item) {
-                                      return Row(children: [
-                                        Expanded(
-                                            flex: 2,
-                                            child: Checkbox(
-                                                onChanged: (val) {
-                                                  changeCheck(
-                                                      ctx,
-                                                      'TL',
-                                                      item,
-                                                      !(tallasCheks[item] ??
-                                                          false), () {
-                                                    setState(() {
-                                                      tallasCheks[item] =
-                                                          !(tallasCheks[item] ??
-                                                              false);
+                                                  },
+                                                  value: ColorsCheks[item])),
+                                          Expanded(
+                                              flex: 6,
+                                              child: Text(item,
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          'Roboto-Light',
+                                                      fontSize: 18))),
+                                          Container(
+                                            width: 50,
+                                            height: 50,
+                                            child: Card(
+                                                child: Container(
+                                                    width: 50,
+                                                    height: 50,
+                                                    padding: EdgeInsets.all(10),
+                                                    decoration: BoxDecoration(
+                                                        color: Color(int.parse(
+                                                            '0xFF${Combs[item]![0]}')),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25)),
+                                                    child: Container(
+                                                        decoration: BoxDecoration(
+                                                            color: Color(int.parse(
+                                                                '0xFF${(Combs[item]![1] == '') ? Combs[item]![0] : Combs[item]![1]}')),
+                                                            borderRadius:
+                                                                BorderRadius.circular(25)))),
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25))),
+                                          )
+                                        ]);
+                                      }).toList()))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  flex: 9,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          top: mediaQuery(context, 'w', .01),
+                                          bottom:
+                                              mediaQuery(context, 'w', .03)),
+                                      child: Text('Talla',
+                                          style: TextStyle(
+                                              fontFamily: 'Roboto-Light',
+                                              fontSize: 20)))),
+                              Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          top: mediaQuery(context, 'w', .01),
+                                          bottom:
+                                              mediaQuery(context, 'w', .03)),
+                                      child: IconButton(
+                                          icon: Icon((conf['TL'] ?? false)
+                                              ? Icons.arrow_drop_down
+                                              : Icons.arrow_drop_up),
+                                          onPressed: () => actionTl()))),
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: Visibility(
+                                      visible: !(conf['TL'] ?? false),
+                                      child: Container(
+                                          child: Column(
+                                              children: tallas.map((item) {
+                                        return Row(children: [
+                                          Expanded(
+                                              flex: 2,
+                                              child: Checkbox(
+                                                  onChanged: (val) {
+                                                    changeCheck(
+                                                        ctx,
+                                                        'TL',
+                                                        item,
+                                                        !(tallasCheks[item] ??
+                                                            false), () {
+                                                      setState(() {
+                                                        tallasCheks[item] =
+                                                            !(tallasCheks[
+                                                                    item] ??
+                                                                false);
+                                                      });
                                                     });
-                                                  });
-                                                },
-                                                value: tallasCheks[item])),
-                                        Expanded(
-                                            flex: 8,
-                                            child: Text(item,
-                                                style: TextStyle(
-                                                    fontFamily: 'Roboto-Light',
-                                                    fontSize: 18)))
-                                      ]);
-                                    }).toList()))))
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                flex: 9,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        top: mediaQuery(context, 'w', .01),
-                                        bottom: mediaQuery(context, 'w', .03)),
-                                    child: Text('Categorias',
-                                        style: TextStyle(
-                                            fontFamily: 'Roboto-Light',
-                                            fontSize: 20)))),
-                            Expanded(
-                                flex: 1,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        top: mediaQuery(context, 'w', .01),
-                                        bottom: mediaQuery(context, 'w', .03)),
-                                    child: IconButton(
-                                        icon: Icon((conf['CT'] ?? false)
-                                            ? Icons.arrow_drop_down
-                                            : Icons.arrow_drop_up),
-                                        onPressed: () => actionCt()))),
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                child: Visibility(
-                                    visible: !(conf['CT'] ?? false),
-                                    child: Container(
-                                        child: Column(
-                                            children: categorias.map((item) {
-                                      return Row(children: [
-                                        Expanded(
-                                            flex: 2,
-                                            child: Checkbox(
-                                                onChanged: (val) {
-                                                  changeCheck(
-                                                      ctx,
-                                                      'CT',
-                                                      item,
-                                                      !(categoriasCheks[item] ??
-                                                          false), () {
-                                                    setState(() {
-                                                      categoriasCheks[item] =
-                                                          !(categoriasCheks[
-                                                                  item] ??
-                                                              false);
+                                                  },
+                                                  value: tallasCheks[item])),
+                                          Expanded(
+                                              flex: 8,
+                                              child: Text(item,
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          'Roboto-Light',
+                                                      fontSize: 18)))
+                                        ]);
+                                      }).toList()))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  flex: 9,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          top: mediaQuery(context, 'w', .01),
+                                          bottom:
+                                              mediaQuery(context, 'w', .03)),
+                                      child: Text('Categorias',
+                                          style: TextStyle(
+                                              fontFamily: 'Roboto-Light',
+                                              fontSize: 20)))),
+                              Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          top: mediaQuery(context, 'w', .01),
+                                          bottom:
+                                              mediaQuery(context, 'w', .03)),
+                                      child: IconButton(
+                                          icon: Icon((conf['CT'] ?? false)
+                                              ? Icons.arrow_drop_down
+                                              : Icons.arrow_drop_up),
+                                          onPressed: () => actionCt()))),
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: Visibility(
+                                      visible: !(conf['CT'] ?? false),
+                                      child: Container(
+                                          child: Column(
+                                              children: categorias.map((item) {
+                                        return Row(children: [
+                                          Expanded(
+                                              flex: 2,
+                                              child: Checkbox(
+                                                  onChanged: (val) {
+                                                    changeCheck(
+                                                        ctx,
+                                                        'CT',
+                                                        item,
+                                                        !(categoriasCheks[
+                                                                item] ??
+                                                            false), () {
+                                                      setState(() {
+                                                        categoriasCheks[item] =
+                                                            !(categoriasCheks[
+                                                                    item] ??
+                                                                false);
+                                                      });
                                                     });
-                                                  });
-                                                },
-                                                value: categoriasCheks[item])),
-                                        Expanded(
-                                            flex: 8,
-                                            child: Text(item,
-                                                style: TextStyle(
-                                                    fontFamily: 'Roboto-Light',
-                                                    fontSize: 18)))
-                                      ]);
-                                    }).toList()))))
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                flex: 9,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        top: mediaQuery(context, 'w', .01),
-                                        bottom: mediaQuery(context, 'w', .03)),
-                                    child: Text('Tags',
-                                        style: TextStyle(
-                                            fontFamily: 'Roboto-Light',
-                                            fontSize: 20)))),
-                            Expanded(
-                                flex: 1,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        top: mediaQuery(context, 'w', .01),
-                                        bottom: mediaQuery(context, 'w', .03)),
-                                    child: IconButton(
-                                        icon: Icon((conf['TG'] ?? false)
-                                            ? Icons.arrow_drop_down
-                                            : Icons.arrow_drop_up),
-                                        onPressed: () => actionTg()))),
-                          ]),
-                          Row(children: [
-                            Expanded(
-                                child: Visibility(
-                                    visible: !(conf['TG'] ?? false),
-                                    child: Container(
-                                        child: Column(
-                                            children: tags.map((item) {
-                                      return Row(children: [
-                                        Expanded(
-                                            flex: 2,
-                                            child: Checkbox(
-                                                onChanged: (val) {
-                                                  changeCheck(
-                                                      ctx,
-                                                      'TG',
-                                                      item,
-                                                      !(tagCheks[item] ??
-                                                          false), () {
-                                                    setState(() {
-                                                      tagCheks[item] =
-                                                          !(tagCheks[item] ??
-                                                              false);
+                                                  },
+                                                  value:
+                                                      categoriasCheks[item])),
+                                          Expanded(
+                                              flex: 8,
+                                              child: Text(item,
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          'Roboto-Light',
+                                                      fontSize: 18)))
+                                        ]);
+                                      }).toList()))))
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  flex: 9,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          top: mediaQuery(context, 'w', .01),
+                                          bottom:
+                                              mediaQuery(context, 'w', .03)),
+                                      child: Text('Tags',
+                                          style: TextStyle(
+                                              fontFamily: 'Roboto-Light',
+                                              fontSize: 20)))),
+                              Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          top: mediaQuery(context, 'w', .01),
+                                          bottom:
+                                              mediaQuery(context, 'w', .03)),
+                                      child: IconButton(
+                                          icon: Icon((conf['TG'] ?? false)
+                                              ? Icons.arrow_drop_down
+                                              : Icons.arrow_drop_up),
+                                          onPressed: () => actionTg()))),
+                            ]),
+                            Row(children: [
+                              Expanded(
+                                  child: Visibility(
+                                      visible: !(conf['TG'] ?? false),
+                                      child: Container(
+                                          child: Column(
+                                              children: tags.map((item) {
+                                        return Row(children: [
+                                          Expanded(
+                                              flex: 2,
+                                              child: Checkbox(
+                                                  onChanged: (val) {
+                                                    changeCheck(
+                                                        ctx,
+                                                        'TG',
+                                                        item,
+                                                        !(tagCheks[item] ??
+                                                            false), () {
+                                                      setState(() {
+                                                        tagCheks[item] =
+                                                            !(tagCheks[item] ??
+                                                                false);
+                                                      });
                                                     });
-                                                  });
-                                                },
-                                                value: tagCheks[item])),
-                                        Expanded(
-                                            flex: 8,
-                                            child: Text(item,
-                                                style: TextStyle(
-                                                    fontFamily: 'Roboto-Light',
-                                                    fontSize: 18)))
-                                      ]);
-                                    }).toList()))))
-                          ]),
-                          Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: Row(children: [
-                                Expanded(
-                                    child: ElevatedButton(
-                                        onPressed: () => crearProducto(ctx),
-                                        child: Container(
-                                            height: 52,
-                                            child: Center(
-                                                child: Text('Guardar Producto',
-                                                    style: TextStyle(
-                                                        fontSize: 15))))))
-                              ]))
-                        ])))
-                  ])
-                ]))));
+                                                  },
+                                                  value: tagCheks[item])),
+                                          Expanded(
+                                              flex: 8,
+                                              child: Text(item,
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          'Roboto-Light',
+                                                      fontSize: 18)))
+                                        ]);
+                                      }).toList()))))
+                            ]),
+                            Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                child: Row(children: [
+                                  Expanded(
+                                      child: ElevatedButton(
+                                          onPressed: () => crearProducto(ctx),
+                                          child: Container(
+                                              height: 52,
+                                              child: Center(
+                                                  child: Text(
+                                                      'Guardar Producto',
+                                                      style: TextStyle(
+                                                          fontSize: 15))))))
+                                ]))
+                          ])))
+                    ])
+                  ])))),
+    );
   }
 }

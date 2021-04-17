@@ -34,12 +34,12 @@ class _Historial extends State<Historial> {
       File imgFile = File(img.path);
       httpPostFile(context, 'fact/$formato', {'id': formato}, imgFile, true)
           .then((resp) {
-        successMsg(this.context, 'Factura cargada correctamente')
-            .then((value) => Navigator.pop(this.context));
+        successMsg(this.context, 'Factura cargada correctamente').then(
+            (value) => Navigator.of(this.context, rootNavigator: true).pop());
       }).catchError((jsonError) {
         Navigator.pop(this.context);
-        errorMsg(this.context, 'Error', 'Error en la subida')
-            .then((value) => Navigator.pop(this.context));
+        errorMsg(this.context, 'Error', 'Error en la subida').then(
+            (value) => Navigator.of(this.context, rootNavigator: true).pop());
       });
     }
   }
@@ -76,11 +76,10 @@ class _Historial extends State<Historial> {
 
     if (!Directory(ruta).existsSync()) Directory(ruta).createSync();
     if (permiso) {
-      var imgId =
-          await ImageDownloader.downloadImage('http://$urlDB/fact/$idFile',
-              destination: AndroidDestinationType.directoryDownloads
-                ..inExternalFilesDir()
-                ..subDirectory('$nameFile.jpg'));
+      var imgId = await ImageDownloader.downloadImage(
+          'http://$urlDB/fact/$idFile',
+          destination: AndroidDestinationType.directoryDownloads
+            ..inExternalFilesDir());
       var path = await ImageDownloader.findPath(imgId!);
       Navigator.of(ctx, rootNavigator: true).pop();
       OpenFile.open(path!)
@@ -324,74 +323,77 @@ class _Historial extends State<Historial> {
 
   @override
   Widget build(BuildContext ctx) {
-    return Scaffold(
-        key: scafoldKey,
-        drawer: Container(
-            width: mediaQuery(context, 'w', .70), child: menuOptions(ctx)),
-        body: SingleChildScrollView(
-            child: Container(
-                padding: EdgeInsets.only(
-                    top: mediaQuery(context, 'h', .05),
-                    left: mediaQuery(context, 'w', .05),
-                    right: mediaQuery(context, 'w', .05)),
-                child: Column(children: [
-                  Container(
-                      child: Column(children: [
-                    Row(children: [
-                      Expanded(
-                          flex: 9,
-                          child: Container(
-                              child: Text('Ventas',
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto-Light',
-                                      fontSize:
-                                          mediaQuery(context, 'h', .05))))),
-                      Expanded(
-                          flex: 1,
-                          child: Container(
-                              child: IconButton(
-                                  onPressed: () {
-                                    scafoldKey.currentState!.openDrawer();
-                                  },
-                                  icon: Icon(
-                                    CupertinoIcons.sidebar_left,
-                                    size: 18,
-                                  ))))
-                    ]),
-                    Row(children: [
-                      Expanded(
-                          child: Container(
-                              margin: EdgeInsets.only(
-                                  top: mediaQuery(context, 'w', .01)),
-                              child: Text('Historial de Ventas',
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto-Thin',
-                                      fontSize:
-                                          mediaQuery(context, 'h', .03)))))
+    return WillPopScope(
+      onWillPop: () => exitApp(context),
+      child: Scaffold(
+          key: scafoldKey,
+          drawer: Container(
+              width: mediaQuery(context, 'w', .70), child: menuOptions(ctx)),
+          body: SingleChildScrollView(
+              child: Container(
+                  padding: EdgeInsets.only(
+                      top: mediaQuery(context, 'h', .05),
+                      left: mediaQuery(context, 'w', .05),
+                      right: mediaQuery(context, 'w', .05)),
+                  child: Column(children: [
+                    Container(
+                        child: Column(children: [
+                      Row(children: [
+                        Expanded(
+                            flex: 9,
+                            child: Container(
+                                child: Text('Ventas',
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto-Light',
+                                        fontSize:
+                                            mediaQuery(context, 'h', .05))))),
+                        Expanded(
+                            flex: 1,
+                            child: Container(
+                                child: IconButton(
+                                    onPressed: () {
+                                      scafoldKey.currentState!.openDrawer();
+                                    },
+                                    icon: Icon(
+                                      CupertinoIcons.sidebar_left,
+                                      size: 18,
+                                    ))))
+                      ]),
+                      Row(children: [
+                        Expanded(
+                            child: Container(
+                                margin: EdgeInsets.only(
+                                    top: mediaQuery(context, 'w', .01)),
+                                child: Text('Historial de Ventas',
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto-Thin',
+                                        fontSize:
+                                            mediaQuery(context, 'h', .03)))))
+                      ])
+                    ])),
+                    Divider(),
+                    Column(children: [
+                      Row(children: [
+                        Expanded(
+                            child: Container(
+                                height: mediaQuery(context, 'h', .77),
+                                child: !viewVentas
+                                    ? Container()
+                                    : Stepper(
+                                        onStepTapped: (step) => _tapped(step),
+                                        currentStep: _currentStep,
+                                        controlsBuilder: (BuildContext context,
+                                            {VoidCallback? onStepContinue,
+                                            VoidCallback? onStepCancel}) {
+                                          return Container();
+                                        },
+                                        //onStepCancel: () {},
+                                        // onStepContinue: () {},
+                                        steps: stepersD)))
+                      ])
                     ])
-                  ])),
-                  Divider(),
-                  Column(children: [
-                    Row(children: [
-                      Expanded(
-                          child: Container(
-                              height: mediaQuery(context, 'h', .77),
-                              child: !viewVentas
-                                  ? Container()
-                                  : Stepper(
-                                      onStepTapped: (step) => _tapped(step),
-                                      currentStep: _currentStep,
-                                      controlsBuilder: (BuildContext context,
-                                          {VoidCallback? onStepContinue,
-                                          VoidCallback? onStepCancel}) {
-                                        return Container();
-                                      },
-                                      //onStepCancel: () {},
-                                      // onStepContinue: () {},
-                                      steps: stepersD)))
-                    ])
-                  ])
-                ]))));
+                  ])))),
+    );
   }
 }
 

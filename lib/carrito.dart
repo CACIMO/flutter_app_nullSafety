@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'datosCliente.dart';
 import 'utils.dart';
@@ -27,10 +28,7 @@ class _Carrito extends State<Carrito> {
 
   GlobalKey<ScaffoldState> scafoldKey = GlobalKey();
 
-  Future<bool> _onBack() async {
-    Navigator.pop(context, true);
-    return true;
-  }
+  
 
   void getCarrito() {
     httpGet(this.context, 'carrito', false).then((resp) {
@@ -288,6 +286,6 @@ class _Carrito extends State<Carrito> {
                                 }))
                       ])
                     ])))),
-        onWillPop: () => _onBack());
+        onWillPop: () => exitApp(this.context));
   }
 }

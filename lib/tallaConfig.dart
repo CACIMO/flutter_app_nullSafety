@@ -82,7 +82,7 @@ class _TallaConfig extends State<TallaConfig> {
                     : (type == 'TL' ? controllersTL.text : controllersTL.text)),
                 'active': 'true'
               },
-              false)
+              true)
           .then((resp) {
         successMsg(
                 ctx,

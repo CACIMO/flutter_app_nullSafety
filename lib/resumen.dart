@@ -54,14 +54,15 @@ class _Resumen extends State<Resumen> {
         context: this.context,
         builder: (BuildContext ctx) {
           return QrScanner(callBack: (data) {
-            procesarArticulo(data);
+            try {
+              procesarArticulo(data);
+            } catch (onerror) {}
           });
         });
   }
 
   void procesarArticulo(Map data) {
-    print(data);
-    /* httpPost(
+    httpPost(
             context,
             'qrscann/null',
             {
@@ -75,8 +76,16 @@ class _Resumen extends State<Resumen> {
       Navigator.of(this.context, rootNavigator: true).pop();
       getFormato(this.context);
     }).catchError((onError) {
-      print(onError);
-    }); */
+      Navigator.of(this.context, rootNavigator: true).pop();
+      try {
+        print('TestErr: $onError');
+        String msg = onError['err']['msg'];
+        errorMsg(this.context, 'Error Qr Scanner', msg);
+      } catch (err) {
+        print('TestErr: $err');
+        errorMsg(this.context, 'Error Qr Scanner', 'Error en el server');
+      }
+    });
   }
 
   @override
@@ -521,6 +530,39 @@ class _Resumen extends State<Resumen> {
                                                                     bottom: 5),
                                                             child: Text(
                                                                 item['cantidad']
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize: mediaQuery(
+                                                                        context,
+                                                                        'h',
+                                                                        .017),
+                                                                    fontFamily:
+                                                                        'Roboto-Light')))
+                                                      ]),
+                                                      Row(children: [
+                                                        Container(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 10,
+                                                                    bottom: 5),
+                                                            child: Text(
+                                                                'Restante:',
+                                                                style: TextStyle(
+                                                                    fontSize: mediaQuery(
+                                                                        context,
+                                                                        'h',
+                                                                        .017),
+                                                                    color: Colors
+                                                                        .black54,
+                                                                    fontFamily:
+                                                                        'Roboto-Light'))),
+                                                        Container(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 10,
+                                                                    bottom: 5),
+                                                            child: Text(
+                                                                item['restante']
                                                                     .toString(),
                                                                 style: TextStyle(
                                                                     fontSize: mediaQuery(

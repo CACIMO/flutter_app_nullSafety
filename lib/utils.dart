@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/carrito.dart';
 import 'package:flutter_app/configuracion.dart';
 import 'package:flutter_app/historial.dart';
@@ -9,6 +10,7 @@ import 'package:image_downloader/image_downloader.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'newprod.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -213,6 +215,11 @@ Future<void> actionMsg(BuildContext ctx, String msgx, Function okFunction) {
 Drawer menuOptions(ctx) {
   //it is added each option of menu
   List<Widget> opciones = [Divider()];
+  if (access('admin'))
+    opciones.add(MenuBtn(
+        icono: Icon(CupertinoIcons.cloud_upload),
+        title: 'Enviar Formato',
+        nextPage: Container()));
   if (menOptions.length != 0)
     menOptions.forEach((op) {
       opciones.add(options[op['_id']] ?? Container());
@@ -268,6 +275,9 @@ bool access(String aux) {
     case 'aformat':
       resp =
           (pro['a'] == permissions || pro['b'] == permissions) ? true : false;
+      break;
+    case 'admin':
+      resp = (pro['a'] == permissions) ? true : false;
       break;
   }
   return resp;
@@ -363,7 +373,6 @@ Future<void> uploadMsg(
 }
 
 void _descargaFile(BuildContext ctx, Map data, String nameFile) async {
-  print('data: $data');
   alertLoad(ctx);
   bool permiso = await _checkPermission();
   if (permiso) {
@@ -371,8 +380,7 @@ void _descargaFile(BuildContext ctx, Map data, String nameFile) async {
       var imgId = await ImageDownloader.downloadImage(
           'http://$urlDB/qrscann/${jsonEncode(data)}',
           destination: AndroidDestinationType.directoryDCIM
-            ..inExternalFilesDir()
-            ..subDirectory('$nameFile.png'));
+            ..inExternalFilesDir());
       var path = await ImageDownloader.findPath(imgId!);
       Navigator.of(ctx, rootNavigator: true).pop();
       OpenFile.open(path!)
@@ -411,4 +419,32 @@ Future<bool> _checkPermission() async {
   }
 
   return false;
+}
+
+void cleanSessions() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.clear();
+}
+
+Future<bool> exitApp(context) async {
+  actionMsg(context, 'Desea cerrar sesion?', () {
+    cleanSessions();
+    SystemNavigator.pop();
+  });
+  return false;
+}
+
+Future<void> downloadFormat(BuildContext ctx) {
+  return showDialog<void>(
+      context: ctx,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+            title: Text('Enviar Formato',
+                style: TextStyle(
+                    fontFamily: 'Roboto-Regular',
+                    fontSize: mediaQuery(ctx, 'h', .025))),
+            content: Container(
+                height: mediaQuery(ctx, 'h', .18),
+                child: DateFormat(context: ctx)));
+      });
 }

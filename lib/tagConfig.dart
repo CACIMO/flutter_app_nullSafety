@@ -83,7 +83,7 @@ class _TagConfig extends State<TagConfig> {
                     : (type == 'TL' ? controllersTG.text : controllersTG.text)),
                 'active': 'true'
               },
-              false)
+              true)
           .then((resp) {
         successMsg(
                 ctx,
