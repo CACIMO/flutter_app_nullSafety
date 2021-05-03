@@ -20,7 +20,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:path/path.dart';
 import 'catalogo.dart';
 import 'models.dart';
-import 'package:device_info/device_info.dart';
+//import 'package:device_info/device_info.dart';
 
 String token = '';
 String urlDB = '3.141.11.180:3000';
@@ -76,15 +76,15 @@ double mediaQuery(BuildContext ctx, String type, double factor) {
 }
 
 Future<String> getDeviceInfo() async {
-  String idDevice = '';
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  String idDevice = 'TEMP';
+  /* DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   if (Platform.isAndroid) {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     idDevice = androidInfo.id;
   } else {
     IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
     idDevice = iosInfo.name;
-  }
+  } */
   return idDevice;
 }
 
@@ -378,9 +378,7 @@ void _descargaFile(BuildContext ctx, Map data, String nameFile) async {
   if (permiso) {
     try {
       var imgId = await ImageDownloader.downloadImage(
-          'http://$urlDB/qrscann/${jsonEncode(data)}',
-          destination: AndroidDestinationType.directoryDCIM
-            ..inExternalFilesDir());
+          'http://$urlDB/qrscann/${jsonEncode(data)}');
       var path = await ImageDownloader.findPath(imgId!);
       Navigator.of(ctx, rootNavigator: true).pop();
       OpenFile.open(path!)
