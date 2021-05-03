@@ -603,7 +603,6 @@ class _Producto extends State<Producto> {
         'tallaData': tallasId[tallasKey],
         'colorData': ColorsId[colorKey],
       };
-      print(jsonAux);
       alertQr(ctx, jsonAux);
     }
   }

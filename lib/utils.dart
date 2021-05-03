@@ -377,8 +377,13 @@ void _descargaFile(BuildContext ctx, Map data, String nameFile) async {
   bool permiso = await _checkPermission();
   if (permiso) {
     try {
-      var imgId = await ImageDownloader.downloadImage(
-          'http://$urlDB/qrscann/${jsonEncode(data)}');
+      String jsonstr = jsonEncode(data);
+      print(jsonstr);
+
+      var urlData = Uri.http(urlDB, 'qrscann/$jsonstr').toString();
+      print(urlData);
+
+      var imgId = await ImageDownloader.downloadImage(urlData);
       var path = await ImageDownloader.findPath(imgId!);
       Navigator.of(ctx, rootNavigator: true).pop();
       OpenFile.open(path!)
