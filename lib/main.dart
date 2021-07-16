@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter_app/catalogo.dart';
-
 import 'login.dart';
 import 'utils.dart';
 import 'package:flutter_app/login.dart';

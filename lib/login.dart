@@ -48,6 +48,8 @@ class _Login extends State<Login> {
           sha512.convert(utf8.encode(controllers['password']!.text)).toString()
     };
 
+    print(jsonAux);
+
     //it is validate that the fiels User and password aren't null or thant aren't in blanck
     for (final key in jsonAux.keys) {
       if (jsonAux[key] == '') {
@@ -59,6 +61,7 @@ class _Login extends State<Login> {
 
     if (!flag) {
       httpPost(this.context, 'login', jsonAux, true).then((resp) {
+        print(resp);
         List aux = resp['data']['usuario'];
         if (aux.length == 0) throw '';
         setState(() {
@@ -75,6 +78,7 @@ class _Login extends State<Login> {
           MaterialPageRoute(builder: (context) => Catalogo()),
         );
       }).catchError((jsonError) {
+        print(jsonError);
         errorMsg(
             this.context, 'Error Log in', 'Usuario o contraseña incorrecto.');
       });
