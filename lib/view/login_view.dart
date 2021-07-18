@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/controller/login_controller.dart';
-import 'utils.dart';
+import 'package:flutter_app/controller/general_controller.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -12,17 +12,14 @@ class Login extends StatefulWidget {
 class _Login extends State<Login> {
   @override
   void initState() {
-    cleanSessions();
     super.initState();
   }
 
-  //vars
   final Map<String, TextEditingController> controllers = {
     'user': TextEditingController(),
     'password': TextEditingController(),
   };
 
-  //methods
   Future<bool> _onBackPressed() async {
     SystemNavigator.pop();
     return true;
@@ -30,40 +27,35 @@ class _Login extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    double widthApp = MediaQuery.of(context).size.width;
-    double heightApp = MediaQuery.of(context).size.height;
     return WillPopScope(
         onWillPop: _onBackPressed,
         child: Scaffold(
           body: SingleChildScrollView(
-            padding:
-                EdgeInsets.only(left: widthApp * .12, right: widthApp * .12),
+            padding: EdgeInsets.only(
+                left: mQ(context, 'w', .12), right: mQ(context, 'w', .12)),
             child: Column(
               children: [
                 Container(
-                    margin: EdgeInsets.only(top: heightApp * .2),
+                    margin: EdgeInsets.only(top: mQ(context, 'h', .2)),
                     child: Image.asset('images/logo.png')),
                 Container(
-                  child: TextFormField(
-                    maxLength: 30,
-                    controller: controllers['user'],
-                    decoration: InputDecoration(
-                      counterText: '',
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFFEBEBEB), width: 1)),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xFFEBEBEB), width: 1)),
-                      hintText: 'Usuario',
-                      hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
-                      filled: true,
-                      fillColor: Color(0xFFEBEBEB),
-                    ),
-                  ),
-                ),
+                    child: TextFormField(
+                        maxLength: 30,
+                        controller: controllers['user'],
+                        decoration: InputDecoration(
+                            counterText: '',
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFFEBEBEB), width: 1)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color(0xFFEBEBEB), width: 1)),
+                            hintText: 'Usuario',
+                            hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                            filled: true,
+                            fillColor: Color(0xFFEBEBEB)))),
                 Container(
-                  margin: EdgeInsets.only(top: heightApp * .015),
+                  margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
                   child: TextFormField(
                     obscureText: true,
                     maxLength: 100,
@@ -85,13 +77,14 @@ class _Login extends State<Login> {
                 ),
                 Container(
                     margin: EdgeInsets.only(
-                        top: heightApp * .015, bottom: heightApp * .05),
+                        top: mQ(context, 'h', .015),
+                        bottom: mQ(context, 'h', .05)),
                     child: Row(
                       children: [
                         Expanded(
                             child: ElevatedButton(
                           onPressed: () {
-                            //logIn();
+                            logIn(context, controllers);
                           },
                           child: Container(
                             height: 52,
@@ -107,7 +100,8 @@ class _Login extends State<Login> {
                 Divider(),
                 Container(
                     margin: EdgeInsets.only(
-                        top: heightApp * .015, bottom: heightApp * .05),
+                        top: mQ(context, 'h', .015),
+                        bottom: mQ(context, 'w', .05)),
                     child: Row(
                       children: [
                         Expanded(
