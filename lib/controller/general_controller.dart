@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/view/alert_component.dart';
@@ -49,14 +51,24 @@ Future postRequest(String urlRoute, Map<String, String>? data) async {
     return Future.error(jsonDecode(response.body));
 }
 
-Future putrequest(BuildContext ctx, urlRoute, Map<String, String>? data,
-    bool loadDialog) async {
+Future putrequest(String urlRoute, Map<String, String>? data) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token') ?? '';
   var urlData = Uri.http(urlDB, urlRoute);
   var response = await http.put(urlData,
       headers: <String, String>{'access-token': token}, body: data);
-  if (loadDialog) Navigator.of(ctx, rootNavigator: true).pop();
+  if (response.statusCode == 200)
+    return jsonDecode(response.body);
+  else
+    return Future.error(jsonDecode(response.body));
+}
+
+Future deleteRequest(String urlRoute, Map<String, String>? data) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String token = prefs.getString('token') ?? '';
+  var urlData = Uri.http(urlDB, urlRoute);
+  var response = await http.delete(urlData,
+      headers: <String, String>{'access-token': token}, body: data);
   if (response.statusCode == 200)
     return jsonDecode(response.body);
   else
@@ -85,4 +97,45 @@ Future<bool> exitApp(context) async {
     SystemNavigator.pop();
   }); */
   return false;
+}
+
+String getCurrentRoute(BuildContext context) {
+  return (ModalRoute.of(context)!.settings.name).toString();
+}
+
+Future postFileRequest(
+    String urlRoute, Map<String, String> data, List<File> arrayFiles) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  print(0);
+  String token = prefs.getString('token') ?? '';
+  var headers = {'access-token': token};
+  var uri = Uri.http(urlDB, urlRoute);
+  var stream;
+
+  List<http.MultipartFile> multipartArray = [];
+
+  arrayFiles.forEach((File file) {
+    List aux = (file.path.split('/'));
+    stream = new http.ByteStream(file.openRead());
+    int peso = file.lengthSync();
+
+    multipartArray.add(http.MultipartFile('file', stream, peso,
+        filename: (aux[aux.length - 1])));
+  });
+  var request = new http.MultipartRequest("PUT", uri);
+  request.headers.addAll(headers);
+  request.fields.addAll(data);
+  request.files.addAll(multipartArray);
+
+  var response;
+  try {
+    response = await request.send();
+  } catch (e) {
+    return Future.error('Error en el server');
+  }
+
+  if (response.statusCode != 200)
+    return Future.error('Error en el server');
+  else
+    return;
 }

@@ -4,40 +4,40 @@ import 'package:flutter_app/controller/general_controller.dart';
 
 class MenuController extends ChangeNotifier {
   Map<String, Map<String, dynamic>> menuOption = {
-    '604f9cf5aaa8ce91e788e218': {
-      'title': 'Carrito',
-      'icono': Icon(CupertinoIcons.cart),
-      'rute': 'carrito',
-      'active': false
-    },
     '604f9cf5aaa8ce91e788e217': {
       'title': 'Catalogo',
       'icono': Icon(CupertinoIcons.book),
-      'rute': 'catalogo',
+      'route': 'catalogo',
+      'active': false
+    },
+    '604f9cf5aaa8ce91e788e218': {
+      'title': 'Carrito',
+      'icono': Icon(CupertinoIcons.cart),
+      'route': 'carrito',
       'active': false
     },
     '604f9cf5aaa8ce91e788e219': {
       'title': 'Nuevo Producto',
       'icono': Icon(CupertinoIcons.tag),
-      'rute': 'nueprod',
+      'route': 'nueprod',
       'active': false
     },
     '604f9cf5aaa8ce91e788e21a': {
       'title': 'Historial de Ventas',
       'icono': Icon(CupertinoIcons.tickets),
-      'rute': 'historial',
+      'route': 'historial',
       'active': false
     },
     '604f9cf5aaa8ce91e788e21d': {
       'title': 'Configuracion',
       'icono': Icon(CupertinoIcons.settings),
-      'rute': 'configuracion',
+      'route': 'configuracion',
       'active': false
     },
     '604f9cf5aaa8ce91e788e21e': {
       'title': 'Cerrar Sesión',
       'icono': Icon(CupertinoIcons.square_arrow_left),
-      'rute': 'logout',
+      'route': 'logout',
       'active': true
     }
   };

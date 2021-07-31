@@ -14,9 +14,9 @@ class AlertComponent extends StatelessWidget {
       'e': Icon(CupertinoIcons.multiply_circle,
           color: Colors.red.withOpacity(.75)),
       'w': Icon(CupertinoIcons.multiply_circle,
-          color: Colors.red.withOpacity(.75)),
-      's': Icon(CupertinoIcons.multiply_circle,
-          color: Colors.red.withOpacity(.75))
+          color: Colors.yellow.withOpacity(.75)),
+      's': Icon(CupertinoIcons.check_mark_circled,
+          color: Colors.green.withOpacity(.75))
     };
     return Container(
         child: Column(children: [
