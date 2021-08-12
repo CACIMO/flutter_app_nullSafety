@@ -51,7 +51,7 @@ Future postRequest(String urlRoute, Map<String, String>? data) async {
     return Future.error(jsonDecode(response.body));
 }
 
-Future putrequest(String urlRoute, Map<String, String>? data) async {
+Future putRequest(String urlRoute, Map<String, String>? data) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token') ?? '';
   var urlData = Uri.http(urlDB, urlRoute);
@@ -138,4 +138,20 @@ Future postFileRequest(
     return Future.error('Error en el server');
   else
     return;
+}
+
+Future<void> alertLoad(BuildContext ctx) {
+  return showDialog<void>(
+      context: ctx,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: Container(
+                color: Colors.transparent,
+                height: mQ(context, 'h', 1),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                )));
+      });
 }

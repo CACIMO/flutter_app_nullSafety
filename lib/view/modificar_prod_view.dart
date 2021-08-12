@@ -1,31 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/controller/editar_controller.dart';
 import 'package:flutter_app/controller/general_controller.dart';
-import 'package:flutter_app/model/editar_model.dart';
+import 'package:flutter_app/controller/modificar_prod_controller.dart';
+import 'package:flutter_app/model/modificar_prod_model.dart';
 import 'package:flutter_app/view/combinacion_view.dart';
 import 'package:flutter_app/view/drawer_fil_view.dart';
 import 'package:flutter_app/view/drawer_menu_view.dart';
 import 'package:provider/provider.dart';
 
-class EditarProducto extends StatefulWidget {
+class ModificarProducto extends StatefulWidget {
   @override
-  _EditarProducto createState() => new _EditarProducto();
+  _ModificarProducto createState() => new _ModificarProducto();
 }
 
-class _EditarProducto extends State<EditarProducto> {
+class _ModificarProducto extends State<ModificarProducto> {
   GlobalKey<ScaffoldState> scafoldKey = GlobalKey();
-  Map<String, TextEditingController> controllers = {};
 
   @override
   void initState() {
-    super.initState();
     getProducto(context);
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    controllers = Provider.of<EditarModel>(context).controllers;
+    String titulo = 'Modificar Producto';
+
+    Map<String, TextEditingController> controllers =
+        Provider.of<ModificarProdModel>(context).controllers;
+    List combinaciones = Provider.of<ModificarProdModel>(context).combiList;
+
+    for (var i = 0; i < combinaciones.length; i++) {
+      combinaciones[i].addAll({'index': i});
+    }
+
     return Scaffold(
         key: scafoldKey,
         endDrawer: DrawerFilter(),
@@ -41,10 +49,10 @@ class _EditarProducto extends State<EditarProducto> {
                 Expanded(
                     flex: 8,
                     child: Container(
-                        child: Text('Modificar Producto',
+                        child: Text(titulo,
                             style: TextStyle(
                                 fontFamily: 'Roboto-Light',
-                                fontSize: mQ(context, 'w', .07))))),
+                                fontSize: mQ(context, 'w', .075))))),
                 Expanded(
                     flex: 1,
                     child: Container(
@@ -57,7 +65,9 @@ class _EditarProducto extends State<EditarProducto> {
                     flex: 1,
                     child: Container(
                         child: IconButton(
-                            onPressed: () => print('sdad'),
+                            onPressed: () {
+                              updateProd(context, controllers);
+                            },
                             icon:
                                 Icon(CupertinoIcons.cloud_upload, size: 18)))),
               ]),
@@ -105,11 +115,12 @@ class _EditarProducto extends State<EditarProducto> {
                                   maxLength: 30,
                                   decoration: InputDecoration(
                                       counterText: '',
+                                      enabled: false,
                                       focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Color(0xFFEBEBEB),
                                               width: 1)),
-                                      enabledBorder: OutlineInputBorder(
+                                      border: OutlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Color(0xFFEBEBEB),
                                               width: 1)),
@@ -131,12 +142,13 @@ class _EditarProducto extends State<EditarProducto> {
                                   controller: controllers['rfVend'],
                                   maxLength: 30,
                                   decoration: InputDecoration(
+                                      enabled: false,
                                       counterText: '',
                                       focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Color(0xFFEBEBEB),
                                               width: 1)),
-                                      enabledBorder: OutlineInputBorder(
+                                      border: OutlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Color(0xFFEBEBEB),
                                               width: 1)),
@@ -236,32 +248,30 @@ class _EditarProducto extends State<EditarProducto> {
                           flex: 1,
                           child: Container(
                               child: IconButton(
-                                  onPressed: () => print(''),
+                                  onPressed: () => addNewCombi(context),
                                   icon: Icon(CupertinoIcons.plus_app,
                                       size: 18)))),
                     ]),
                     Visibility(
-                        visible: Provider.of<EditarModel>(context).newCombi,
-                        child: Row(children: [
-                          Combinacion(
+                      visible:
+                          Provider.of<ModificarProdModel>(context).newCombi,
+                      child: Row(children: [
+                        Combinacion(
                             isNew: true,
-                            isEdit: false,
-                          )
-                        ])),
+                            prov: Provider.of<ModificarProdModel>(context))
+                      ]),
+                    ),
                     Container(
                         height: mQ(context, 'h', .2),
                         child: ListView.builder(
                             padding: EdgeInsets.all(0),
-                            itemCount: Provider.of<EditarModel>(context)
-                                .combinaciones
-                                .length,
+                            itemCount: combinaciones.length,
                             itemBuilder: (BuildContext context, int index) {
-                              Map<String, dynamic> aux =
-                                  Provider.of<EditarModel>(context)
-                                      .combinaciones[index];
-                              aux.addAll({'index': index});
                               return Combinacion(
-                                  isNew: false, isEdit: true, data: aux);
+                                  isNew: false,
+                                  data: combinaciones[index],
+                                  prov:
+                                      Provider.of<ModificarProdModel>(context));
                             }))
                   ])))
             ])));

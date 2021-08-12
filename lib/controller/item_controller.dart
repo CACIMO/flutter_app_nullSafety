@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/controller/carrito_controller.dart';
 import 'package:flutter_app/model/carrito_model.dart';
-import 'package:flutter_app/model/editar_model.dart';
+import 'package:flutter_app/model/modificar_prod_model.dart';
+import 'package:flutter_app/model/nuevo_prod_model.dart';
 import 'package:flutter_app/model/productos_model.dart';
 import 'package:flutter_app/view/producto_view.dart';
 import 'package:provider/provider.dart';
@@ -57,8 +58,8 @@ void removeProducto(BuildContext context, Item prodInfo) {
         .then((value) => alertMessage(context, 's', 'Proceso exitoso',
                 'Producto eliminado con exito.')
             .then((value) => removeToListProd(context, prodInfo.id)))
-        .catchError((onError) => alertMessage(context, 's', 'Alerta',
-            'Producto en uso, no es posible eliminarlo'));
+        .catchError((onError) => alertMessage(context, 'e', 'Alerta',
+            'Producto en uso, no es posible eliminarlo.'));
   } else {
     removeProdCarrito(prodInfo, carritoId)
         .then((value) => alertMessage(
@@ -70,6 +71,6 @@ void removeProducto(BuildContext context, Item prodInfo) {
 }
 
 void goToEditView(BuildContext context, String id) {
-  Provider.of<EditarModel>(context, listen: false).producto = id;
-  Navigator.pushNamed(context, '/editprod');
+  Provider.of<ModificarProdModel>(context, listen: false).producto = id;
+  Navigator.pushNamed(context, '/modifView');
 }

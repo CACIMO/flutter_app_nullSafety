@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/controller/producto_controller.dart';
@@ -66,8 +65,9 @@ void addCombiToArray(BuildContext context) {
 
 void saveNewProd(
     BuildContext context, Map<String, TextEditingController> controller) async {
-  List<Map<String, dynamic>> combiList =
+  List combiList =
       Provider.of<NuevoProdModel>(context, listen: false).combiList;
+  alertLoad(context);
 
   List<Map<String, dynamic>> auxCombi = [];
   List<File> arrayFiles = [];
@@ -104,13 +104,29 @@ void saveNewProd(
   try {
     await Provider.of<NuevoProdModel>(context, listen: false)
         .saveProd(data, arrayFiles)
-        .then((value) => alertMessage(
-                context, 's', 'Proceso exitoso', 'Producto agregado con exito')
-            .then((value) => Provider.of<NuevoProdModel>(context, listen: false)
-                .cleanCamps()));
+        .then((value) {
+      Navigator.pop(context);
+      alertMessage(
+              context, 's', 'Proceso exitoso', 'Producto agregado con exito')
+          .then((value) =>
+              Provider.of<NuevoProdModel>(context, listen: false).cleanCamps());
+    });
 
     return;
   } catch (e) {
+    Navigator.pop(context);
     return Future.error('');
   }
+}
+
+void getProducto(BuildContext context) {
+  Provider.of<NuevoProdModel>(context, listen: false)
+      .getProductInfo()
+      .then((value) {
+    // print('acabo');
+  });
+}
+
+void resetView(BuildContext context) {
+  Provider.of<NuevoProdModel>(context, listen: false).resetView();
 }

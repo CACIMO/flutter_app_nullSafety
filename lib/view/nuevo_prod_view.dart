@@ -15,17 +15,22 @@ class NuevoProducto extends StatefulWidget {
 
 class _NuevoProducto extends State<NuevoProducto> {
   GlobalKey<ScaffoldState> scafoldKey = GlobalKey();
-  Map<String, TextEditingController> controllers = {};
-
   @override
   void initState() {
     super.initState();
-    clearData(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    controllers = Provider.of<NuevoProdModel>(context).controllers;
+    String titulo = 'Nuevo Producto';
+    if (Provider.of<NuevoProdModel>(context).isEdit) getProducto(context);
+    Map<String, TextEditingController> controllers =
+        Provider.of<NuevoProdModel>(context).controllers;
+    List combinaciones = Provider.of<NuevoProdModel>(context).combiList;
+
+    for (var i = 0; i < combinaciones.length; i++) {
+      combinaciones[i].addAll({'index': i});
+    }
     return Scaffold(
         key: scafoldKey,
         endDrawer: DrawerFilter(),
@@ -41,10 +46,10 @@ class _NuevoProducto extends State<NuevoProducto> {
                 Expanded(
                     flex: 8,
                     child: Container(
-                        child: Text('Nuevo producto',
+                        child: Text(titulo,
                             style: TextStyle(
                                 fontFamily: 'Roboto-Light',
-                                fontSize: mQ(context, 'w', .08))))),
+                                fontSize: mQ(context, 'w', .075))))),
                 Expanded(
                     flex: 1,
                     child: Container(
@@ -244,25 +249,20 @@ class _NuevoProducto extends State<NuevoProducto> {
                       visible: Provider.of<NuevoProdModel>(context).newCombi,
                       child: Row(children: [
                         Combinacion(
-                          isNew: true,
-                          isEdit: false,
-                        )
+                            isNew: true,
+                            prov: Provider.of<NuevoProdModel>(context))
                       ]),
                     ),
                     Container(
                         height: mQ(context, 'h', .2),
                         child: ListView.builder(
                             padding: EdgeInsets.all(0),
-                            itemCount: Provider.of<NuevoProdModel>(context)
-                                .combiList
-                                .length,
+                            itemCount: combinaciones.length,
                             itemBuilder: (BuildContext context, int index) {
-                              Map<String, dynamic> aux =
-                                  Provider.of<NuevoProdModel>(context)
-                                      .combiList[index];
-                              aux.addAll({'index': index});
                               return Combinacion(
-                                  isNew: false, isEdit: false, data: aux);
+                                  isNew: false,
+                                  data: combinaciones[index],
+                                  prov: Provider.of<NuevoProdModel>(context));
                             }))
                   ])))
             ])));

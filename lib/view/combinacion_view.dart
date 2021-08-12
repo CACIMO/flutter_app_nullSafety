@@ -3,9 +3,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
+import 'package:flutter_app/controller/modificar_prod_controller.dart';
 import 'package:flutter_app/controller/nuevo_prod_controller.dart';
 import 'package:flutter_app/model/drawer_fil_model.dart';
-import 'package:flutter_app/model/editar_model.dart';
 import 'package:flutter_app/model/nuevo_prod_model.dart';
 import 'package:flutter_app/model/productos_model.dart';
 import 'package:flutter_app/view/dropdown_view.dart';
@@ -14,20 +14,19 @@ import 'package:provider/provider.dart';
 
 class Combinacion extends StatelessWidget {
   final bool isNew;
-  final bool isEdit;
   final Map<String, dynamic>? data;
+  final dynamic prov;
   const Combinacion(
-      {Key? key, required this.isNew, this.data, required this.isEdit})
+      {Key? key, required this.isNew, this.data, required this.prov})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     ItemCheck talla = ItemCheck('Seleccione tala', 'none', false);
-    File img = isEdit
-        ? Provider.of<EditarModel>(context).imgFile
-        : Provider.of<NuevoProdModel>(context).imgFile;
+    File img = prov.imgFile;
     ColorD color =
         ColorD('FFFFFF', 'FFFFFF', 'Seleccione un color', 'none', false);
+
     if (data != null) {
       color = Provider.of<DrawerFilterModel>(context)
           .colorList
@@ -38,27 +37,26 @@ class Combinacion extends StatelessWidget {
           .where((e) => e.id == data!['talla'])
           .toList()[0];
     }
+    bool isEdit = prov.isEdit;
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Row(children: [
         Container(
             margin: EdgeInsets.only(right: 10),
             height: mQ(context, 'h', .12),
             width: mQ(context, 'h', .12),
-            child: (!Provider.of<NuevoProdModel>(context).imgSelec &&
-                        data == null ||
-                    (data == null &&
-                        isEdit &&
-                        !Provider.of<EditarModel>(context).imgSelec))
-                ? IconButton(
-                    onPressed: () => addImgNew(context),
-                    icon: Icon(CupertinoIcons.add_circled),
-                  )
-                : (isEdit && data != null)
-                    ? CachedNetworkImage(
-                        height: mQ(context, 'h', .12),
-                        imageUrl:
-                            'http://$urlDB/getimg/preview/${data!['img']}')
-                    : Image.file(data == null ? img : data!['img'])),
+            child:
+                (!Provider.of<NuevoProdModel>(context).imgSelec && data == null)
+                    ? IconButton(
+                        onPressed: () =>
+                            isEdit ? addImgNewMod(context) : addImgNew(context),
+                        icon: Icon(CupertinoIcons.add_circled),
+                      )
+                    : (prov.isEdit)
+                        ? CachedNetworkImage(
+                            height: mQ(context, 'h', .12),
+                            imageUrl:
+                                'http://$urlDB/getimg/preview/${data!['img']}')
+                        : Image.file(data == null ? img : data!['img'])),
         if (data == null)
           Container(
               child: Column(
@@ -67,16 +65,18 @@ class Combinacion extends StatelessWidget {
                   children: [
                 Row(children: [
                   DropDownColor(
-                      onChange: (String? idColor) =>
-                          changeColorPro(context, idColor.toString()),
-                      idSelec: Provider.of<NuevoProdModel>(context).colorSelect,
+                      onChange: (String? idColor) => isEdit
+                          ? changeColorProMod(context, idColor.toString())
+                          : changeColorPro(context, idColor.toString()),
+                      idSelec: prov.colorSelect,
                       list: Provider.of<DrawerFilterModel>(context).colorList)
                 ]),
                 Row(children: [
                   DropDownTalla(
-                      onChange: (String? idTalla) =>
-                          changeTallaProd(context, idTalla.toString()),
-                      idSelec: Provider.of<NuevoProdModel>(context).tallaSelect,
+                      onChange: (String? idTalla) => isEdit
+                          ? changeTallaProdMod(context, idTalla.toString())
+                          : changeTallaProd(context, idTalla.toString()),
+                      idSelec: prov.tallaSelect,
                       list: Provider.of<DrawerFilterModel>(context)
                           .tallaList
                           .map((e) => Talla(e.titulo, e.id))
@@ -122,7 +122,7 @@ class Combinacion extends StatelessWidget {
                         Container(
                             height: 20,
                             child: Text(
-                                isEdit
+                                (prov.isEdit)
                                     ? data!['stock'].toString()
                                     : data!['cantidad'],
                                 style: TextStyle(
@@ -151,8 +151,11 @@ class Combinacion extends StatelessWidget {
           width: mQ(context, 'w', .15),
           alignment: Alignment.centerRight,
           child: IconButton(
-            onPressed: () => removeLast(
-                context, isNew, (data == null) ? -1 : data!['index']),
+            onPressed: () => isEdit
+                ? removeLastProd(
+                    context, isNew, (data == null) ? -1 : data!['index'])
+                : removeLast(
+                    context, isNew, (data == null) ? -1 : data!['index']),
             icon: Icon(CupertinoIcons.trash,
                 size: 30, color: Colors.red.withOpacity(.5)),
           ),
@@ -164,7 +167,7 @@ class Combinacion extends StatelessWidget {
               margin: EdgeInsets.only(right: 10),
               width: mQ(context, 'w', .4),
               child: TextFormField(
-                  controller: Provider.of<NuevoProdModel>(context).stock,
+                  controller: prov.stock,
                   maxLength: 30,
                   autofocus: false,
                   keyboardType: TextInputType.number,
@@ -180,7 +183,9 @@ class Combinacion extends StatelessWidget {
                       hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
                       fillColor: Color(0xFFEBEBEB)))),
           ElevatedButton(
-              onPressed: () => addCombiToArray(context),
+              onPressed: () => isEdit
+                  ? addCombiToArrayMod(context)
+                  : addCombiToArray(context),
               child: Container(
                   child: Text('Agregar',
                       style: TextStyle(

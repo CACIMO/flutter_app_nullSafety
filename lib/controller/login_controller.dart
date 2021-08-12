@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
+import 'package:flutter_app/model/login_model.dart';
 import 'package:flutter_app/model/menu_model.dart';
 import 'package:flutter_app/model/user_model.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 void logIn(
     BuildContext context, Map<String, TextEditingController> controller) async {
   bool flag = false;
+  alertLoad(context);
   Map<String, String> jsonAux = {
     'usuario': controller['user']!.text,
     'password':
@@ -26,8 +28,11 @@ void logIn(
     Provider.of<UserModel>(context, listen: false)
         .loginUser(jsonAux)
         .then((value) => Provider.of<MenuController>(context, listen: false)
-            .getMenu()
-            .then((value) => Navigator.pushNamed(context, '/catalogo')))
+                .getMenu()
+                .then((value) {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/catalogo');
+            }))
         .catchError((error) {
       print(error);
       alertMessage(

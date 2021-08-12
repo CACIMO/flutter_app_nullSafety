@@ -5,14 +5,14 @@ import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/model/productos_model.dart';
 import 'package:image_picker/image_picker.dart';
 
-class NuevoProdModel extends ChangeNotifier {
+class ModificarProdModel extends ChangeNotifier {
   String colorSelect = 'none';
   String tallaSelect = 'none';
   bool newCombi = false;
   bool imgSelec = false;
   File imgFile = File('');
   String producto = '';
-  bool isEdit = false;
+  bool isEdit = true;
   TextEditingController stock = new TextEditingController();
   List combiList = [];
   Map<String, TextEditingController> controllers = {
@@ -108,13 +108,14 @@ class NuevoProdModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> saveProd(
-      Map<String, String> data, List<File> arrayFiles) async {
-    await postFileRequest('producto', data, arrayFiles).then((value) {
-      return;
-    }).onError((onError, strace) {
-      return Future.error('');
-    });
+  Future<dynamic> saveProd(Map<String, String> data) async {
+    Map response = {};
+    try {
+      response = await putRequest('updateproducto', data);
+      print(response);
+    } catch (e) {
+      return Future.error(e);
+    }
   }
 
   Future getProductInfo() async {
@@ -178,7 +179,7 @@ class NuevoProdModel extends ChangeNotifier {
 
   void resetView() {
     combiList = [];
-    controllers.keys.forEach((key) => controllers[key]!.text = '');
+    //controllers.keys.forEach((key) => controllers[key]!.text = '');
     colorSelect = 'none';
     tallaSelect = 'none';
     newCombi = false;

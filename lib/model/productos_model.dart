@@ -265,7 +265,7 @@ Future removeProdCarrito(Item prod, String carritoId) async {
   };
   Map<String, dynamic> request = {};
   try {
-    request = await putrequest('carrito', data);
+    request = await putRequest('carrito', data);
     if (request['err'] != null) throw 'Error de datos contacte a soporte.';
     return;
   } catch (e) {
