@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/controller/login_controller.dart';
 import 'package:flutter_app/controller/general_controller.dart';
-import 'package:flutter_app/model/login_model.dart';
-import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override

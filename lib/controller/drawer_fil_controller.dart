@@ -37,6 +37,5 @@ void changeValueCheck(
 }
 
 void findWhenChangeFilter(BuildContext context) {
-  Provider.of<ProductosModel>(context, listen: false).cleanFinder();
-  Provider.of<ProductosModel>(context, listen: false).getList(context);
+  Provider.of<ProductosModel>(context, listen: false).getList(context, true);
 }

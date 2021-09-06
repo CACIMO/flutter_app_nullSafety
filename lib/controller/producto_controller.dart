@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/model/drawer_fil_model.dart';
@@ -22,19 +24,15 @@ void changeTalla(BuildContext context, String idTalla) {
   Provider.of<ProductosModel>(context, listen: false).changeDropDown();
 }
 
-void findByname(BuildContext context, String controllerBus) {
+Future<void> findByname(BuildContext context, String controllerBus) async {
   Provider.of<ProductosModel>(context, listen: false).busqueda = controllerBus;
-  Provider.of<ProductosModel>(context, listen: false).finder = true;
-  Provider.of<ProductosModel>(context, listen: false).cleanFinder();
-  Provider.of<ProductosModel>(context, listen: false).getList(context);
+  Provider.of<ProductosModel>(context, listen: false).getList(context, true);
 }
 
 void refreshFinder(BuildContext context, TextEditingController controllerBus) {
   controllerBus.text = '';
   Provider.of<ProductosModel>(context, listen: false).busqueda = '';
-  Provider.of<ProductosModel>(context, listen: false).finder = true;
-  Provider.of<ProductosModel>(context, listen: false).cleanFinder();
-  Provider.of<ProductosModel>(context, listen: false).getList(context);
+  Provider.of<ProductosModel>(context, listen: false).getList(context, true);
 }
 
 void getColorsList(BuildContext context) {
@@ -76,9 +74,11 @@ void addToCar(
     if (flagError)
       alertMessage(context, 'e', 'Error carrito', auxError);
     else {
+      alertLoad(context);
       Provider.of<ProductosModel>(context, listen: false)
           .addToCarrito(precio.text)
           .then((value) {
+        Navigator.pop(context);
         precio.text = '';
         Provider.of<ProductosModel>(context, listen: false).cleanProdInfo();
         alertMessage(context, 's', 'Proceso exitoso',
@@ -88,10 +88,43 @@ void addToCar(
           findByname(context,
               Provider.of<ProductosModel>(context, listen: false).busqueda);
         });
+      }).catchError((onError) {
+        Navigator.pop(context);
       });
     }
   } else {
     alertMessage(context, 'e', 'Error Privilegios',
         'Tu usaurio no puede realizar ventas');
+  }
+}
+
+void shareImg(BuildContext context, String img) {
+  descargarImgShare(context, img);
+}
+
+void showQr(BuildContext context, Item prodData) {
+  bool flagError = false;
+  String auxError = '';
+
+  if (Provider.of<ProductosModel>(context, listen: false).colorSelect ==
+      'none') {
+    flagError = true;
+    auxError = 'Debe seleccionar un color';
+  } else if (Provider.of<ProductosModel>(context, listen: false).tallaSelect ==
+      'none') {
+    flagError = true;
+    auxError = 'Debe seleccionar una talla';
+  }
+
+  if (flagError)
+    alertMessage(context, 'e', 'Error QR Generator', auxError);
+  else {
+    Map aux = {
+      'id':
+          Provider.of<ProductosModel>(context, listen: false).prodSelected!.id,
+      'color': Provider.of<ProductosModel>(context, listen: false).colorSelect,
+      'talla': Provider.of<ProductosModel>(context, listen: false).tallaSelect
+    };
+    alertQR(context, aux);
   }
 }

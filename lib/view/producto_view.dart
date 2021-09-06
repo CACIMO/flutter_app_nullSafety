@@ -46,8 +46,7 @@ class ProductoView extends StatelessWidget {
                           Expanded(
                               flex: 2,
                               child: IconButton(
-                                onPressed: () =>
-                                    print(''), //_alertQr(context, this.data),
+                                onPressed: () => showQr(context, prodData),
                                 icon: Icon(CupertinoIcons.qrcode),
                               ))
                         ]),
@@ -244,12 +243,16 @@ class ProductoView extends StatelessWidget {
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
                             child: Container(
-                                child: CachedNetworkImage(
-                                    width: mQ(context, 'w', .7),
-                                    height: mQ(context, 'w', .7),
-                                    placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
-                                    imageUrl: prodData.urlImg)))),
+                                child: InkWell(
+                              onTap: () => shareImg(context, prodData.urlImg),
+                              child: CachedNetworkImage(
+                                  width: mQ(context, 'w', .7),
+                                  height: mQ(context, 'w', .7),
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  imageUrl: Provider.of<ProductosModel>(context)
+                                      .imgProd),
+                            )))),
                   )))
         ],
       ),

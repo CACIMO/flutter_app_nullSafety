@@ -18,13 +18,15 @@ class ProductosModel extends ChangeNotifier {
   int maxStock = 0;
   int cant = 0;
   String imgProd = '';
+  String idCombi = '';
   //Product View
   int counter = 1;
   String colorSelect = 'none';
   String tallaSelect = 'none';
   FocusNode focusNode = FocusNode();
+  GlobalKey qrImgKey = GlobalKey();
 
-  Future getList(BuildContext context) async {
+  Future getList(BuildContext context, finder) async {
     List<String> auxColor =
         Provider.of<DrawerFilterModel>(context, listen: false).colorsIds;
     List<String> auxCateg =
@@ -35,6 +37,10 @@ class ProductosModel extends ChangeNotifier {
         Provider.of<DrawerFilterModel>(context, listen: false).tagsIds;
     Map response = {};
     try {
+      if (finder) {
+        last = 10;
+        init = 0;
+      }
       response = await postRequest('producto', {
         'prod_id': 'null',
         'init': init.toString(),
@@ -45,16 +51,14 @@ class ProductosModel extends ChangeNotifier {
         'tag': jsonEncode(auxTag),
         'tal': jsonEncode(auxTalla)
       });
-      if (finder) {
-        cleanFinder();
-        finder = false;
-      }
+      if (finder) cleanFinder();
       List prods = response['data'];
       prods.forEach((prod) {
         List<ColorD> colorData = [];
         List<Talla> tallaData = [];
         List colorsTemp = prod['colorData'];
         List tallasTemp = prod['tallaData'];
+
         colorsTemp.forEach((cl) {
           colorData.add(new ColorD(cl['primario'], cl['segundario'] ?? '',
               cl['titulo'], cl['_id'], false));
@@ -62,6 +66,7 @@ class ProductosModel extends ChangeNotifier {
         tallasTemp.forEach((tl) {
           tallaData.add(new Talla(tl['titulo'], tl['_id']));
         });
+
         addProd(new Item(
             prod['_id'],
             prod['titulo'],
@@ -92,6 +97,7 @@ class ProductosModel extends ChangeNotifier {
 
   void setProd(Item prod) {
     prodSelected = prod;
+    imgProd = (prod.urlImg);
     setProperties();
     notifyListeners();
   }
@@ -115,12 +121,14 @@ class ProductosModel extends ChangeNotifier {
   }
 
   void addColorViewProd(ColorD color) {
-    arrayColors.add(color);
+    int index = arrayColors.indexWhere((cl) => cl.id == color.id);
+    if (index < 0) arrayColors.add(color);
     notifyListeners();
   }
 
   void addTallaViewProd(Talla talla) {
-    arryTallas.add(talla);
+    int index = arryTallas.indexWhere((tl) => tl.id == talla.id);
+    if (index < 0) arryTallas.add(talla);
     notifyListeners();
   }
 
@@ -150,11 +158,18 @@ class ProductosModel extends ChangeNotifier {
           .where((combi) =>
               (combi['color'] == colorSelect && combi['talla'] == tallaSelect))
           .toList();
-      print(combi);
-      maxStock = (combi[0]['stock']);
-      imgProd = (combi[0]['img']);
-    } else
+      if (combi.length > 0) {
+        maxStock = (int.parse(combi[0]['stock'].toString()));
+        imgProd = 'http://$urlDB/getimg/preview/${combi[0]['img']}';
+        idCombi = (combi[0]['_id']);
+      } else {
+        idCombi = '';
+        maxStock = 0;
+      }
+    } else {
+      idCombi = '';
       maxStock = 0;
+    }
     notifyListeners();
   }
 
@@ -164,7 +179,8 @@ class ProductosModel extends ChangeNotifier {
       'talla': tallaSelect,
       'color': colorSelect,
       'producto': prodSelected!.id,
-      'cantidad': counter.toString()
+      'cantidad': counter.toString(),
+      'idCombi': idCombi
     };
     try {
       await postRequest('carrito', dataRequest);
@@ -180,12 +196,19 @@ class ProductosModel extends ChangeNotifier {
     arryTallas = [];
     arrayColors = [];
     counter = 0;
+    idCombi = '';
+    maxStock = 0;
     notifyListeners();
   }
 
   void removeItemList(String id) {
     int index = listProds.indexWhere((Item prod) => prod.id == id);
     listProds.removeAt(index);
+    notifyListeners();
+  }
+
+  void clearList() {
+    listProds = [];
     notifyListeners();
   }
 }
@@ -278,7 +301,6 @@ Future removeProdCatalogo(Item prod) async {
   try {
     request = await deleteRequest('producto', {'prod_id': prod.id});
     if (request['err'] != null) throw 'Error de datos contacte a soporte.';
-    print(request);
     return;
   } catch (e) {
     return Future.error(e.toString());

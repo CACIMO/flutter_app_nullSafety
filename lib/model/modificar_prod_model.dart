@@ -14,6 +14,7 @@ class ModificarProdModel extends ChangeNotifier {
   String producto = '';
   bool isEdit = true;
   TextEditingController stock = new TextEditingController();
+  TextEditingController stockAux = new TextEditingController();
   List combiList = [];
   Map<String, TextEditingController> controllers = {
     'titulo': TextEditingController(),
@@ -71,11 +72,11 @@ class ModificarProdModel extends ChangeNotifier {
   }
 
   Future saveCombi() async {
-    Map<String, dynamic> dataToSave = {
+    Map<String, String> dataToSave = {
+      'idProd': producto,
       'talla': tallaSelect,
       'color': colorSelect,
-      'img': imgFile,
-      'cantidad': stock.text
+      'stock': stock.text
     };
     if (tallaSelect == 'none' ||
         colorSelect == 'none' ||
@@ -83,11 +84,16 @@ class ModificarProdModel extends ChangeNotifier {
         stock.text == '')
       return Future.error('');
     else {
-      combiList.add(dataToSave);
       newCombi = false;
       imgSelec = false;
-      notifyListeners();
-      return;
+      try {
+        await postFileRequest(
+            'updateproducto/combi', dataToSave, [File(imgFile.path)]);
+        notifyListeners();
+        return;
+      } catch (e) {
+        return Future.error(e);
+      }
     }
   }
 
@@ -109,10 +115,8 @@ class ModificarProdModel extends ChangeNotifier {
   }
 
   Future<dynamic> saveProd(Map<String, String> data) async {
-    Map response = {};
     try {
-      response = await putRequest('updateproducto', data);
-      print(response);
+      await putRequest('updateproducto', data);
     } catch (e) {
       return Future.error(e);
     }
@@ -188,5 +192,18 @@ class ModificarProdModel extends ChangeNotifier {
     producto = '';
     stock = new TextEditingController();
     //notifyListeners();
+  }
+
+  void resetView2() {
+    combiList = [];
+    controllers.keys.forEach((key) => controllers[key]!.text = '');
+    colorSelect = 'none';
+    tallaSelect = 'none';
+    newCombi = false;
+    imgSelec = false;
+    imgFile = File('');
+    producto = '';
+    stock = new TextEditingController();
+    notifyListeners();
   }
 }

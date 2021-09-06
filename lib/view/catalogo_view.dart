@@ -25,7 +25,7 @@ class _Catalogo extends State<Catalogo> {
       if (consultar) {
         consultar = false;
         Provider.of<ProductosModel>(context, listen: false)
-            .getList(context)
+            .getList(context, false)
             .then((value) => (consultar = true));
       }
     }
@@ -34,9 +34,9 @@ class _Catalogo extends State<Catalogo> {
   @override
   void initState() {
     controllerScroll..addListener(_scrollListener);
-    Provider.of<ProductosModel>(context, listen: false).getList(context);
     getColorsList(context);
     getTallasList(context);
+    findByname(context, '');
     super.initState();
   }
 

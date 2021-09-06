@@ -1,5 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/controller/producto_controller.dart';
@@ -34,10 +34,32 @@ void addNewCombi(BuildContext context) {
         'Primiero debe guardar la combinacion anterior');
 }
 
-void addImgNewMod(BuildContext context) async {
+void addImgNewMod(
+    BuildContext context, bool action, Map<String, dynamic> data) async {
   ImagePicker _picker = ImagePicker();
   XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-  Provider.of<ModificarProdModel>(context, listen: false).setFile(image);
+  List<File> arr = [File(image!.path)];
+  if (!action) {
+    Provider.of<ModificarProdModel>(context, listen: false).setFile(image);
+  } else {
+    Map<String, String> datax = {
+      'lastImg': data['img'].toString(),
+      'id': Provider.of<ModificarProdModel>(context, listen: false).producto,
+      'combi': data["_id"].toString()
+    };
+    try {
+      alertLoad(context);
+      await postFileRequest('updateproducto/img', datax, arr);
+      Navigator.pop(context);
+      alertMessage(context, 's', 'Proceso Exitoso', 'Imagen Actualizada')
+          .then((value) {
+        Provider.of<ModificarProdModel>(context, listen: false)
+            .getProductInfo();
+      });
+    } catch (e) {
+      Navigator.pop(context);
+    }
+  }
 }
 
 void clearData(BuildContext context) {
@@ -53,14 +75,20 @@ void removeLastProd(BuildContext context, bool isNew, int index) {
 }
 
 void addCombiToArrayMod(BuildContext context) {
+  alertLoad(context);
   Provider.of<ModificarProdModel>(context, listen: false)
       .saveCombi()
-      .then((value) => alertMessage(
-          context, 's', 'Proceso exitoso', 'Combinacion agregada.'))
-      .catchError((onError) {
-    print(onError);
+      .then((value) {
+    Provider.of<ModificarProdModel>(context, listen: false).getProductInfo();
+    Navigator.pop(context);
+    alertMessage(context, 's', 'Proceso exitoso', 'Combinacion agregada.')
+        .then((value) {});
+  }).catchError((onError) {
+    Navigator.pop(context);
     alertMessage(context, 'e', 'Error', 'Faltan datos por llenar.');
   });
+
+  Provider.of<ModificarProdModel>(context, listen: false).imgSelec = false;
 }
 
 void updateProd(

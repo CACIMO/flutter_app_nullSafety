@@ -58,7 +58,6 @@ void addCombiToArray(BuildContext context) {
       .then((value) => alertMessage(
           context, 's', 'Proceso exitoso', 'Combinacion agregada.'))
       .catchError((onError) {
-    print(onError);
     alertMessage(context, 'e', 'Error', 'Faltan datos por llenar.');
   });
 }
@@ -77,8 +76,8 @@ void saveNewProd(
     auxCombi.add({
       'talla': e['talla'],
       'color': e['color'],
-      'cantidad': e['cantidad'],
-      'imgFile': aux[aux.length - 1].split('.')[0]
+      'stock': e['cantidad'],
+      'img': aux[aux.length - 1].split('.')[0]
     });
   });
   Map<String, String> data = {

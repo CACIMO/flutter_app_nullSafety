@@ -52,9 +52,7 @@ class DrawerFilterModel extends ChangeNotifier {
         });
       }
       notifyListeners();
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
   }
 
   void getTallaFilter() async {
@@ -70,9 +68,7 @@ class DrawerFilterModel extends ChangeNotifier {
         });
       }
       notifyListeners();
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
   }
 
   void getCategoryFilter() async {
@@ -88,9 +84,7 @@ class DrawerFilterModel extends ChangeNotifier {
         });
       }
       notifyListeners();
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
   }
 
   void getTagFilter() async {
@@ -106,9 +100,7 @@ class DrawerFilterModel extends ChangeNotifier {
         });
       }
       notifyListeners();
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
   }
 
   void addItemToarry(String type, String id) {

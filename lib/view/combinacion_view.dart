@@ -6,6 +6,7 @@ import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/controller/modificar_prod_controller.dart';
 import 'package:flutter_app/controller/nuevo_prod_controller.dart';
 import 'package:flutter_app/model/drawer_fil_model.dart';
+import 'package:flutter_app/model/modificar_prod_model.dart';
 import 'package:flutter_app/model/nuevo_prod_model.dart';
 import 'package:flutter_app/model/productos_model.dart';
 import 'package:flutter_app/view/dropdown_view.dart';
@@ -44,19 +45,27 @@ class Combinacion extends StatelessWidget {
             margin: EdgeInsets.only(right: 10),
             height: mQ(context, 'h', .12),
             width: mQ(context, 'h', .12),
-            child:
-                (!Provider.of<NuevoProdModel>(context).imgSelec && data == null)
-                    ? IconButton(
-                        onPressed: () =>
-                            isEdit ? addImgNewMod(context) : addImgNew(context),
-                        icon: Icon(CupertinoIcons.add_circled),
-                      )
-                    : (prov.isEdit)
-                        ? CachedNetworkImage(
+            child: ((prov.isEdit
+                        ? !Provider.of<ModificarProdModel>(context).imgSelec
+                        : !Provider.of<NuevoProdModel>(context).imgSelec) &&
+                    data == null)
+                ? IconButton(
+                    onPressed: () => isEdit
+                        ? addImgNewMod(context, false, {})
+                        : addImgNew(context),
+                    icon: Icon(CupertinoIcons.add_circled),
+                  )
+                : (prov.isEdit && data != null)
+                    ? InkWell(
+                        onTap: () {
+                          addImgNewMod(context, true, data ?? {});
+                        },
+                        child: CachedNetworkImage(
                             height: mQ(context, 'h', .12),
                             imageUrl:
-                                'http://$urlDB/getimg/preview/${data!['img']}')
-                        : Image.file(data == null ? img : data!['img'])),
+                                'http://$urlDB/getimg/preview/${data!['img']}'),
+                      )
+                    : Image.file(data == null ? img : data!['img'])),
         if (data == null)
           Container(
               child: Column(
@@ -84,82 +93,89 @@ class Combinacion extends StatelessWidget {
                 ]),
               ]))
         else
-          Container(
-              width: mQ(context, 'w', .4),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: mQ(context, 'h', .005)),
-                      height: 20,
-                      child: Row(children: [
-                        Text('Tallas: ',
-                            style: TextStyle(
-                                fontSize: mQ(context, 'w', .035),
-                                color: Colors.black54,
-                                fontFamily: 'Roboto-Light')),
-                        Container(
-                            height: 20,
-                            child: Text(talla.titulo,
-                                style: TextStyle(
-                                    fontSize: mQ(context, 'w', .035),
-                                    color: Colors.black54,
-                                    fontFamily: 'Roboto-Light')))
-                      ]),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: mQ(context, 'h', .005)),
-                      height: 20,
-                      child: Row(children: [
-                        Container(
-                          child: Text('Stock: ',
+          InkWell(
+            onTap: () => stockAlert(context, data, () {
+              Provider.of<ModificarProdModel>(context, listen: false)
+                  .getProductInfo();
+            }),
+            child: Container(
+                width: mQ(context, 'w', .4),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(bottom: mQ(context, 'h', .005)),
+                        height: 20,
+                        child: Row(children: [
+                          Text('Tallas: ',
                               style: TextStyle(
                                   fontSize: mQ(context, 'w', .035),
                                   color: Colors.black54,
                                   fontFamily: 'Roboto-Light')),
-                        ),
-                        Container(
-                            height: 20,
-                            child: Text(
-                                (prov.isEdit)
-                                    ? data!['stock'].toString()
-                                    : data!['cantidad'],
-                                style: TextStyle(
-                                    fontSize: mQ(context, 'w', .035),
-                                    color: Colors.black54,
-                                    fontFamily: 'Roboto-Light')))
-                      ]),
-                    ),
-                    Container(
-                        height: 20,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text('Color: ',
+                          Container(
+                              height: 20,
+                              child: Text(talla.titulo,
                                   style: TextStyle(
                                       fontSize: mQ(context, 'w', .035),
                                       color: Colors.black54,
-                                      fontFamily: 'Roboto-Light')),
-                              Container(
-                                  child: ColorItem(
-                                      primario: color.primario,
-                                      segundario: color.segundario))
-                            ]))
-                  ])),
-        Container(
-          width: mQ(context, 'w', .15),
-          alignment: Alignment.centerRight,
-          child: IconButton(
-            onPressed: () => isEdit
-                ? removeLastProd(
-                    context, isNew, (data == null) ? -1 : data!['index'])
-                : removeLast(
-                    context, isNew, (data == null) ? -1 : data!['index']),
-            icon: Icon(CupertinoIcons.trash,
-                size: 30, color: Colors.red.withOpacity(.5)),
+                                      fontFamily: 'Roboto-Light')))
+                        ]),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: mQ(context, 'h', .005)),
+                        height: 20,
+                        child: Row(children: [
+                          Container(
+                            child: Text('Stock: ',
+                                style: TextStyle(
+                                    fontSize: mQ(context, 'w', .035),
+                                    color: Colors.black54,
+                                    fontFamily: 'Roboto-Light')),
+                          ),
+                          Container(
+                              height: 20,
+                              child: Text(
+                                  (prov.isEdit)
+                                      ? data!['stock'].toString()
+                                      : data!['cantidad'],
+                                  style: TextStyle(
+                                      fontSize: mQ(context, 'w', .035),
+                                      color: Colors.black54,
+                                      fontFamily: 'Roboto-Light')))
+                        ]),
+                      ),
+                      Container(
+                          height: 20,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text('Color: ',
+                                    style: TextStyle(
+                                        fontSize: mQ(context, 'w', .035),
+                                        color: Colors.black54,
+                                        fontFamily: 'Roboto-Light')),
+                                Container(
+                                    child: ColorItem(
+                                        primario: color.primario,
+                                        segundario: color.segundario))
+                              ]))
+                    ])),
           ),
-        )
+        if (isNew)
+          Container(
+            width: mQ(context, 'w', .15),
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              onPressed: () => isEdit
+                  ? removeLastProd(
+                      context, isNew, (data == null) ? -1 : data!['index'])
+                  : removeLast(
+                      context, isNew, (data == null) ? -1 : data!['index']),
+              icon: Icon(CupertinoIcons.trash,
+                  size: 30, color: Colors.red.withOpacity(.5)),
+            ),
+          )
       ]),
       if (data == null)
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [

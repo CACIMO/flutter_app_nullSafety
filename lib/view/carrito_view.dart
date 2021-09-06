@@ -59,8 +59,17 @@ class _Carrito extends State<Carrito> {
                     flex: 1,
                     child: Container(
                         child: IconButton(
-                            onPressed: () =>
-                                Navigator.pushNamed(context, '/formato'),
+                            onPressed: () {
+                              if (Provider.of<CarritoModel>(context,
+                                          listen: false)
+                                      .carritoList
+                                      .length >
+                                  0)
+                                Navigator.pushNamed(context, '/formato');
+                              else
+                                alertMessage(context, 'w', 'Alerta!',
+                                    'Debe agragar al menos un producto.');
+                            },
                             icon:
                                 Icon(CupertinoIcons.doc_richtext, size: 18)))),
               ]),

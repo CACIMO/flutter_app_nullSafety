@@ -4,16 +4,16 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_app/controller/carrito_controller.dart';
 import 'package:flutter_app/model/carrito_model.dart';
 import 'package:flutter_app/model/modificar_prod_model.dart';
-import 'package:flutter_app/model/nuevo_prod_model.dart';
 import 'package:flutter_app/model/productos_model.dart';
 import 'package:flutter_app/view/producto_view.dart';
 import 'package:provider/provider.dart';
-
 import 'general_controller.dart';
 
 void showProd(BuildContext context, Item prodData) {
   String route = getCurrentRoute(context);
+
   Provider.of<ProductosModel>(context, listen: false).cleanProdInfo();
+
   if (route == '/catalogo') {
     Provider.of<ProductosModel>(context, listen: false).setProd(prodData);
     prodData.combinaciones.forEach((combi) {

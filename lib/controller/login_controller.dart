@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
-import 'package:flutter_app/model/login_model.dart';
 import 'package:flutter_app/model/menu_model.dart';
 import 'package:flutter_app/model/user_model.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +33,6 @@ void logIn(
               Navigator.pushNamed(context, '/catalogo');
             }))
         .catchError((error) {
-      print(error);
       alertMessage(
           context, 'e', 'Login Error', 'Usuario o contraseña incorrectos.');
     });

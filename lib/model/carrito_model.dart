@@ -13,47 +13,49 @@ class CarritoModel extends ChangeNotifier {
       response = await getRequest(
         'carrito',
       );
+      if (response['data'].length > 0) {
+        Map<String, dynamic> carritoInfo = response['data'][0];
+        carritoId = carritoInfo['_id'];
+        List carrito = carritoInfo['producto'];
+        List productos = carritoInfo['Productos'];
+        List colorList = carritoInfo['Colores'];
+        List tallaList = carritoInfo['Tallas'];
+        carrito.forEach((prod) {
+          Map<String, dynamic> itemInfo = productos
+              .where((carEle) => carEle['_id'] == prod['id'])
+              .toList()[0];
+          Map<String, dynamic> colorInfo = colorList
+              .where((colorEle) => colorEle['_id'] == prod['color'])
+              .toList()[0];
+          Map<String, dynamic> tallaInfo = tallaList
+              .where((tallaEle) => tallaEle['_id'] == prod['talla'])
+              .toList()[0];
+          ColorD colorData = new ColorD(
+              colorInfo['primario'],
+              colorInfo['segundario'] ?? '',
+              colorInfo['titulo'],
+              colorInfo['_id'],
+              false);
 
-      Map<String, dynamic> carritoInfo = response['data'][0];
-      carritoId = carritoInfo['_id'];
-      List carrito = carritoInfo['producto'];
-      List productos = carritoInfo['Productos'];
-      List colorList = carritoInfo['Colores'];
-      List tallaList = carritoInfo['Tallas'];
-      carrito.forEach((prod) {
-        Map<String, dynamic> itemInfo = productos
-            .where((carEle) => carEle['_id'] == prod['id'])
-            .toList()[0];
-        Map<String, dynamic> colorInfo = colorList
-            .where((colorEle) => colorEle['_id'] == prod['color'])
-            .toList()[0];
-        Map<String, dynamic> tallaInfo = tallaList
-            .where((tallaEle) => tallaEle['_id'] == prod['talla'])
-            .toList()[0];
-        ColorD colorData = new ColorD(
-            colorInfo['primario'],
-            colorInfo['segundario'] ?? '',
-            colorInfo['titulo'],
-            colorInfo['_id'],
-            false);
+          Talla tallaData = new Talla(tallaInfo['titulo'], tallaInfo['_id']);
 
-        Talla tallaData = new Talla(tallaInfo['titulo'], tallaInfo['_id']);
-        addCarrito(new Item(
-          itemInfo['_id'],
-          itemInfo['titulo'],
-          'http://$urlDB/getimg/preview/${itemInfo['_id']}',
-          prod['valor'].toString(),
-          '',
-          '',
-          prod['cantidad'].toString(),
-          [tallaData],
-          [colorData],
-          prod['_id'],
-          [],
-          prod['costo'].toString(),
-          prod['descripcion'],
-        ));
-      });
+          addCarrito(new Item(
+            itemInfo['_id'],
+            itemInfo['titulo'],
+            'http://$urlDB/getimg/preview/${itemInfo['_id']}',
+            prod['valor'].toString(),
+            '',
+            '',
+            prod['cantidad'].toString(),
+            [tallaData],
+            [colorData],
+            prod['_id'],
+            [],
+            '',
+            '',
+          ));
+        });
+      }
       return;
     } catch (e) {
       return Future.error(e);
@@ -64,13 +66,4 @@ class CarritoModel extends ChangeNotifier {
     carritoList.add(item);
     notifyListeners();
   }
-
-  /* Future removeProd(Item item) async {
-    Map<String, String> data = {
-      'idCarrito': carritoId,
-      'iditem': itemData['_id'],
-      'idProducto': itemData['id'],
-      'cantidad': itemData['cantidad'].toString()
-    };
-  } */
 }

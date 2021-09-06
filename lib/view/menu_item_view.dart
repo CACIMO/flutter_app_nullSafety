@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
+import 'package:flutter_app/controller/menu_controller.dart';
 
 class MenuItem extends StatelessWidget {
   final String titulo;
@@ -16,7 +17,7 @@ class MenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, '/$route'),
+      onTap: () => changeView(context, '/$route'),
       child: Column(children: [
         Row(children: [
           Container(
