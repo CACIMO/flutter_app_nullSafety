@@ -34,7 +34,12 @@ Future<void> uploadFac(BuildContext context) async {
             context, 's', 'Proceso exitoso', 'Factura guardada correctamente.'))
         .catchError((onError) => alertMessage(context, 'e', 'Error al subir',
             'Error al subir la imagen al server.'))
-        .whenComplete(() => Navigator.pop(context));
+        .whenComplete(() async {
+      User aux2 = Provider.of<UserModel>(context, listen: false).user;
+      await Provider.of<HistorialModel>(context, listen: false)
+          .getHistorial(aux2);
+      Navigator.pop(context);
+    });
   } else
     alertMessage(context, 'w', 'Atencion!', 'Debe seleccionar una imagen');
 }
@@ -53,9 +58,7 @@ Future<void> descargarFactura(BuildContext context, String? imgId) async {
 }
 
 Future<void> descontarProd(BuildContext context, String code) async {
-  alertLoad(context);
   Map aux = jsonDecode(code);
-  User aux2 = Provider.of<UserModel>(context, listen: false).user;
   try {
     await putRequest('getForm/null', {
       'formato':
@@ -66,13 +69,9 @@ Future<void> descontarProd(BuildContext context, String code) async {
       'talla': aux['talla'],
     });
 
-    // await Provider.of<HistorialModel>(context, listen: false)
-    //     .getHistorial(aux2);
     await Provider.of<HistorialModel>(context, listen: false)
         .refrescarHistorial();
-    Navigator.pop(context);
   } catch (e) {
-    Navigator.pop(context);
     alertMessage(context, 'e', 'Error Interno', 'Error al descontar');
   }
 }

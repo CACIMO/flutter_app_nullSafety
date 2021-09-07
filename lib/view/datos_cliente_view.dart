@@ -63,15 +63,122 @@ class _FormatoView extends State<FormatoView> {
               ]),
               Divider(),
               Container(
-                  height: mQ(context, 'h', .79),
-                  child: ListView(padding: EdgeInsets.only(top: 0), children: [
-                    Container(
-                      //margin: EdgeInsets.only(top: mQ(context, 'h',.015),
-                      child: TextFormField(
-                        controller: controllers['documento'],
-                        keyboardType: TextInputType.number,
-                        maxLength: 11,
-                        decoration: InputDecoration(
+                //margin: EdgeInsets.only(top: mQ(context, 'h',.015),
+                child: TextFormField(
+                  controller: controllers['documento'],
+                  keyboardType: TextInputType.number,
+                  maxLength: 11,
+                  decoration: InputDecoration(
+                    counterText: '',
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                    hintText: 'Documento de Identidad',
+                    labelText: 'Documento de Identidad',
+                    hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                    fillColor:
+                        Color(0xFFEBEBEB), //,Colors.grey.withOpacity(0.5),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
+                child: TextFormField(
+                  controller: controllers['nombre'],
+                  maxLength: 100,
+                  decoration: InputDecoration(
+                    counterText: '',
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                    hintText: 'Nombre Cliente',
+                    labelText: 'Nombre Cliente',
+                    hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                    //filled: true,
+                    fillColor:
+                        Color(0xFFEBEBEB), //,Colors.grey.withOpacity(0.5),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
+                child: TextFormField(
+                  controller: controllers['direccion'],
+                  maxLength: 60,
+                  decoration: InputDecoration(
+                    counterText: '',
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                    hintText: 'Dirección',
+                    labelText: 'Dirección',
+                    hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                    //filled: true,
+                    fillColor:
+                        Color(0xFFEBEBEB), //,Colors.grey.withOpacity(0.5),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
+                child: TextFormField(
+                  controller: controllers['barrio'],
+                  maxLength: 30,
+                  decoration: InputDecoration(
+                    counterText: '',
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                    hintText: 'Barrio',
+                    labelText: 'Barrio',
+                    hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                    //filled: true,
+                    fillColor:
+                        Color(0xFFEBEBEB), //,Colors.grey.withOpacity(0.5),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
+                child: TextFormField(
+                  controller: controllers['ciudad'],
+                  maxLength: 30,
+                  decoration: InputDecoration(
+                    counterText: '',
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                    hintText: 'Ciudad',
+                    labelText: 'Ciudad',
+                    hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                    //filled: true,
+                    fillColor:
+                        Color(0xFFEBEBEB), //,Colors.grey.withOpacity(0.5),
+                  ),
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
+                  child: TextFormField(
+                      controller: controllers['telefono'],
+                      maxLength: 10,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
                           counterText: '',
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -79,42 +186,18 @@ class _FormatoView extends State<FormatoView> {
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Color(0xFFEBEBEB), width: 1)),
-                          hintText: 'Documento de Identidad',
-                          labelText: 'Documento de Identidad',
-                          hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
-                          fillColor: Color(
-                              0xFFEBEBEB), //,Colors.grey.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
-                      child: TextFormField(
-                        controller: controllers['nombre'],
-                        maxLength: 100,
-                        decoration: InputDecoration(
-                          counterText: '',
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFFEBEBEB), width: 1)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFFEBEBEB), width: 1)),
-                          hintText: 'Nombre Cliente',
-                          labelText: 'Nombre Cliente',
+                          hintText: 'Telefono',
+                          labelText: 'Telefono',
                           hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
                           //filled: true,
-                          fillColor: Color(
-                              0xFFEBEBEB), //,Colors.grey.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
-                      child: TextFormField(
-                        controller: controllers['direccion'],
-                        maxLength: 60,
-                        decoration: InputDecoration(
+                          fillColor: Color(0xFFEBEBEB)))),
+              Container(
+                  margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
+                  child: TextFormField(
+                      controller: controllers['envio'],
+                      maxLength: 10,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
                           counterText: '',
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -122,140 +205,52 @@ class _FormatoView extends State<FormatoView> {
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Color(0xFFEBEBEB), width: 1)),
-                          hintText: 'Dirección',
-                          labelText: 'Dirección',
+                          hintText: 'Costo de Envio',
+                          labelText: 'Costo de Envio',
                           hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
                           //filled: true,
-                          fillColor: Color(
-                              0xFFEBEBEB), //,Colors.grey.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
-                      child: TextFormField(
-                        controller: controllers['barrio'],
-                        maxLength: 30,
-                        decoration: InputDecoration(
-                          counterText: '',
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFFEBEBEB), width: 1)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFFEBEBEB), width: 1)),
-                          hintText: 'Barrio',
-                          labelText: 'Barrio',
-                          hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
-                          //filled: true,
-                          fillColor: Color(
-                              0xFFEBEBEB), //,Colors.grey.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
-                      child: TextFormField(
-                        controller: controllers['ciudad'],
-                        maxLength: 30,
-                        decoration: InputDecoration(
-                          counterText: '',
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFFEBEBEB), width: 1)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFFEBEBEB), width: 1)),
-                          hintText: 'Ciudad',
-                          labelText: 'Ciudad',
-                          hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
-                          //filled: true,
-                          fillColor: Color(
-                              0xFFEBEBEB), //,Colors.grey.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
-                        child: TextFormField(
-                            controller: controllers['telefono'],
-                            maxLength: 10,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                counterText: '',
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFEBEBEB), width: 1)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFEBEBEB), width: 1)),
-                                hintText: 'Telefono',
-                                labelText: 'Telefono',
-                                hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
-                                //filled: true,
-                                fillColor: Color(0xFFEBEBEB)))),
-                    Container(
-                        margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
-                        child: TextFormField(
-                            controller: controllers['envio'],
-                            maxLength: 10,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                counterText: '',
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFEBEBEB), width: 1)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFEBEBEB), width: 1)),
-                                hintText: 'Costo de Envio',
-                                labelText: 'Costo de Envio',
-                                hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
-                                //filled: true,
-                                fillColor: Color(0xFFEBEBEB)))),
-                    Container(
-                      child: Divider(),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(top: mQ(context, 'h', .01)),
-                        child: Text('Forma de Pago',
-                            style: TextStyle(
-                                fontSize: mQ(context, 'h', .018),
-                                fontFamily: 'Roboto-Regular'))),
-                    Container(
-                      margin: EdgeInsets.only(top: mQ(context, 'h', .01)),
-                      child: Divider(),
-                    ),
-                    Container(
-                        height: mQ(context, 'h', .08),
-                        child: Row(children: [
-                          Expanded(
-                              child: DropdownButton<String>(
-                            value: Provider.of<FormatoModel>(context).idSelect,
-                            icon: Container(
-                                child: const Icon(
-                                    CupertinoIcons.arrowtriangle_down_circle)),
-                            iconSize: 24,
-                            elevation: 16,
-                            onChanged: (String? value) {
-                              changeFPago(context, value ?? 'I');
-                            },
-                            items: Provider.of<FormatoModel>(context)
-                                .opciones
-                                .map<DropdownMenuItem<String>>((opcion) {
-                              return DropdownMenuItem(
-                                  value: opcion['value'],
-                                  child: Container(
-                                      height: mQ(context, 'h', .03),
-                                      width: mQ(context, 'w', .8),
-                                      child: Text(opcion['titulo'] ?? '',
-                                          style: TextStyle(
-                                              fontFamily: 'Roboto-Light',
-                                              fontSize:
-                                                  mQ(context, 'h', .02)))));
-                            }).toList(),
-                          ))
-                        ]))
+                          fillColor: Color(0xFFEBEBEB)))),
+              Container(
+                child: Divider(),
+              ),
+              Container(
+                  margin: EdgeInsets.only(top: mQ(context, 'h', .01)),
+                  child: Text('Forma de Pago',
+                      style: TextStyle(
+                          fontSize: mQ(context, 'h', .018),
+                          fontFamily: 'Roboto-Regular'))),
+              Container(
+                margin: EdgeInsets.only(top: mQ(context, 'h', .01)),
+                child: Divider(),
+              ),
+              Container(
+                  height: mQ(context, 'h', .08),
+                  child: Row(children: [
+                    Expanded(
+                        child: DropdownButton<String>(
+                      value: Provider.of<FormatoModel>(context).idSelect,
+                      icon: Container(
+                          child: const Icon(
+                              CupertinoIcons.arrowtriangle_down_circle)),
+                      iconSize: 24,
+                      elevation: 16,
+                      onChanged: (String? value) {
+                        changeFPago(context, value ?? 'I');
+                      },
+                      items: Provider.of<FormatoModel>(context)
+                          .opciones
+                          .map<DropdownMenuItem<String>>((opcion) {
+                        return DropdownMenuItem(
+                            value: opcion['value'],
+                            child: Container(
+                                height: mQ(context, 'h', .03),
+                                width: mQ(context, 'w', .8),
+                                child: Text(opcion['titulo'] ?? '',
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto-Light',
+                                        fontSize: mQ(context, 'h', .02)))));
+                      }).toList(),
+                    ))
                   ]))
             ])));
   }
