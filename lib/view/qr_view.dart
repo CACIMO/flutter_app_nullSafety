@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/controller/historial_controller.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 

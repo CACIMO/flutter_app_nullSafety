@@ -12,6 +12,10 @@ void getListColorTalla(BuildContext context) {
   getTallasList(context);
 }
 
+void removeByind(BuildContext context, int index) {
+  Provider.of<NuevoProdModel>(context, listen: false).removeCombiByIndex(index);
+}
+
 void changeTallaProd(BuildContext context, String idTalla) {
   Provider.of<NuevoProdModel>(context, listen: false).changeTalla(idTalla);
 }
@@ -53,11 +57,11 @@ void removeLast(BuildContext context, bool isNew, int index) {
 }
 
 void addCombiToArray(BuildContext context) {
-  Provider.of<NuevoProdModel>(context, listen: false)
-      .saveCombi()
-      .then((value) => alertMessage(
-          context, 's', 'Proceso exitoso', 'Combinacion agregada.'))
-      .catchError((onError) {
+  Provider.of<NuevoProdModel>(context, listen: false).saveCombi().then((value) {
+    Provider.of<NuevoProdModel>(context, listen: false).removeLast();
+    alertMessage(context, 's', 'Proceso exitoso', 'Combinacion agregada.');
+  }).catchError((onError) {
+    Provider.of<NuevoProdModel>(context, listen: false).removeLast();
     alertMessage(context, 'e', 'Error', 'Faltan datos por llenar.');
   });
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
+import 'package:flutter_app/controller/modificar_prod_controller.dart';
 import 'package:flutter_app/model/productos_model.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -42,10 +43,16 @@ class ModificarProdModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void cleanModal() {
+    resetVars();
+    imgFile = File('');
+    stock = new TextEditingController();
+    notifyListeners();
+  }
+
   void resetVars() {
     colorSelect = 'none';
     tallaSelect = 'none';
-    //notifyListeners();
   }
 
   void clear() {
@@ -165,6 +172,19 @@ class ModificarProdModel extends ChangeNotifier {
           prod['combinacion'],
           prod['costo'].toString(),
           prod['descripcion']));
+      return;
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future removePostCombi(String idCombi) async {
+    Map response = {};
+    try {
+      await postRequest('updateproducto/combi', {
+        'idCombi': '$idCombi',
+        'idProd': '$producto',
+      });
       return;
     } catch (e) {
       return Future.error(e);

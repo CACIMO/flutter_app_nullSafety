@@ -38,26 +38,28 @@ void addImgNewMod(
     BuildContext context, bool action, Map<String, dynamic> data) async {
   ImagePicker _picker = ImagePicker();
   XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-  List<File> arr = [File(image!.path)];
-  if (!action) {
-    Provider.of<ModificarProdModel>(context, listen: false).setFile(image);
-  } else {
-    Map<String, String> datax = {
-      'lastImg': data['img'].toString(),
-      'id': Provider.of<ModificarProdModel>(context, listen: false).producto,
-      'combi': data["_id"].toString()
-    };
-    try {
-      alertLoad(context);
-      await postFileRequest('updateproducto/img', datax, arr);
-      Navigator.pop(context);
-      alertMessage(context, 's', 'Proceso Exitoso', 'Imagen Actualizada')
-          .then((value) {
-        Provider.of<ModificarProdModel>(context, listen: false)
-            .getProductInfo();
-      });
-    } catch (e) {
-      Navigator.pop(context);
+  if (image != null) {
+    List<File> arr = [File(image.path)];
+    if (!action) {
+      Provider.of<ModificarProdModel>(context, listen: false).setFile(image);
+    } else {
+      Map<String, String> datax = {
+        'lastImg': data['img'].toString(),
+        'id': Provider.of<ModificarProdModel>(context, listen: false).producto,
+        'combi': data["_id"].toString()
+      };
+      try {
+        alertLoad(context);
+        await postFileRequest('updateproducto/img', datax, arr);
+        Navigator.pop(context);
+        alertMessage(context, 's', 'Proceso Exitoso', 'Imagen Actualizada')
+            .then((value) {
+          Provider.of<ModificarProdModel>(context, listen: false)
+              .getProductInfo();
+        });
+      } catch (e) {
+        Navigator.pop(context);
+      }
     }
   }
 }
@@ -74,21 +76,36 @@ void removeLastProd(BuildContext context, bool isNew, int index) {
         .removeCombiByIndex(index);
 }
 
-void addCombiToArrayMod(BuildContext context) {
+Future<void> addCombiToArrayMod(BuildContext context) async {
   alertLoad(context);
-  Provider.of<ModificarProdModel>(context, listen: false)
-      .saveCombi()
-      .then((value) {
-    Provider.of<ModificarProdModel>(context, listen: false).getProductInfo();
-    Navigator.pop(context);
-    alertMessage(context, 's', 'Proceso exitoso', 'Combinacion agregada.')
-        .then((value) {});
-  }).catchError((onError) {
-    Navigator.pop(context);
-    alertMessage(context, 'e', 'Error', 'Faltan datos por llenar.');
-  });
 
-  Provider.of<ModificarProdModel>(context, listen: false).imgSelec = false;
+  try {
+    await Provider.of<ModificarProdModel>(context, listen: false).saveCombi();
+    Provider.of<ModificarProdModel>(context, listen: false).cleanModal();
+    alertMessage(context, 's', 'Proceso exitoso', 'Combinacion agregada.');
+    await Provider.of<ModificarProdModel>(context, listen: false)
+        .getProductInfo();
+    Navigator.pop(context);
+    Navigator.pop(context);
+  } catch (error) {
+    Navigator.pop(context);
+    Navigator.pop(context);
+    print(error);
+  }
+
+  //   .then((value) {
+  // Provider.of<ModificarProdModel>(context, listen: false).resetVars();
+  //Provider.of<ModificarProdModel>(context, listen: false).getProductInfo();
+  //Navigator.pop(context);
+  // alertMessage(context, 's', 'Proceso exitoso', 'Combinacion agregada.')
+  //     .then((value) {});
+  // }).catchError((onError) {
+  //print(onError);
+  //Navigator.pop(context);
+  //alertMessage(context, 'e', 'Error', 'Faltan datos por llenar.');
+  //});
+
+  //Provider.of<ModificarProdModel>(context, listen: false).imgSelec = false;
 }
 
 void updateProd(
@@ -112,11 +129,13 @@ void updateProd(
   try {
     await Provider.of<ModificarProdModel>(context, listen: false)
         .saveProd(data)
-        .then((value) => alertMessage(
-                context, 's', 'Proceso exitoso', 'Producto agregado con exito')
-            .then((value) =>
-                Provider.of<ModificarProdModel>(context, listen: false)
-                    .cleanCamps()));
+        .then((value) => alertMessage(context, 's', 'Proceso exitoso',
+                    'Producto agregado con exito')
+                .then((value) {
+              Provider.of<ModificarProdModel>(context, listen: false)
+                  .cleanCamps();
+              Navigator.pop(context);
+            }));
 
     return;
   } catch (e) {

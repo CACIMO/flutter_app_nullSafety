@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -269,5 +268,18 @@ Future<void> alertQR(BuildContext ctx, Map data) {
                         )),
                   ),
                 ))));
+      });
+}
+
+Future<void> combiAlert(BuildContext ctx, bool edit) {
+  return showDialog<void>(
+      context: ctx,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+            title: Text('Agregar Combinacion',
+                style: TextStyle(
+                    fontFamily: 'Roboto-Regular',
+                    fontSize: mQ(context, 'h', .025))),
+            content: Container(child: AlertCombi(edit: edit)));
       });
 }

@@ -231,17 +231,9 @@ class _ModificarProducto extends State<ModificarProducto> {
                       flex: 1,
                       child: Container(
                           child: IconButton(
-                              onPressed: () => addNewCombi(context),
+                              onPressed: () => combiAlert(context, true),
                               icon: Icon(CupertinoIcons.plus_app, size: 18)))),
                 ]),
-                Visibility(
-                  visible: Provider.of<ModificarProdModel>(context).newCombi,
-                  child: Row(children: [
-                    Combinacion(
-                        isNew: true,
-                        prov: Provider.of<ModificarProdModel>(context))
-                  ]),
-                ),
                 Container(
                     height: mQ(context, 'h', .2),
                     child: ListView.builder(
@@ -251,7 +243,17 @@ class _ModificarProducto extends State<ModificarProducto> {
                           return Combinacion(
                               isNew: false,
                               data: combinaciones[index],
-                              prov: Provider.of<ModificarProdModel>(context));
+                              prov: Provider.of<ModificarProdModel>(context),
+                              delete: () async {
+                                alertLoad(context);
+                                await Provider.of<ModificarProdModel>(context,
+                                        listen: false)
+                                    .removePostCombi(
+                                        combinaciones[index]['_id']);
+
+                                getProducto(context);
+                                Navigator.pop(context);
+                              });
                         }))
               ])
             ])));
