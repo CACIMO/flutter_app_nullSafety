@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
+import 'package:flutter_app/controller/login_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -9,11 +11,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   //vars
   bool visibility = false;
+  late String pass, user, token;
 
   //methods
   @override
   void initState() {
     super.initState();
+    getinitialData();
+  }
+
+  Future<void> getinitialData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    token = prefs.getString('token') ?? '';
+    user = prefs.getString('user') ?? '';
+    pass = prefs.getString('pass') ?? '';
+    if (token != '') {
+      logInCat(context, {'user': user, 'pass': pass});
+    }
   }
 
   @override

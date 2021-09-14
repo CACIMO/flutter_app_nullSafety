@@ -10,9 +10,10 @@ class UserModel extends ChangeNotifier {
       response = await postRequest('login', userData);
       String token = response['data']['token'];
       Map<String, dynamic> userInfo = response['data']['usuario'][0];
-
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', token);
+      prefs.setString('user', userData['usuario']!);
+      prefs.setString('pass', userData['password']!);
 
       user = new User(
           userInfo['_id'],

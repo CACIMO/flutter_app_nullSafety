@@ -236,13 +236,12 @@ class _NuevoProducto extends State<NuevoProducto> {
                         itemCount: combinaciones.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Combinacion(
-                            isNew: false,
-                            data: combinaciones[index],
-                            prov: Provider.of<NuevoProdModel>(context),
-                            delete: () {
-                              removeByind(context, index);
-                            },
-                          );
+                              isNew: false,
+                              data: combinaciones[index],
+                              prov: Provider.of<NuevoProdModel>(context),
+                              delete: () {
+                                removeByind(context, index);
+                              });
                         }))
               ])
             ])));

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
-import 'package:flutter_app/controller/modificar_prod_controller.dart';
 import 'package:flutter_app/model/productos_model.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -179,7 +178,6 @@ class ModificarProdModel extends ChangeNotifier {
   }
 
   Future removePostCombi(String idCombi) async {
-    Map response = {};
     try {
       await postRequest('updateproducto/combi', {
         'idCombi': '$idCombi',
