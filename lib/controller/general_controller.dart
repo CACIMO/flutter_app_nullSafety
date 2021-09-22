@@ -209,7 +209,6 @@ Future<void> alertLoad(BuildContext ctx) {
 }
 
 Future<void> descargarImgShare(BuildContext context, String? imgId) async {
-  final RenderBox box = context.findRenderObject() as RenderBox;
   if (imgId != null && imgId != 'null' && imgId != '') {
     alertLoad(context);
     var imageId = await ImageDownloader.downloadImage(imgId,
@@ -218,10 +217,7 @@ Future<void> descargarImgShare(BuildContext context, String? imgId) async {
     Navigator.pop(context);
     var path = await ImageDownloader.findPath(imageId!);
 
-    Share.shareFiles([path.toString()],
-        text: 'text',
-        subject: 'subject',
-        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+    Share.shareFiles([path.toString()]);
   }
 }
 

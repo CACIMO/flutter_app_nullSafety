@@ -39,7 +39,10 @@ Future<void> saveData(BuildContext context) async {
       Navigator.pop(context);
       alertMessage(context, 's', 'Proceso Exitoso',
               'Formato nuevo ${response['data']['msg']}')
-          .then((value) => clearData(context));
+          .then((value) {
+        Navigator.pushNamed(context, '/catalogo');
+        clearData(context);
+      });
 
       return;
     } catch (e) {

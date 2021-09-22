@@ -1,6 +1,7 @@
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/controller/historial_controller.dart';
 import 'package:flutter_app/model/historial_model.dart';
+import 'package:flutter_app/model/user_model.dart';
 import 'package:flutter_app/view/drawer_fil_view.dart';
 import 'package:flutter_app/view/drawer_menu_view.dart';
 import 'package:intl/intl.dart';
@@ -58,7 +59,14 @@ class _Resumen extends State<Resumen> {
                     child: Container(
                         child: IconButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/qr');
+                              User aux2 =
+                                  Provider.of<UserModel>(context, listen: false)
+                                      .user;
+                              if (aux2.permiso != '6050ae3e96f425bd7bf19d3b')
+                                Navigator.pushNamed(context, '/qr');
+                              else
+                                alertMessage(context, 'e',
+                                    'Acceso Restringido.', 'No tienes acceso');
                             },
                             icon: Icon(CupertinoIcons.qrcode_viewfinder,
                                 size: 18)))),

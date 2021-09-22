@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/model/productos_model.dart';
@@ -70,8 +69,10 @@ class HistorialModel extends ChangeNotifier {
     });
   }
 
-  Future<void> getHistorial(User userInfo) async {
-    postRequest('getForm/null', {'vendedor': userInfo.id}).then((response) {
+  Future<void> getHistorial(User userInfo, bool acceso) async {
+    postRequest(
+            'getForm/${acceso ? 'true' : 'false'}', {'vendedor': userInfo.id})
+        .then((response) {
       formatos = [];
       List<HistorialProd> prods = [];
       response['data'].forEach((formato) {

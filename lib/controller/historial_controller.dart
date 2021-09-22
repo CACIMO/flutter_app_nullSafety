@@ -11,7 +11,8 @@ import 'package:provider/provider.dart';
 
 void getHistorial(BuildContext context) {
   User aux = Provider.of<UserModel>(context, listen: false).user;
-  Provider.of<HistorialModel>(context, listen: false).getHistorial(aux);
+  bool acceso = aux.permiso == '6050bc8b96f425bd7bf19d3c';
+  Provider.of<HistorialModel>(context, listen: false).getHistorial(aux, acceso);
 }
 
 void setFormato(BuildContext context, Formato formato) {
@@ -36,8 +37,10 @@ Future<void> uploadFac(BuildContext context) async {
             'Error al subir la imagen al server.'))
         .whenComplete(() async {
       User aux2 = Provider.of<UserModel>(context, listen: false).user;
+
+      bool acceso = aux2.permiso == '6050bc8b96f425bd7bf19d3c';
       await Provider.of<HistorialModel>(context, listen: false)
-          .getHistorial(aux2);
+          .getHistorial(aux2, acceso);
       Navigator.pop(context);
     });
   } else

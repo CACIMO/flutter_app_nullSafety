@@ -71,7 +71,16 @@ class ProductoView extends StatelessWidget {
                                         child: Text(
                                             (stock > 0)
                                                 ? stock.toString()
-                                                : 'Seleccione color y talla',
+                                                : (Provider.of<ProductosModel>(
+                                                                    context)
+                                                                .colorSelect ==
+                                                            'none' ||
+                                                        Provider.of<ProductosModel>(
+                                                                    context)
+                                                                .tallaSelect ==
+                                                            'none')
+                                                    ? 'Seleccione color y talla'
+                                                    : 'No hay Stock disponible',
                                             style: TextStyle(
                                                 fontFamily: 'Roboto-Light',
                                                 fontSize:
