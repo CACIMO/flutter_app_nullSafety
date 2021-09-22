@@ -6,7 +6,7 @@ import 'package:flutter_app/model/login_model.dart';
 import 'package:flutter_app/model/modificar_prod_model.dart';
 import 'package:flutter_app/model/nuevo_prod_model.dart';
 import 'package:flutter_app/model/productos_model.dart';
-import 'package:flutter_app/view/carrito_view%20copy.dart';
+import 'package:flutter_app/view/configuracion_view.dart';
 import 'package:flutter_app/view/carrito_view.dart';
 import 'package:flutter_app/view/catalogo_view.dart';
 import 'package:flutter_app/model/menu_model.dart';
