@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/model/productos_model.dart';
+import 'package:flutter_app/model/user_model.dart';
 
 class ConfigModel extends ChangeNotifier {
   List<ColorD> colores = [];
   List<ItemCheck> tallas = [];
   List<ItemCheck> tags = [];
   List<ItemCheck> categorias = [];
+  List<User> users = [];
 
   Future<void> getTalla() async {
     try {
@@ -15,6 +17,30 @@ class ConfigModel extends ChangeNotifier {
       List aux = request['data'];
       tallas = aux
           .map((e) => ItemCheck(e['titulo'], e['_id'], e['active']))
+          .toList();
+      notifyListeners();
+      return request;
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<void> getUser() async {
+    try {
+      var request = await getRequest('usuario');
+      users = [];
+      List aux = request['data'];
+      users = aux
+          .map((e) => User(
+              e['_id'],
+              e['Permiso'],
+              e['usuario'],
+              e['cedula'].toString(),
+              e['nombre'],
+              e['apellido'],
+              e['correo'],
+              int.parse(e['telefono']),
+              e['Permisos'][0]['titulo']))
           .toList();
       notifyListeners();
       return request;
@@ -81,7 +107,6 @@ class ConfigModel extends ChangeNotifier {
   Future<void> createItem(String type, Map<String, String> data) async {
     try {
       await postRequest('$type', data);
-      print('El type $type la data ${data}');
       return;
     } catch (e) {
       return Future.error(e);

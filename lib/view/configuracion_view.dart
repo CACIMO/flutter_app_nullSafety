@@ -137,7 +137,7 @@ class _Configuracion extends State<Configuracion> {
               Container(
                   height: 50,
                   child: InkWell(
-                      onTap: () => print(''),
+                      onTap: () => Navigator.pushNamed(context, '/userconf'),
                       child: Row(children: [
                         Expanded(
                             flex: 1,

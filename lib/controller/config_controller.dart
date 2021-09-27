@@ -10,6 +10,12 @@ void getColor(BuildContext context) {
       .then((value) => null);
 }
 
+void getUsers(BuildContext context) {
+  Provider.of<ConfigModel>(context, listen: false)
+      .getUser()
+      .then((value) => null);
+}
+
 void createColor(
     BuildContext context, String? prim, String? seg, String? titulo) {
   if (prim != '' && prim != null && titulo != '' && titulo != null) {

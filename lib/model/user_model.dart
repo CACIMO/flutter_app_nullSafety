@@ -30,12 +30,6 @@ class UserModel extends ChangeNotifier {
     } catch (error) {
       return Future.error(error);
     }
-
-    /* postRequest('login', userData, true).then((response) {
-      return;
-    }).catchError((error) {
-      return Future.error(error);
-    }); */
   }
 }
 

@@ -25,6 +25,7 @@ import 'package:flutter_app/view/qr_view.dart';
 import 'package:flutter_app/view/resumen_view.dart';
 import 'package:flutter_app/view/tag_view.dart';
 import 'package:flutter_app/view/talla_view.dart';
+import 'package:flutter_app/view/user_conf_view.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -63,7 +64,8 @@ class MyApp extends StatelessWidget {
           '/talla': (context) => TallaView(),
           '/categoria': (context) => CategoriaView(),
           '/tag': (context) => TagsView(),
-          '/qr': (context) => QrView()
+          '/qr': (context) => QrView(),
+          '/userconf': (context) => UserConfig()
         },
         theme: ThemeData(
           fontFamily: 'Roboto-Regular',
