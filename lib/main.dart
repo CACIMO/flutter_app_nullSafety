@@ -1,5 +1,6 @@
 import 'package:flutter_app/model/carrito_model.dart';
 import 'package:flutter_app/model/config_model.dart';
+import 'package:flutter_app/model/cuenta_model.dart';
 import 'package:flutter_app/model/datos_cliente_model.dart';
 import 'package:flutter_app/model/drawer_fil_model.dart';
 import 'package:flutter_app/model/historial_model.dart';
@@ -40,7 +41,8 @@ void main() async {
     ChangeNotifierProvider(create: (context) => GeneralModel()),
     ChangeNotifierProvider(create: (context) => HistorialModel()),
     ChangeNotifierProvider(create: (context) => FormatoModel()),
-    ChangeNotifierProvider(create: (context) => ConfigModel())
+    ChangeNotifierProvider(create: (context) => ConfigModel()),
+    ChangeNotifierProvider(create: (context) => CuentaModel())
   ], child: MyApp()));
 }
 
