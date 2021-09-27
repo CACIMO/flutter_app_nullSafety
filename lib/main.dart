@@ -15,6 +15,7 @@ import 'package:flutter_app/view/carrito_view.dart';
 import 'package:flutter_app/view/catalogo_view.dart';
 import 'package:flutter_app/model/menu_model.dart';
 import 'package:flutter_app/model/user_model.dart';
+import 'package:flutter_app/view/cuenta_view.dart';
 import 'package:flutter_app/view/datos_cliente_view.dart';
 import 'package:flutter_app/view/historial_view.dart';
 import 'package:flutter_app/view/home_view.dart';
@@ -67,7 +68,8 @@ class MyApp extends StatelessWidget {
           '/categoria': (context) => CategoriaView(),
           '/tag': (context) => TagsView(),
           '/qr': (context) => QrView(),
-          '/userconf': (context) => UserConfig()
+          '/userconf': (context) => UserConfig(),
+          '/cuenta': (context) => Cuenta()
         },
         theme: ThemeData(
           fontFamily: 'Roboto-Regular',

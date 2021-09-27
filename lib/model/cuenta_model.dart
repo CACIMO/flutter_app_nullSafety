@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 
@@ -6,7 +8,7 @@ class CuentaModel extends ChangeNotifier {
     'usuario': TextEditingController(),
     'nombre': TextEditingController(),
     'apellido': TextEditingController(),
-    'documento': TextEditingController(),
+    'cedula': TextEditingController(),
     'telefono': TextEditingController(),
     'correo': TextEditingController(),
     'password': TextEditingController(),
@@ -17,21 +19,27 @@ class CuentaModel extends ChangeNotifier {
     Map<String, String> aux = {};
     controllers.forEach((key, value) {
       if (value.text == '') flag = false;
-      aux.addAll({key: (key == 'password') ? '' : value.text});
+      aux.addAll({
+        key: (key == 'password')
+            ? sha512.convert(utf8.encode(value.text)).toString()
+            : value.text
+      });
     });
-
+    print(aux);
     if (flag) {
       try {
-        await postRequest('usuario', {});
-      } catch (e) {}
+        await postRequest('usuario', aux);
+        return;
+      } catch (e) {
+        return Future.error(e);
+      }
     }
+  }
 
-    // User.usuario = req.body.usuario
-    // User.cedula = req.body.cedula
-    // User.nombre = req.body.nombre
-    // User.apellido = req.body.apellido
-    // User.correo = req.body.correo
-    // User.telefono = req.body.telefono
-    // User.password = req.body.password
+  void clearData() {
+    controllers.forEach((key, value) {
+      value.text = '';
+    });
+    notifyListeners();
   }
 }

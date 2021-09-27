@@ -92,7 +92,7 @@ class _Cuenta extends State<Cuenta> {
                 margin: EdgeInsets.only(top: heightApp * .015),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
-                  controller: controllers['documento'],
+                  controller: controllers['cedula'],
                   autofocus: false,
                   decoration: InputDecoration(
                     labelText: 'Documento',

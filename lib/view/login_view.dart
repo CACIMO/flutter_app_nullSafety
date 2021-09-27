@@ -104,12 +104,8 @@ class _Login extends State<Login> {
                       child: Row(children: [
                         Expanded(
                             child: ElevatedButton(
-                                onPressed: () {
-                                  /*  Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Cuenta()),
-                              ); */
-                                },
+                                onPressed: () =>
+                                    Navigator.pushNamed(context, '/cuenta'),
                                 child: Container(
                                     height: 52,
                                     child: Center(
