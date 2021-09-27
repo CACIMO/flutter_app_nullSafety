@@ -117,6 +117,43 @@ Future<void> stockAlert(BuildContext ctx, data, Function function) {
       });
 }
 
+Future<void> newDataAlert(BuildContext ctx, String type, Function function) {
+  return showDialog<void>(
+      context: ctx,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+            title: Text('Agregar $type',
+                style: TextStyle(
+                    fontFamily: 'Roboto-Regular',
+                    fontSize: mQ(context, 'h', .025))),
+            content: Container(
+                height: mQ(context, 'h', .15),
+                child: NewAlert(
+                  type: type,
+                  funcion: function,
+                )));
+      });
+}
+
+Future<void> newDataColorAlert(
+    BuildContext ctx, String type, Function function) {
+  return showDialog<void>(
+      context: ctx,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+            title: Text('Agregar $type',
+                style: TextStyle(
+                    fontFamily: 'Roboto-Regular',
+                    fontSize: mQ(context, 'h', .025))),
+            content: Container(
+                height: mQ(context, 'h', .35),
+                child: NewColorAlert(
+                  type: type,
+                  funcion: function,
+                )));
+      });
+}
+
 Future<void> saveStock(
     BuildContext context, String combincion, String stock) async {
   alertLoad(context);

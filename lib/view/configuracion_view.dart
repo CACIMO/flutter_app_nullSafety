@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/controller/carrito_controller.dart';
 import 'package:flutter_app/controller/general_controller.dart';
-import 'package:flutter_app/model/carrito_model.dart';
 import 'package:flutter_app/view/drawer_fil_view.dart';
 import 'package:flutter_app/view/drawer_menu_view.dart';
-import 'package:flutter_app/view/item_view.dart';
-import 'package:provider/provider.dart';
 
 class Configuracion extends StatefulWidget {
   @override
@@ -59,7 +55,7 @@ class _Configuracion extends State<Configuracion> {
               Container(
                   height: 50,
                   child: InkWell(
-                      onTap: () => print(''),
+                      onTap: () => Navigator.pushNamed(context, '/color'),
                       child: Row(children: [
                         Expanded(
                             flex: 1,
@@ -79,7 +75,7 @@ class _Configuracion extends State<Configuracion> {
               Container(
                   height: 50,
                   child: InkWell(
-                      onTap: () => print(''),
+                      onTap: () => Navigator.pushNamed(context, '/categoria'),
                       child: Row(children: [
                         Expanded(
                             flex: 1,
@@ -101,7 +97,7 @@ class _Configuracion extends State<Configuracion> {
               Container(
                   height: 50,
                   child: InkWell(
-                      onTap: () => print(''),
+                      onTap: () => Navigator.pushNamed(context, '/tag'),
                       child: Row(children: [
                         Expanded(
                             flex: 1,
@@ -121,7 +117,7 @@ class _Configuracion extends State<Configuracion> {
               Container(
                   height: 50,
                   child: InkWell(
-                      onTap: () => print(''),
+                      onTap: () => Navigator.pushNamed(context, '/talla'),
                       child: Row(children: [
                         Expanded(
                             flex: 1,

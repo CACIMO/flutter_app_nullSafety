@@ -42,7 +42,7 @@ class DrawerFilterModel extends ChangeNotifier {
 
     try {
       colorList = [];
-      response = await getRequest('color');
+      response = await getRequest('color/active');
       List auxList = response['data'];
       if (auxList.length > 0) {
         auxList.forEach((color) {
@@ -60,7 +60,7 @@ class DrawerFilterModel extends ChangeNotifier {
 
     try {
       tallaList = [];
-      response = await getRequest('talla');
+      response = await getRequest('talla/active');
       List auxTalla = response['data'];
       if (auxTalla.length > 0) {
         auxTalla.forEach((talla) {
@@ -76,7 +76,7 @@ class DrawerFilterModel extends ChangeNotifier {
 
     try {
       categoriaList = [];
-      response = await getRequest('categoria');
+      response = await getRequest('categoria/active');
       List auxCat = response['data'];
       if (auxCat.length > 0) {
         auxCat.forEach((cat) {
@@ -92,7 +92,7 @@ class DrawerFilterModel extends ChangeNotifier {
 
     try {
       tagList = [];
-      response = await getRequest('tag');
+      response = await getRequest('tag/active');
       List auxTag = response['data'];
       if (auxTag.length > 0) {
         auxTag.forEach((tag) {

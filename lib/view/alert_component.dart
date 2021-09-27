@@ -187,3 +187,132 @@ class AlertCombi extends StatelessWidget {
     );
   }
 }
+
+class NewAlert extends StatelessWidget {
+  final String type;
+  final Function funcion;
+  const NewAlert({Key? key, required this.type, required this.funcion})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController itemAux = new TextEditingController();
+    return Container(
+        child: Column(children: [
+      Row(children: [
+        Expanded(
+            child: Container(
+                margin: EdgeInsets.only(bottom: mQ(context, 'h', .012)),
+                child: TextFormField(
+                    autofocus: false,
+                    controller: itemAux,
+                    decoration: InputDecoration(
+                        counterText: '',
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                        hintText: '$type',
+                        labelText: '$type',
+                        hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                        fillColor: Color(0xFFEBEBEB)))))
+      ]),
+      ElevatedButton(
+        onPressed: () => funcion(itemAux.text),
+        child: Container(
+          height: 52,
+          child: Center(
+              child: Text(
+            'Guardar',
+            style: TextStyle(fontSize: 15),
+          )),
+        ),
+      )
+    ]));
+  }
+}
+
+class NewColorAlert extends StatelessWidget {
+  final String type;
+  final Function funcion;
+  const NewColorAlert({Key? key, required this.type, required this.funcion})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController primario = new TextEditingController();
+    TextEditingController segundario = new TextEditingController();
+    TextEditingController titulo = new TextEditingController();
+    return Container(
+        child: Column(children: [
+      Row(children: [
+        Expanded(
+            child: Container(
+                margin: EdgeInsets.only(bottom: mQ(context, 'h', .012)),
+                child: TextFormField(
+                    autofocus: false,
+                    controller: titulo,
+                    decoration: InputDecoration(
+                        counterText: '',
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                        hintText: 'Nombre $type',
+                        labelText: 'Nombre $type',
+                        hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                        fillColor: Color(0xFFEBEBEB)))))
+      ]),
+      Row(children: [
+        Expanded(
+            child: Container(
+                margin: EdgeInsets.only(bottom: mQ(context, 'h', .012)),
+                child: TextFormField(
+                    autofocus: false,
+                    controller: primario,
+                    decoration: InputDecoration(
+                        counterText: '',
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                        hintText: 'Color Primario',
+                        labelText: 'Color Primario',
+                        hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                        fillColor: Color(0xFFEBEBEB)))))
+      ]),
+      Row(children: [
+        Expanded(
+            child: Container(
+                margin: EdgeInsets.only(bottom: mQ(context, 'h', .012)),
+                child: TextFormField(
+                    autofocus: false,
+                    controller: segundario,
+                    decoration: InputDecoration(
+                        counterText: '',
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xFFEBEBEB), width: 1)),
+                        hintText: 'Color Segundario',
+                        labelText: 'Color Segundario',
+                        hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                        fillColor: Color(0xFFEBEBEB)))))
+      ]),
+      ElevatedButton(
+          onPressed: () => funcion(titulo.text, primario.text, segundario.text),
+          child: Container(
+              height: 52,
+              child: Center(
+                  child: Text('Guardar', style: TextStyle(fontSize: 15)))))
+    ]));
+  }
+}

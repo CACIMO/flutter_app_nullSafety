@@ -1,4 +1,5 @@
 import 'package:flutter_app/model/carrito_model.dart';
+import 'package:flutter_app/model/config_model.dart';
 import 'package:flutter_app/model/datos_cliente_model.dart';
 import 'package:flutter_app/model/drawer_fil_model.dart';
 import 'package:flutter_app/model/historial_model.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_app/model/login_model.dart';
 import 'package:flutter_app/model/modificar_prod_model.dart';
 import 'package:flutter_app/model/nuevo_prod_model.dart';
 import 'package:flutter_app/model/productos_model.dart';
+import 'package:flutter_app/view/categoria_view.dart';
+import 'package:flutter_app/view/color_view.dart';
 import 'package:flutter_app/view/configuracion_view.dart';
 import 'package:flutter_app/view/carrito_view.dart';
 import 'package:flutter_app/view/catalogo_view.dart';
@@ -20,6 +23,8 @@ import 'package:flutter_app/view/modificar_prod_view.dart';
 import 'package:flutter_app/view/nuevo_prod_view.dart';
 import 'package:flutter_app/view/qr_view.dart';
 import 'package:flutter_app/view/resumen_view.dart';
+import 'package:flutter_app/view/tag_view.dart';
+import 'package:flutter_app/view/talla_view.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -33,7 +38,8 @@ void main() async {
     ChangeNotifierProvider(create: (context) => ModificarProdModel()),
     ChangeNotifierProvider(create: (context) => GeneralModel()),
     ChangeNotifierProvider(create: (context) => HistorialModel()),
-    ChangeNotifierProvider(create: (context) => FormatoModel())
+    ChangeNotifierProvider(create: (context) => FormatoModel()),
+    ChangeNotifierProvider(create: (context) => ConfigModel())
   ], child: MyApp()));
 }
 
@@ -53,6 +59,10 @@ class MyApp extends StatelessWidget {
           '/resumen': (context) => Resumen(),
           '/formato': (context) => FormatoView(),
           '/configuracion': (context) => Configuracion(),
+          '/color': (context) => ColorView(),
+          '/talla': (context) => TallaView(),
+          '/categoria': (context) => CategoriaView(),
+          '/tag': (context) => TagsView(),
           '/qr': (context) => QrView()
         },
         theme: ThemeData(
