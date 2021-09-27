@@ -8,7 +8,7 @@ void changeFPago(BuildContext context, String value) {
   Provider.of<FormatoModel>(context, listen: false).changeFPago(value);
 }
 
-Future<void> saveData(BuildContext context) async {
+Future<void> saveDataC(BuildContext context) async {
   bool flag = false;
   Map<String, String> data = {};
   Provider.of<FormatoModel>(context, listen: false)
@@ -35,6 +35,7 @@ Future<void> saveData(BuildContext context) async {
     alertLoad(context);
     Map<String, dynamic> response = {};
     try {
+      print(data);
       response = await postRequest('formato', data);
       Navigator.pop(context);
       alertMessage(context, 's', 'Proceso Exitoso',
@@ -47,6 +48,8 @@ Future<void> saveData(BuildContext context) async {
       return;
     } catch (e) {
       Navigator.pop(context);
+      alertMessage(context, 'e', 'Error!', 'Valide la informacion.');
+
       return Future.error(e);
     }
   }

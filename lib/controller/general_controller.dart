@@ -2,7 +2,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_app/controller/config_controller.dart';
+import 'package:flutter_app/model/config_model.dart';
 import 'package:flutter_app/model/modificar_prod_model.dart';
+import 'package:flutter_app/model/user_model.dart';
 import 'package:flutter_app/view/alert_component.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -314,5 +317,57 @@ Future<void> combiAlert(BuildContext ctx, bool edit) {
                     fontFamily: 'Roboto-Regular',
                     fontSize: mQ(context, 'h', .025))),
             content: Container(child: AlertCombi(edit: edit)));
+      });
+}
+
+Future<void> alertAddCTTG(ctx, User data) async {
+  return showDialog<void>(
+      context: ctx,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          title: Text('Tipo de Perfil',
+              style: TextStyle(
+                  fontFamily: 'Roboto-Thin', fontSize: mQ(context, 'h', .025))),
+          content: SingleChildScrollView(
+              child: Container(
+                  child: Column(children: [
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(
+                  left: mQ(context, 'w', .1), right: mQ(context, 'w', .1)),
+              child: ElevatedButton(
+                  onPressed: () => saveDataP(
+                      context, 'P', "6050ae3e96f425bd7bf19d3b", data.id),
+                  child: Container(
+                      child: Center(
+                          child: Text('Vendedor',
+                              style: TextStyle(fontSize: 13))))),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(
+                  left: mQ(context, 'w', .1), right: mQ(context, 'w', .1)),
+              child: ElevatedButton(
+                  onPressed: () => saveDataP(
+                      context, 'P', '604f9fedaaa8ce91e788e21f', data.id),
+                  child: Container(
+                      child: Center(
+                          child: Text('Administrador',
+                              style: TextStyle(fontSize: 13))))),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(
+                  left: mQ(context, 'w', .1), right: mQ(context, 'w', .1)),
+              child: ElevatedButton(
+                  onPressed: () => saveDataP(
+                      context, 'P', "6050bc8b96f425bd7bf19d3c", data.id),
+                  child: Container(
+                      child: Center(
+                          child:
+                              Text('Bodega', style: TextStyle(fontSize: 13))))),
+            ),
+          ]))),
+        );
       });
 }

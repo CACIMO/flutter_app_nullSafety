@@ -25,6 +25,16 @@ class ConfigModel extends ChangeNotifier {
     }
   }
 
+  Future<void> updUser(Map<String, String> data) async {
+    try {
+      await putRequest('usuario', data);
+      notifyListeners();
+      return;
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
   Future<void> getUser() async {
     try {
       var request = await getRequest('usuario');

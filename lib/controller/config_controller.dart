@@ -164,3 +164,15 @@ void updTag(BuildContext context, ItemCheck item) {
       .updateItem('tag/null', data)
       .then((value) => getTag(context));
 }
+
+Future<void> saveDataP(
+    BuildContext context, String type, String permiso, String id) async {
+  Map<String, String> data = {'type': type, 'data': permiso, 'userId': id};
+  Provider.of<ConfigModel>(context, listen: false)
+      .updateItem('usuario', data)
+      .then((value) {
+    Navigator.pop(context);
+    alertMessage(
+        context, 's', 'Proceso Exitoso', 'El permiso se ha actualizado');
+  });
+}

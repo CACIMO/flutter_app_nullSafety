@@ -14,7 +14,8 @@ class FormatoModel extends ChangeNotifier {
     'barrio': TextEditingController(),
     'ciudad': TextEditingController(),
     'telefono': TextEditingController(),
-    'envio': TextEditingController()
+    'envio': TextEditingController(),
+    'obs': TextEditingController()
   };
 
   String idSelect = 'I';

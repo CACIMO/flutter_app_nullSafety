@@ -64,7 +64,8 @@ class HistorialModel extends ChangeNotifier {
           formato['telefono'].toString(),
           fpago,
           vendedor,
-          prods));
+          prods,
+          formato['observacion'] ?? ''));
       notifyListeners();
     });
   }
@@ -110,22 +111,24 @@ class HistorialModel extends ChangeNotifier {
             ? '${formato['Vendedor'][0]['nombre']} ${formato['Vendedor'][0]['apellido']}'
             : 'Indefinido';
         formatos.add(new Formato(
-            formato['_id'],
-            DateTime.parse(formato['fecha']),
-            etapa,
-            formato['fac'].toString(),
-            double.parse(formato['envio'].toString()),
-            formato['formato'],
-            formato['documento'].toString(),
-            formato['barrio'],
-            formato['ciudad'],
-            double.parse(formato['total'].toString()),
-            formato['direccion'],
-            formato['nombre'],
-            formato['telefono'].toString(),
-            fpago,
-            vendedor,
-            prods));
+          formato['_id'],
+          DateTime.parse(formato['fecha']),
+          etapa,
+          formato['fac'].toString(),
+          double.parse(formato['envio'].toString()),
+          formato['formato'],
+          formato['documento'].toString(),
+          formato['barrio'],
+          formato['ciudad'],
+          double.parse(formato['total'].toString()),
+          formato['direccion'],
+          formato['nombre'],
+          formato['telefono'].toString(),
+          fpago,
+          vendedor,
+          prods,
+          formato['observacion'] ?? '',
+        ));
       });
       notifyListeners();
     });
@@ -169,6 +172,7 @@ class Formato {
   final String telefono;
   final String formaPago;
   final List<HistorialProd> prods;
+  final String observacion;
 
   Formato(
       this.id,
@@ -186,7 +190,8 @@ class Formato {
       this.telefono,
       this.formaPago,
       this.vendedor,
-      this.prods);
+      this.prods,
+      this.observacion);
 }
 
 @immutable

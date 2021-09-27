@@ -57,7 +57,7 @@ class _FormatoView extends State<FormatoView> {
                     flex: 1,
                     child: Container(
                         child: IconButton(
-                            onPressed: () => saveData(context),
+                            onPressed: () => saveDataC(context),
                             icon:
                                 Icon(CupertinoIcons.arrow_up_doc, size: 18)))),
               ]),
@@ -207,6 +207,24 @@ class _FormatoView extends State<FormatoView> {
                                   color: Color(0xFFEBEBEB), width: 1)),
                           hintText: 'Costo de Envio',
                           labelText: 'Costo de Envio',
+                          hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
+                          //filled: true,
+                          fillColor: Color(0xFFEBEBEB)))),
+              Container(
+                  margin: EdgeInsets.only(top: mQ(context, 'h', .015)),
+                  child: TextFormField(
+                      controller: controllers['obs'],
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                          counterText: '',
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFFEBEBEB), width: 1)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFFEBEBEB), width: 1)),
+                          hintText: 'Observacion',
+                          labelText: 'Observacion',
                           hintStyle: TextStyle(color: Color(0xFFAAAAAA)),
                           //filled: true,
                           fillColor: Color(0xFFEBEBEB)))),

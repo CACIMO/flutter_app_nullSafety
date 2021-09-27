@@ -74,7 +74,7 @@ class _Resumen extends State<Resumen> {
               Divider(),
               Column(children: [
                 Container(
-                    height: mQ(context, 'h', .26),
+                    height: mQ(context, 'h', .35),
                     child: Column(children: [
                       Row(children: [
                         Container(
@@ -228,12 +228,33 @@ class _Resumen extends State<Resumen> {
                                       fontFamily: 'Roboto-Regular')),
                             ))
                       ]),
-                      Divider()
+                      Row(children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: mQ(context, 'h', .015),
+                              bottom: mQ(context, 'h', .005)),
+                          child: Text('OBSERVACIONES',
+                              style: TextStyle(
+                                  fontSize: mQ(context, 'h', .016),
+                                  color: Colors.black54,
+                                  fontFamily: 'Roboto-Regular')),
+                        )
+                      ]),
+                      Row(children: [
+                        Container(
+                          child: Text(formato.observacion,
+                              style: TextStyle(
+                                  fontSize: mQ(context, 'h', .017),
+                                  fontFamily: 'Roboto-Regular')),
+                        )
+                      ]),
+                      Container(
+                          alignment: Alignment.bottomCenter, child: Divider())
                     ])),
                 Container(
                     height: mQ(context, 'h', .53),
                     child: ListView.builder(
-                        padding: EdgeInsets.only(top: 2),
+                        padding: EdgeInsets.only(top: 0),
                         shrinkWrap: true,
                         primary: false,
                         itemCount: formato.prods.length,

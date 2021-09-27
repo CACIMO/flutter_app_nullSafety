@@ -4,6 +4,7 @@ import 'package:flutter_app/controller/config_controller.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/model/config_model.dart';
 import 'package:flutter_app/view/drawer_menu_view.dart';
+import 'package:flutter_app/view/profile_view.dart';
 import 'package:provider/provider.dart';
 
 class UserConfig extends StatefulWidget {
@@ -67,7 +68,11 @@ class _UserConfig extends State<UserConfig> {
                                     .map((e) => Container(
                                         padding: EdgeInsets.only(top: 10),
                                         child: InkWell(
-                                            onTap: () => print(''),
+                                            onTap: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PerfilView(data: e))),
                                             child: Row(children: [
                                               Expanded(
                                                   flex: 2,
