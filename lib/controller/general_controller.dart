@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/controller/config_controller.dart';
-import 'package:flutter_app/model/config_model.dart';
 import 'package:flutter_app/model/modificar_prod_model.dart';
 import 'package:flutter_app/model/user_model.dart';
 import 'package:flutter_app/view/alert_component.dart';
