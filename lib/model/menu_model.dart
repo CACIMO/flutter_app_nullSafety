@@ -28,6 +28,12 @@ class MenuController extends ChangeNotifier {
       'route': 'historial',
       'active': false
     },
+    '615342fc56eb703ed3264c38': {
+      'title': 'Envio de Formato',
+      'icono': Icon(CupertinoIcons.mail),
+      'route': 'mail',
+      'active': false
+    },
     '604f9cf5aaa8ce91e788e21d': {
       'title': 'Configuracion',
       'icono': Icon(CupertinoIcons.settings),

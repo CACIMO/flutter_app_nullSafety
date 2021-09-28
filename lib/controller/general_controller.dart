@@ -371,3 +371,15 @@ Future<void> alertAddCTTG(ctx, User data) async {
         );
       });
 }
+
+Future<void> showCalendar(BuildContext context, Function aux) async {
+  final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: new DateTime.now(),
+      firstDate: new DateTime(2015),
+      helpText: 'Fecha Inicial', // Can be used as title
+      cancelText: 'Cancelar',
+      confirmText: 'Confirmar',
+      lastDate: DateTime.now());
+  aux(picked);
+}

@@ -17,6 +17,7 @@ import 'package:flutter_app/model/menu_model.dart';
 import 'package:flutter_app/model/user_model.dart';
 import 'package:flutter_app/view/cuenta_view.dart';
 import 'package:flutter_app/view/datos_cliente_view.dart';
+import 'package:flutter_app/view/formato_mail_view.dart';
 import 'package:flutter_app/view/historial_view.dart';
 import 'package:flutter_app/view/home_view.dart';
 import 'package:flutter_app/view/login_view.dart';
@@ -69,7 +70,8 @@ class MyApp extends StatelessWidget {
           '/tag': (context) => TagsView(),
           '/qr': (context) => QrView(),
           '/userconf': (context) => UserConfig(),
-          '/cuenta': (context) => Cuenta()
+          '/cuenta': (context) => Cuenta(),
+          '/mail': (context) => FormatoMail()
         },
         theme: ThemeData(
           fontFamily: 'Roboto-Regular',
