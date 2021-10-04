@@ -283,7 +283,7 @@ class ResumenItem extends StatelessWidget {
                 flex: 3,
                 child: Container(
                     child: CachedNetworkImage(
-                        imageUrl: 'http://$urlDB/getimg/preview/${prod.id}'))),
+                        imageUrl: 'http://$urlDB/getimg/preview/${prod.img}'))),
             Expanded(
                 flex: 7,
                 child: Container(

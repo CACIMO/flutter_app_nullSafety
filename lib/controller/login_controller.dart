@@ -15,7 +15,7 @@ void logIn(
     'password':
         sha512.convert(utf8.encode(controller['password']!.text)).toString()
   };
-
+  print(jsonAux);
   for (final key in jsonAux.keys) {
     if (jsonAux[key] == '') {
       flag = true;

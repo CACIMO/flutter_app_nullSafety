@@ -79,56 +79,67 @@ class _FormatoMail extends State<FormatoMail> {
                           ))
                     ]),
                     Container(
-                      margin: EdgeInsets.only(top: 5),
-                      child: Row(children: [
-                        Expanded(
-                            flex: 5,
-                            child: Column(children: [
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        margin: EdgeInsets.only(right: 5),
-                                        child: Text(
-                                            DateFormat('dd-MM-y')
-                                                .format(fechaInicial),
-                                            style: TextStyle(
-                                                fontSize:
-                                                    mQ(context, 'h', .016),
-                                                fontFamily: 'Roboto-Regular'))),
-                                    IconButton(
-                                        icon: Icon(CupertinoIcons.pencil),
-                                        onPressed: () => showCalendar(
-                                            context,
-                                            (date) => setState(
-                                                () => fechaInicial = date)))
-                                  ])
-                            ])),
-                        Expanded(
-                            flex: 5,
-                            child: Column(children: [
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        margin: EdgeInsets.only(right: 5),
-                                        child: Text(
-                                            DateFormat('dd-MM-y')
-                                                .format(fechaFinal),
-                                            style: TextStyle(
-                                                fontSize:
-                                                    mQ(context, 'h', .016),
-                                                fontFamily: 'Roboto-Regular'))),
-                                    IconButton(
-                                        icon: Icon(CupertinoIcons.pencil),
-                                        onPressed: () => showCalendar(
-                                            context,
-                                            (date) => setState(
-                                                () => fechaFinal = date)))
-                                  ])
-                            ]))
-                      ]),
-                    )
+                        margin: EdgeInsets.only(top: 5),
+                        child: Row(children: [
+                          Expanded(
+                              flex: 5,
+                              child: Column(children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.only(right: 5),
+                                          child: Text(
+                                              DateFormat('y-MM-dd')
+                                                  .format(fechaInicial),
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      mQ(context, 'h', .016),
+                                                  fontFamily:
+                                                      'Roboto-Regular'))),
+                                      IconButton(
+                                          icon: Icon(CupertinoIcons.pencil),
+                                          onPressed: () => showCalendar(
+                                              context,
+                                              (date) => setState(() =>
+                                                  fechaInicial = date != null
+                                                      ? date
+                                                      : fechaInicial)))
+                                    ])
+                              ])),
+                          Expanded(
+                              flex: 5,
+                              child: Column(children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.only(right: 5),
+                                          child: Text(
+                                              DateFormat('y-MM-dd')
+                                                  .format(fechaFinal),
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      mQ(context, 'h', .016),
+                                                  fontFamily:
+                                                      'Roboto-Regular'))),
+                                      IconButton(
+                                          icon: Icon(CupertinoIcons.pencil),
+                                          onPressed: () => showCalendar(
+                                              context,
+                                              (date) => setState(() =>
+                                                  fechaFinal = date != null
+                                                      ? date
+                                                      : fechaFinal)))
+                                    ])
+                              ]))
+                        ])),
+                    Container(
+                        margin: EdgeInsets.only(top: 10),
+                        child: ElevatedButton(
+                            onPressed: () =>
+                                sendEmail(context, fechaInicial, fechaFinal),
+                            child: Text('Enviar')))
                   ]))
             ])));
   }

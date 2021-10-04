@@ -26,7 +26,9 @@ class HistorialModel extends ChangeNotifier {
             .toString();
         Map color = formato['Colores']
             .singleWhere((e) => e['_id'] == producto['color']);
-
+        String fileName = formato['Prods']
+            .singleWhere((e) => e['_id'] == producto['id'])['fileName']
+            .toString();
         prods.add(new HistorialProd(
             producto['id'],
             titulo,
@@ -35,7 +37,8 @@ class HistorialModel extends ChangeNotifier {
             int.parse(producto['cantidad'].toString()),
             ColorD(color['primario'], color['segundario'], color['titulo'],
                 color['_id'], true),
-            talla));
+            talla,
+            fileName));
       });
 
       String etapa = formato['Etapa'].length > 0
@@ -88,7 +91,11 @@ class HistorialModel extends ChangeNotifier {
               .toString();
           Map color = formato['Colores']
               .singleWhere((e) => e['_id'] == producto['color']);
+          String fileName = formato['Prods']
+              .singleWhere((e) => e['_id'] == producto['id'])['fileName']
+              .toString();
 
+          print(formato['Prods']);
           prods.add(new HistorialProd(
               producto['id'],
               titulo,
@@ -97,7 +104,8 @@ class HistorialModel extends ChangeNotifier {
               int.parse(producto['cantidad'].toString()),
               ColorD(color['primario'], color['segundario'], color['titulo'],
                   color['_id'], true),
-              talla));
+              talla,
+              fileName));
         });
 
         String etapa = formato['Etapa'].length > 0
@@ -198,6 +206,7 @@ class Formato {
 class HistorialProd {
   final String id;
   final String titulo;
+  final String img;
   final double valor;
   final int restante;
   final int cantidad;
@@ -205,5 +214,5 @@ class HistorialProd {
   final String talla;
 
   HistorialProd(this.id, this.titulo, this.valor, this.restante, this.cantidad,
-      this.color, this.talla);
+      this.color, this.talla, this.img);
 }

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/controller/config_controller.dart';
-import 'package:flutter_app/model/config_model.dart';
 import 'package:flutter_app/model/modificar_prod_model.dart';
 import 'package:flutter_app/model/user_model.dart';
 import 'package:flutter_app/view/alert_component.dart';
@@ -11,6 +10,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:image_downloader/image_downloader.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -382,4 +382,23 @@ Future<void> showCalendar(BuildContext context, Function aux) async {
       confirmText: 'Confirmar',
       lastDate: DateTime.now());
   aux(picked);
+}
+
+Future<void> sendEmail(
+    BuildContext context, DateTime fecIni, DateTime fecFin) async {
+  if (fecIni.isAfter(fecFin))
+    alertMessage(context, 'w', 'Alerta', 'La Fecha final debe ser mayor.');
+  else {
+    Map<String, String> data = {
+      'fecini': DateFormat('y-MM-dd').format(fecIni),
+      'fecfin': DateFormat('y-MM-dd').format(fecFin),
+      'email': Provider.of<UserModel>(context, listen: false).user.correo
+    };
+    print(data);
+    postRequest('email', data)
+        .then((value) => alertMessage(context, 's', 'Proceso Exitoso',
+            'Correo enviado a: \n${Provider.of<UserModel>(context, listen: false).user.correo}'))
+        .catchError((onError) => alertMessage(
+            context, 'e', 'Proceso Fallido', 'Error al enviar el email.'));
+  }
 }
