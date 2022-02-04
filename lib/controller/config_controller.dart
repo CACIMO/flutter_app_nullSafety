@@ -4,6 +4,8 @@ import 'package:flutter_app/model/config_model.dart';
 import 'package:flutter_app/model/productos_model.dart';
 import 'package:provider/provider.dart';
 
+import 'historial_controller.dart';
+
 void getColor(BuildContext context) {
   Provider.of<ConfigModel>(context, listen: false)
       .getColor()
@@ -13,7 +15,7 @@ void getColor(BuildContext context) {
 void getUsers(BuildContext context) {
   Provider.of<ConfigModel>(context, listen: false)
       .getUser()
-      .then((value) => null);
+      .then((value) => loadArrUsers(context));
 }
 
 void createColor(

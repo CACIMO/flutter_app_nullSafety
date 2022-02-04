@@ -64,7 +64,8 @@ void removeProducto(BuildContext context, Item prodInfo) {
         .catchError((onError) => alertMessage(context, 'e', 'Alerta',
             'Producto en uso, no es posible eliminarlo.'));
   } else {
-    removeProdCarrito(prodInfo, carritoId)
+    String userId = Provider.of<UserModel>(context, listen: false).user.cedula;
+    removeProdCarrito(prodInfo, carritoId, userId)
         .then((value) => alertMessage(
                 context, 's', 'Proceso exitoso', 'Producto removido con exito.')
             .then((value) => getCarrito(context)))

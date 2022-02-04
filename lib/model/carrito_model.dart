@@ -6,12 +6,12 @@ class CarritoModel extends ChangeNotifier {
   List<Item> carritoList = [];
   String carritoId = '';
 
-  Future getCarrito(BuildContext context) async {
+  Future getCarrito(BuildContext context, String cc) async {
     Map response = {};
     try {
       carritoList = [];
       response = await getRequest(
-        'carrito',
+        'carrito/$cc',
       );
       if (response['data'].length > 0) {
         Map<String, dynamic> carritoInfo = response['data'][0];
@@ -30,6 +30,10 @@ class CarritoModel extends ChangeNotifier {
           Map<String, dynamic> tallaInfo = tallaList
               .where((tallaEle) => tallaEle['_id'] == prod['talla'])
               .toList()[0];
+          Map<String, dynamic> combiInfo = itemInfo['combinacion']
+              .where((combiImg) => combiImg['_id'] == prod['combinacion'])
+              .toList()[0];
+
           ColorD colorData = new ColorD(
               colorInfo['primario'],
               colorInfo['segundario'] ?? '',
@@ -42,7 +46,7 @@ class CarritoModel extends ChangeNotifier {
           addCarrito(new Item(
             itemInfo['_id'],
             itemInfo['titulo'],
-            'http://$urlDB/getimg/preview/${itemInfo['_id']}',
+            'http://$urlDB/getimg/preview/${combiInfo['img']}',
             prod['valor'].toString(),
             '',
             '',
@@ -50,7 +54,7 @@ class CarritoModel extends ChangeNotifier {
             [tallaData],
             [colorData],
             prod['_id'],
-            [],
+            itemInfo['combinacion'],
             '',
             '',
           ));

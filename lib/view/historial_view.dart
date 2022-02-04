@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/controller/config_controller.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/controller/historial_controller.dart';
 import 'package:flutter_app/model/historial_model.dart';
@@ -23,6 +24,7 @@ class _Historial extends State<Historial> {
   @override
   void initState() {
     getHistorial(context);
+    getUsers(context);
     super.initState();
   }
 
@@ -60,7 +62,7 @@ class _Historial extends State<Historial> {
                     child: Container(
                         child: IconButton(
                             onPressed: () =>
-                                scafoldKey.currentState!.openEndDrawer(),
+                                openFilters(context, 'e', 'Filtros', 'mensaje'),
                             icon: Icon(CupertinoIcons.slider_horizontal_3,
                                 size: 18)))),
               ]),

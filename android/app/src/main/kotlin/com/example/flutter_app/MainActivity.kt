@@ -1,4 +1,4 @@
-package com.amdbb.flutter_app
+package com.amdbebe.flutter_app
 
 import io.flutter.embedding.android.FlutterActivity
 

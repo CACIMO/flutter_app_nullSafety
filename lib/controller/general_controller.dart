@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/controller/config_controller.dart';
+import 'package:flutter_app/model/config_model.dart';
+import 'package:flutter_app/model/historial_model.dart';
 import 'package:flutter_app/model/modificar_prod_model.dart';
 import 'package:flutter_app/model/user_model.dart';
 import 'package:flutter_app/view/alert_component.dart';
@@ -19,7 +21,7 @@ import 'package:share/share.dart';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-String urlDB = '3.141.11.180:3000';
+String urlDB = '3.132.11.142:3000';
 
 double mQ(BuildContext ctx, String type, double factor) {
   Map query = {
@@ -99,6 +101,35 @@ Future<void> alertMessage(
             content: Container(
                 height: mQ(context, 'h', .08),
                 child: AlertComponent(msg: mensaje, type: type)));
+      });
+}
+
+Future<void> historialFilters(
+    BuildContext ctx, String type, String titulo, String mensaje) {
+  print(Provider.of<ConfigModel>(ctx, listen: false).users[0].id);
+  return showDialog<void>(
+      context: ctx,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          title: Text(titulo,
+              style: TextStyle(
+                  fontFamily: 'Roboto-Regular',
+                  fontSize: mQ(context, 'h', .025))),
+          content: Container(
+              height: mQ(context, 'h', .25),
+              child: FiltersComponent(
+                fecini: Provider.of<HistorialModel>(context).fecini,
+                fecfin: Provider.of<HistorialModel>(context).fecfin,
+              )),
+          actions: [
+            TextButton(
+                onPressed: () => print(''),
+                child: Text('Aplicar',
+                    style: TextStyle(
+                        fontFamily: 'Roboto-Light',
+                        fontSize: mQ(context, 'w', .05))))
+          ],
+        );
       });
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/model/drawer_fil_model.dart';
 import 'package:flutter_app/model/productos_model.dart';
+import 'package:flutter_app/model/user_model.dart';
 import 'package:provider/provider.dart';
 
 void sumCounter(BuildContext context) {
@@ -74,7 +75,8 @@ void addToCar(
     else {
       alertLoad(context);
       Provider.of<ProductosModel>(context, listen: false)
-          .addToCarrito(precio.text)
+          .addToCarrito(precio.text,
+              Provider.of<UserModel>(context, listen: false).user.cedula)
           .then((value) {
         Navigator.pop(context);
         precio.text = '';
@@ -97,7 +99,8 @@ void addToCar(
 }
 
 void shareImg(BuildContext context, String img) {
-  descargarImgShare(context, img);
+  descargarImgShare(
+      context, Provider.of<ProductosModel>(context, listen: false).imgProd);
 }
 
 void showQr(BuildContext context, Item prodData) {

@@ -26,6 +26,8 @@ Future<void> saveDataC(BuildContext context) async {
           {'vendedor': Provider.of<UserModel>(context, listen: false).user.id});
       data.addAll(
           {'pago': Provider.of<FormatoModel>(context, listen: false).idSelect});
+      data.addAll(
+          {'cc': Provider.of<UserModel>(context, listen: false).user.cedula});
     }
   });
 

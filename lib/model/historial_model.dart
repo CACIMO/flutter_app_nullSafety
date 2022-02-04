@@ -8,15 +8,36 @@ import 'package:image_picker/image_picker.dart';
 class HistorialModel extends ChangeNotifier {
   List<Formato> formatos = [];
   late Formato selected;
-
+  DateTime fecini = new DateTime.now();
+  DateTime fecfin = new DateTime.now();
   String codeScan = '';
+  String userSelect = 'all';
+  List<User> userArray = [];
+
+  void setUSer(String valueUser) {
+    userSelect = valueUser;
+    notifyListeners();
+  }
+
+  void changeDate(String type, DateTime date) {
+    if (type == 'i')
+      fecini = date;
+    else
+      fecfin = date;
+    notifyListeners();
+  }
+
+  void loadUsers(List<User> usuarios) {
+    userArray = [User('all', '', '', '', 'Todos los usuarios', '', '', 0, '')];
+    userArray.addAll(usuarios);
+    notifyListeners();
+  }
 
   Future<void> refrescarHistorial() async {
     String formato = selected.formato;
     getRequest('getForm/$formato').then((response) {
       List<HistorialProd> prods = [];
       var formato = response['data'][0];
-
       formato['Productos'].forEach((producto) {
         String titulo = formato['Prods']
             .singleWhere((e) => e['_id'] == producto['id'])['titulo']
@@ -26,9 +47,16 @@ class HistorialModel extends ChangeNotifier {
             .toString();
         Map color = formato['Colores']
             .singleWhere((e) => e['_id'] == producto['color']);
-        String fileName = formato['Prods']
-            .singleWhere((e) => e['_id'] == producto['id'])['fileName']
-            .toString();
+
+        String fileName = '';
+
+        formato['Prods'].forEach((auxi) => {
+              if (auxi['_id'] == producto['id'])
+                fileName = auxi['combinacion']
+                    .singleWhere(
+                        (e) => e['_id'] == producto['combinacion'])['img']
+                    .toString()
+            });
         prods.add(new HistorialProd(
             producto['id'],
             titulo,
@@ -74,9 +102,12 @@ class HistorialModel extends ChangeNotifier {
   }
 
   Future<void> getHistorial(User userInfo, bool acceso) async {
-    postRequest(
-            'getForm/${acceso ? 'true' : 'false'}', {'vendedor': userInfo.id})
-        .then((response) {
+    postRequest('getForm/${acceso ? 'true' : 'false'}', {
+      'vendedor': userInfo.id,
+      'fecini': fecini.toString(),
+      'fecfin': fecfin.toString(),
+      'venfil': userSelect
+    }).then((response) {
       formatos = [];
       List<HistorialProd> prods = [];
       response['data'].forEach((formato) {
@@ -94,8 +125,6 @@ class HistorialModel extends ChangeNotifier {
           String fileName = formato['Prods']
               .singleWhere((e) => e['_id'] == producto['id'])['fileName']
               .toString();
-
-          print(formato['Prods']);
           prods.add(new HistorialProd(
               producto['id'],
               titulo,

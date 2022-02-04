@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
+import 'package:flutter_app/model/config_model.dart';
 import 'package:flutter_app/model/historial_model.dart';
 import 'package:flutter_app/model/user_model.dart';
 import 'package:image_downloader/image_downloader.dart';
@@ -11,7 +12,8 @@ import 'package:provider/provider.dart';
 
 void getHistorial(BuildContext context) {
   User aux = Provider.of<UserModel>(context, listen: false).user;
-  bool acceso = aux.permiso == '6050bc8b96f425bd7bf19d3c';
+  bool acceso = aux.permiso == '6050bc8b96f425bd7bf19d3c' ||
+      aux.permiso == '604f9fedaaa8ce91e788e21f';
   Provider.of<HistorialModel>(context, listen: false).getHistorial(aux, acceso);
 }
 
@@ -22,6 +24,25 @@ void setFormato(BuildContext context, Formato formato) {
 void goToResumen(BuildContext context, Formato formato) {
   setFormato(context, formato);
   Navigator.pushNamed(context, '/resumen');
+}
+
+void openFilters(BuildContext ctx, String type, String titulo, String mensaje) {
+  historialFilters(ctx, type, titulo, mensaje);
+}
+
+void loadArrUsers(BuildContext context) {
+  Provider.of<HistorialModel>(context, listen: false)
+      .loadUsers(Provider.of<ConfigModel>(context, listen: false).users);
+}
+
+void changeUser(BuildContext context, String? value) {
+  if (value != null)
+    Provider.of<HistorialModel>(context, listen: false)
+        .setUSer(value.toString());
+}
+
+void changeDateC(BuildContext context, type, DateTime date) {
+  Provider.of<HistorialModel>(context, listen: false).changeDate(type, date);
 }
 
 Future<void> uploadFac(BuildContext context) async {

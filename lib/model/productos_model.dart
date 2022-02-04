@@ -173,17 +173,18 @@ class ProductosModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future addToCarrito(String precio) async {
+  Future addToCarrito(String precio, String usercc) async {
     Map<String, String> dataRequest = {
       'precio': precio,
       'talla': tallaSelect,
       'color': colorSelect,
       'producto': prodSelected!.id,
       'cantidad': counter.toString(),
-      'idCombi': idCombi
+      'idCombi': idCombi,
+      'id_user': usercc
     };
     try {
-      await postRequest('carrito', dataRequest);
+      await postRequest('carrito/null', dataRequest);
       return;
     } catch (e) {
       Future.error(e);
@@ -279,16 +280,20 @@ class Talla {
   Talla(this.titulo, this.id);
 }
 
-Future removeProdCarrito(Item prod, String carritoId) async {
+Future removeProdCarrito(Item prod, String carritoId, String userId) async {
   Map<String, String> data = {
-    'idCarrito': carritoId,
-    'iditem': prod.idCarritoItem,
-    'idProducto': prod.id,
-    'cantidad': prod.cantidad
+    'id_user': userId,
+    'carritoId': carritoId,
+    'itemId': prod.idCarritoItem,
+    'prodId': prod.id,
+    'cantidad': prod.cantidad,
+    'combId': prod.combinaciones[0]['_id']
   };
+  print('Prod Info ${prod.combinaciones}');
   Map<String, dynamic> request = {};
   try {
-    request = await putRequest('carrito', data);
+    request = await putRequest('carrito/null', data);
+    print('request: $request');
     if (request['err'] != null) throw 'Error de datos contacte a soporte.';
     return;
   } catch (e) {

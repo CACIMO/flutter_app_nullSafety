@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
+import 'package:flutter_app/controller/historial_controller.dart';
 import 'package:flutter_app/controller/modificar_prod_controller.dart';
 import 'package:flutter_app/controller/nuevo_prod_controller.dart';
 import 'package:flutter_app/model/drawer_fil_model.dart';
+import 'package:flutter_app/model/historial_model.dart';
 import 'package:flutter_app/model/modificar_prod_model.dart';
 import 'package:flutter_app/model/nuevo_prod_model.dart';
 import 'package:flutter_app/model/productos_model.dart';
 import 'package:flutter_app/view/dropdown_view.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AlertComponent extends StatelessWidget {
@@ -313,6 +316,89 @@ class NewColorAlert extends StatelessWidget {
               height: 52,
               child: Center(
                   child: Text('Guardar', style: TextStyle(fontSize: 15)))))
+    ]));
+  }
+}
+
+class FiltersComponent extends StatelessWidget {
+  final DateTime fecini;
+  final DateTime fecfin;
+  const FiltersComponent({Key? key, required this.fecini, required this.fecfin})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Column(children: [
+      Row(children: [
+        Text('Fecha inicial:',
+            style: TextStyle(
+                fontSize: mQ(context, 'h', .017),
+                color: Colors.black54,
+                fontFamily: 'Roboto-Regular'))
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+            margin: EdgeInsets.only(right: 5),
+            child: Text(DateFormat('y-MM-dd').format(fecini),
+                style: TextStyle(
+                    fontSize: mQ(context, 'h', .016),
+                    fontFamily: 'Roboto-Regular'))),
+        IconButton(
+            icon: Icon(CupertinoIcons.calendar),
+            onPressed: () => showCalendar(
+                context, (date) => changeDateC(context, 'i', date)))
+      ]),
+      Row(children: [
+        Text('Fecha final:',
+            style: TextStyle(
+                fontSize: mQ(context, 'h', .017),
+                color: Colors.black54,
+                fontFamily: 'Roboto-Regular'))
+      ]),
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+            margin: EdgeInsets.only(right: 5),
+            child: Text(DateFormat('y-MM-dd').format(fecfin),
+                style: TextStyle(
+                    fontSize: mQ(context, 'h', .016),
+                    fontFamily: 'Roboto-Regular'))),
+        IconButton(
+            icon: Icon(CupertinoIcons.calendar),
+            onPressed: () => showCalendar(
+                context, (date) => changeDateC(context, 'f', date)))
+      ]),
+      Row(children: [
+        Text('Vendedora:',
+            style: TextStyle(
+                fontSize: mQ(context, 'h', .017),
+                color: Colors.black54,
+                fontFamily: 'Roboto-Regular'))
+      ]),
+      Container(
+        margin: const EdgeInsets.only(top: 10),
+        child: Row(children: [
+          Expanded(
+              child: DropdownButton<String>(
+            value: Provider.of<HistorialModel>(context).userSelect,
+            icon: Visibility(visible: false, child: Icon(Icons.arrow_downward)),
+            elevation: 16,
+            onChanged: (String? value) => changeUser(context, value),
+            items: Provider.of<HistorialModel>(context)
+                .userArray
+                .map<DropdownMenuItem<String>>((opcion) {
+              print(opcion.nombre);
+              return DropdownMenuItem(
+                  value: opcion.id,
+                  child: Container(
+                      height: mQ(context, 'h', .03),
+                      child: Text(opcion.nombre,
+                          style: TextStyle(
+                              fontFamily: 'Roboto-Light',
+                              fontSize: mQ(context, 'h', .02)))));
+            }).toList(),
+          ))
+        ]),
+      )
     ]));
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/controller/historial_controller.dart';
 import 'package:flutter_app/model/historial_model.dart';
 import 'package:intl/intl.dart';
-import 'dart:ui';
 
 class HistoryStep extends StatelessWidget {
   final Formato formato;
