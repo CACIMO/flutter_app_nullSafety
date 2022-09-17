@@ -375,30 +375,29 @@ class FiltersComponent extends StatelessWidget {
                 fontFamily: 'Roboto-Regular'))
       ]),
       Container(
-        margin: const EdgeInsets.only(top: 10),
-        child: Row(children: [
-          Expanded(
-              child: DropdownButton<String>(
-            value: Provider.of<HistorialModel>(context).userSelect,
-            icon: Visibility(visible: false, child: Icon(Icons.arrow_downward)),
-            elevation: 16,
-            onChanged: (String? value) => changeUser(context, value),
-            items: Provider.of<HistorialModel>(context)
-                .userArray
-                .map<DropdownMenuItem<String>>((opcion) {
-              print(opcion.nombre);
-              return DropdownMenuItem(
-                  value: opcion.id,
-                  child: Container(
-                      height: mQ(context, 'h', .03),
-                      child: Text(opcion.nombre,
-                          style: TextStyle(
-                              fontFamily: 'Roboto-Light',
-                              fontSize: mQ(context, 'h', .02)))));
-            }).toList(),
-          ))
-        ]),
-      )
+          margin: const EdgeInsets.only(top: 10),
+          child: Row(children: [
+            Expanded(
+                child: DropdownButton<String>(
+              value: Provider.of<HistorialModel>(context).userSelect,
+              icon:
+                  Visibility(visible: false, child: Icon(Icons.arrow_downward)),
+              elevation: 16,
+              onChanged: (String? value) => changeUser(context, value),
+              items: Provider.of<HistorialModel>(context)
+                  .userArray
+                  .map<DropdownMenuItem<String>>((opcion) {
+                return DropdownMenuItem(
+                    value: opcion.id,
+                    child: Container(
+                        height: mQ(context, 'h', .03),
+                        child: Text(opcion.nombre,
+                            style: TextStyle(
+                                fontFamily: 'Roboto-Light',
+                                fontSize: mQ(context, 'h', .02)))));
+              }).toList(),
+            ))
+          ]))
     ]));
   }
 }

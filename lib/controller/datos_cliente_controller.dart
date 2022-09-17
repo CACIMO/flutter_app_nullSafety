@@ -37,7 +37,6 @@ Future<void> saveDataC(BuildContext context) async {
     alertLoad(context);
     Map<String, dynamic> response = {};
     try {
-      print(data);
       response = await postRequest('formato', data);
       Navigator.pop(context);
       alertMessage(context, 's', 'Proceso Exitoso',

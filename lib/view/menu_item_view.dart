@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/controller/menu_controller.dart';
 
-class MenuItem extends StatelessWidget {
+class MenuElemet extends StatelessWidget {
   final String titulo;
   final Icon icono;
   final String route;
-  const MenuItem(
+  const MenuElemet(
       {Key? key,
       required this.titulo,
       required this.icono,

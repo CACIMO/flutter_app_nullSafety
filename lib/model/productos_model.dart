@@ -293,7 +293,6 @@ Future removeProdCarrito(Item prod, String carritoId, String userId) async {
   Map<String, dynamic> request = {};
   try {
     request = await putRequest('carrito/null', data);
-    print('request: $request');
     if (request['err'] != null) throw 'Error de datos contacte a soporte.';
     return;
   } catch (e) {

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/model/menu_model.dart';
-import 'package:flutter_app/view/menu_item_view.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_app/view/menu_item_view.dart';
 
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class DrawerMenu extends StatelessWidget {
     List<Widget> options = [];
     menuOption.keys.forEach((key) {
       if (menuOption[key]!['active'] == true) {
-        options.add(MenuItem(
+        options.add(MenuElemet(
             titulo: menuOption[key]!['title'],
             icono: menuOption[key]!['icono'],
             route: menuOption[key]!['route']));

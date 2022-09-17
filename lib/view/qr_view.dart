@@ -59,7 +59,7 @@ class _QrViewState extends State<QrView> {
       Barcode aux = scan;
       controller.pauseCamera().then((value) {
         Navigator.pop(context);
-        descontarProd(context, aux.code);
+        descontarProd(context, aux.code ?? '');
       });
     });
   }

@@ -90,7 +90,6 @@ Future<void> addCombiToArrayMod(BuildContext context) async {
   } catch (error) {
     Navigator.pop(context);
     Navigator.pop(context);
-    print(error);
   }
 
   //   .then((value) {

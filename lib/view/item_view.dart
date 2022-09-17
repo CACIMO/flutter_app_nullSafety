@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_app/controller/general_controller.dart';
 import 'package:flutter_app/controller/item_controller.dart';
 import 'package:flutter_app/model/productos_model.dart';
@@ -23,119 +22,155 @@ class Producto extends StatelessWidget {
           constraints: BoxConstraints(minHeight: mQ(context, 'h', .15)),
           child: Container(
               child: Slidable(
-                  actionPane: SlidableDrawerActionPane(),
-                  actionExtentRatio: 0.25,
-                  child: Container(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: mQ(context, 'h', .15),
-                                width: mQ(context, 'h', .15),
-                                child: CachedNetworkImage(
-                                    height: mQ(context, 'h', .15),
-                                    imageUrl: prodData.urlImg),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                      padding: EdgeInsets.only(left: 5),
-                                      child: Column(children: [
-                                        Container(
-                                            width: mQ(context, 'w', 1),
-                                            padding: EdgeInsets.all(3),
-                                            child: Text(prodData.titulo,
-                                                maxLines: 2,
+            endActionPane: ActionPane(motion: ScrollMotion(), children: [
+              if (!isCarrito)
+                SlidableAction(
+                    backgroundColor: Colors.blue.withOpacity(0.8),
+                    icon: CupertinoIcons.pencil_ellipsis_rectangle,
+                    onPressed: (val) => goToEditView(context, prodData.id)),
+              SlidableAction(
+                  backgroundColor: Colors.red.withOpacity(0.8),
+                  icon: CupertinoIcons.trash,
+                  onPressed: (val) => removeProducto(context, prodData))
+            ]),
+            //  actionPane: SlidableDrawerActionPane(),
+            // actionExtentRatio: 0.25,
+            child: Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: mQ(context, 'h', .15),
+                          width: mQ(context, 'h', .15),
+                          child: CachedNetworkImage(
+                              height: mQ(context, 'h', .15),
+                              imageUrl: prodData.urlImg),
+                        ),
+                        Expanded(
+                            child: Container(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Column(children: [
+                                  Container(
+                                      width: mQ(context, 'w', 1),
+                                      padding: EdgeInsets.all(3),
+                                      child: Text(prodData.titulo,
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              fontSize: mQ(context, 'w', .05),
+                                              fontFamily: 'Roboto-Light'))),
+                                  if (isCarrito)
+                                    Container(
+                                      padding: EdgeInsets.all(3),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text('Cantidad:',
                                                 style: TextStyle(
                                                     fontSize:
-                                                        mQ(context, 'w', .05),
+                                                        mQ(context, 'w', .035),
+                                                    color: Colors.black54,
                                                     fontFamily:
-                                                        'Roboto-Light'))),
-                                        if (isCarrito)
-                                          Container(
-                                            padding: EdgeInsets.all(3),
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text('Cantidad:',
-                                                      style: TextStyle(
-                                                          fontSize: mQ(context,
-                                                              'w', .035),
-                                                          color: Colors.black54,
-                                                          fontFamily:
-                                                              'Roboto-Light')),
-                                                  Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 3),
-                                                      child: Text(
-                                                          prodData.cantidad,
-                                                          style: TextStyle(
-                                                              fontSize: mQ(
-                                                                  context,
-                                                                  'w',
-                                                                  .035),
-                                                              color: Colors
-                                                                  .black54,
-                                                              fontFamily:
-                                                                  'Roboto-Light')))
-                                                ]),
-                                          ),
-                                        if (!isCarrito)
-                                          Container(
-                                            padding: EdgeInsets.all(3),
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text('Referencias:',
-                                                      style: TextStyle(
-                                                          fontSize: mQ(context,
-                                                              'w', .035),
-                                                          color: Colors.black54,
-                                                          fontFamily:
-                                                              'Roboto-Light')),
-                                                  Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 3),
-                                                      child: Text(
-                                                          '${prodData.refVendedora} - ${prodData.refInterna}',
-                                                          style: TextStyle(
-                                                              fontSize: mQ(
-                                                                  context,
-                                                                  'w',
-                                                                  .035),
-                                                              color: Colors
-                                                                  .black54,
-                                                              fontFamily:
-                                                                  'Roboto-Light')))
-                                                ]),
-                                          ),
-                                        Container(
-                                          padding: EdgeInsets.all(3),
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text('Valor:',
+                                                        'Roboto-Light')),
+                                            Container(
+                                                padding:
+                                                    EdgeInsets.only(left: 3),
+                                                child: Text(prodData.cantidad,
                                                     style: TextStyle(
                                                         fontSize: mQ(
                                                             context, 'w', .035),
                                                         color: Colors.black54,
                                                         fontFamily:
-                                                            'Roboto-Light')),
-                                                Container(
-                                                    padding: EdgeInsets
-                                                        .only(left: 3),
-                                                    child: Text(
-                                                        NumberFormat
-                                                                .simpleCurrency()
-                                                            .format(double
-                                                                .parse(prodData
-                                                                    .valor)),
+                                                            'Roboto-Light')))
+                                          ]),
+                                    ),
+                                  if (!isCarrito)
+                                    Container(
+                                      padding: EdgeInsets.all(3),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text('Referencias:',
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        mQ(context, 'w', .035),
+                                                    color: Colors.black54,
+                                                    fontFamily:
+                                                        'Roboto-Light')),
+                                            Container(
+                                                padding:
+                                                    EdgeInsets.only(left: 3),
+                                                child: Text(
+                                                    '${prodData.refVendedora} - ${prodData.refInterna}',
+                                                    style: TextStyle(
+                                                        fontSize: mQ(
+                                                            context, 'w', .035),
+                                                        color: Colors.black54,
+                                                        fontFamily:
+                                                            'Roboto-Light')))
+                                          ]),
+                                    ),
+                                  Container(
+                                    padding: EdgeInsets.all(3),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text('Valor:',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      mQ(context, 'w', .035),
+                                                  color: Colors.black54,
+                                                  fontFamily: 'Roboto-Light')),
+                                          Container(
+                                              padding: EdgeInsets.only(left: 3),
+                                              child: Text(
+                                                  NumberFormat.simpleCurrency()
+                                                      .format(double.parse(
+                                                          prodData.valor)),
+                                                  style: TextStyle(
+                                                      fontSize: mQ(
+                                                          context, 'w', .035),
+                                                      color: Colors.black54,
+                                                      fontFamily:
+                                                          'Roboto-Light')))
+                                        ]),
+                                  ),
+                                  Container(
+                                    height: 20,
+                                    padding: EdgeInsets.all(3),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text('Tallas:',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      mQ(context, 'w', .035),
+                                                  color: Colors.black54,
+                                                  fontFamily: 'Roboto-Light')),
+                                          Container(
+                                              width: mQ(context, 'w', .3),
+                                              height: 20,
+                                              padding: EdgeInsets.only(left: 3),
+                                              child: ListView.builder(
+                                                  primary: false,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      prodData.tallas.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    int lent =
+                                                        prodData.tallas.length;
+                                                    return Text(
+                                                        '${prodData.tallas[index].titulo}${(lent - 1 != index ? ', ' : '')}',
                                                         style: TextStyle(
                                                             fontSize: mQ(
                                                                 context,
@@ -144,106 +179,54 @@ class Producto extends StatelessWidget {
                                                             color:
                                                                 Colors.black54,
                                                             fontFamily:
-                                                                'Roboto-Light')))
-                                              ]),
-                                        ),
-                                        Container(
-                                          height: 20,
-                                          padding: EdgeInsets.all(3),
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text('Tallas:',
-                                                    style: TextStyle(
-                                                        fontSize: mQ(
-                                                            context, 'w', .035),
-                                                        color: Colors.black54,
-                                                        fontFamily:
-                                                            'Roboto-Light')),
-                                                Container(
-                                                    width: mQ(context, 'w', .3),
-                                                    height: 20,
-                                                    padding: EdgeInsets.only(
-                                                        left: 3),
-                                                    child: ListView.builder(
-                                                        primary: false,
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        itemCount: prodData
-                                                            .tallas.length,
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          int lent = prodData
-                                                              .tallas.length;
-                                                          return Text(
-                                                              '${prodData.tallas[index].titulo}${(lent - 1 != index ? ', ' : '')}',
-                                                              style: TextStyle(
-                                                                  fontSize: mQ(
-                                                                      context,
-                                                                      'w',
-                                                                      .035),
-                                                                  color: Colors
-                                                                      .black54,
-                                                                  fontFamily:
-                                                                      'Roboto-Light'));
-                                                        }))
-                                              ]),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(3),
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text('Color:',
-                                                    style: TextStyle(
-                                                        fontSize: mQ(
-                                                            context, 'w', .035),
-                                                        color: Colors.black54,
-                                                        fontFamily:
-                                                            'Roboto-Light')),
-                                                Container(
-                                                  width: mQ(context, 'w', .3),
-                                                  height: 20,
-                                                  padding:
-                                                      EdgeInsets.only(left: 3),
-                                                  child: ListView.builder(
-                                                      primary: false,
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemCount: prodData
-                                                          .colores.length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return ColorItem(
-                                                            primario: prodData
-                                                                .colores[index]
-                                                                .primario,
-                                                            segundario: prodData
-                                                                .colores[index]
-                                                                .segundario);
-                                                      }),
-                                                )
-                                              ]),
-                                        )
-                                      ])))
-                            ])
-                      ])),
-                  secondaryActions: <Widget>[
-                if (!isCarrito)
-                  IconSlideAction(
-                      color: Colors.blue.withOpacity(0.8),
-                      icon: CupertinoIcons.pencil_ellipsis_rectangle,
-                      onTap: () => goToEditView(context, prodData.id)),
-                IconSlideAction(
-                    color: Colors.red.withOpacity(0.8),
-                    icon: CupertinoIcons.trash,
-                    onTap: () => removeProducto(context, prodData))
-              ])),
+                                                                'Roboto-Light'));
+                                                  }))
+                                        ]),
+                                  ),
+                                  Container(
+                                      padding: EdgeInsets.all(3),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text('Color:',
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        mQ(context, 'w', .035),
+                                                    color: Colors.black54,
+                                                    fontFamily:
+                                                        'Roboto-Light')),
+                                            Container(
+                                                width: mQ(context, 'w', .3),
+                                                height: 20,
+                                                padding:
+                                                    EdgeInsets.only(left: 3),
+                                                child: ListView.builder(
+                                                    primary: false,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount:
+                                                        prodData.colores.length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      return ColorItem(
+                                                          primario: prodData
+                                                              .colores[index]
+                                                              .primario,
+                                                          segundario: prodData
+                                                              .colores[index]
+                                                              .segundario);
+                                                    }))
+                                          ]))
+                                ])))
+                      ])
+                ])),
+            //secondaryActions: <Widget>[
+            /*
+               */
+            //]
+          )),
         ),
         Divider()
       ]),

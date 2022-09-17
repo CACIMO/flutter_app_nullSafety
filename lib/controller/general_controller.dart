@@ -21,6 +21,8 @@ import 'package:share/share.dart';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'historial_controller.dart';
+
 String urlDB = '3.132.11.142:3000';
 
 double mQ(BuildContext ctx, String type, double factor) {
@@ -106,7 +108,6 @@ Future<void> alertMessage(
 
 Future<void> historialFilters(
     BuildContext ctx, String type, String titulo, String mensaje) {
-  print(Provider.of<ConfigModel>(ctx, listen: false).users[0].id);
   return showDialog<void>(
       context: ctx,
       builder: (BuildContext context) {
@@ -123,7 +124,10 @@ Future<void> historialFilters(
               )),
           actions: [
             TextButton(
-                onPressed: () => print(''),
+                onPressed: () {
+                  Navigator.pop(context);
+                  getHistorial(context);
+                },
                 child: Text('Aplicar',
                     style: TextStyle(
                         fontFamily: 'Roboto-Light',
@@ -425,7 +429,6 @@ Future<void> sendEmail(
       'fecfin': DateFormat('y-MM-dd').format(fecFin),
       'email': Provider.of<UserModel>(context, listen: false).user.correo
     };
-    print(data);
     postRequest('email', data)
         .then((value) => alertMessage(context, 's', 'Proceso Exitoso',
             'Correo enviado a: \n${Provider.of<UserModel>(context, listen: false).user.correo}'))

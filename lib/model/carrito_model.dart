@@ -33,7 +33,8 @@ class CarritoModel extends ChangeNotifier {
           Map<String, dynamic> combiInfo = itemInfo['combinacion']
               .where((combiImg) => combiImg['_id'] == prod['combinacion'])
               .toList()[0];
-
+          List auxCombix = [];
+          auxCombix.add(combiInfo);
           ColorD colorData = new ColorD(
               colorInfo['primario'],
               colorInfo['segundario'] ?? '',
@@ -42,7 +43,7 @@ class CarritoModel extends ChangeNotifier {
               false);
 
           Talla tallaData = new Talla(tallaInfo['titulo'], tallaInfo['_id']);
-
+          print(combiInfo);
           addCarrito(new Item(
             itemInfo['_id'],
             itemInfo['titulo'],
@@ -54,7 +55,7 @@ class CarritoModel extends ChangeNotifier {
             [tallaData],
             [colorData],
             prod['_id'],
-            itemInfo['combinacion'],
+            auxCombix,
             '',
             '',
           ));

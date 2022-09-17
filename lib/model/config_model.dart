@@ -40,8 +40,6 @@ class ConfigModel extends ChangeNotifier {
       var request = await getRequest('usuario');
       users = [];
       List aux = request['data'];
-
-      print(aux);
       users = aux
           .map((e) => User(
               e['_id'],
